@@ -55,3 +55,9 @@ group :development do
   # Use console on exceptions pages [https://github.com/rails/web-console]
   gem "web-console"
 end
+
+gem "sqlite3", "~> 2.7"
+
+gem "bcrypt", "~> 3.1"
+
+gem "devise", "~> 4.9"
