@@ -1,0 +1,34 @@
+name: Deploy to Heroku
+
+on:
+  push:
+    branches:
+      - prod   # triggers on push to prod branch
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Setup Ruby
+        uses: ruby/setup-ruby@v1
+        with:
+          ruby-version: .ruby-version
+
+      - name: Install dependencies
+        run: |
+          bundle install
+
+      - name: Run tests
+        run: bundle exec cucumber && bundle exec rspec
+
+      - name: Deploy to Heroku
+        uses: akhileshns/heroku-deploy@v4
+        with:
+          heroku_api_key: ${{ secrets.HEROKU_API_KEY }}
+          heroku_app_name: "Zapmail" # replace with Heroku app name
+          heroku_email: "aurawra@outlook.com"
+          branch: prod
