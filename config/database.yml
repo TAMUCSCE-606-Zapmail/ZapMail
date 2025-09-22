@@ -91,18 +91,18 @@ production:
     # database: zapmail_production
     # username: zapmail
     # password: <%= ENV["ZAPMAIL_DATABASE_PASSWORD"] %>
-  # Uses same connection info as primary but points to a different db (for caching)
-  cache:
-    <<: *primary_production
-    database: zapmail_production_cache
-    migrations_paths: db/cache_migrate
-  # Separate db of background job queues
-  queue:
-    <<: *primary_production
-    database: zapmail_production_queue
-    migrations_paths: db/queue_migrate
-  # Separate db for actioncable (websockets)
-  cable:
-    <<: *primary_production
-    database: zapmail_production_cable
-    migrations_paths: db/cable_migrate
+  # # Uses same connection info as primary but points to a different db (for caching)
+  # cache:
+  #   <<: *primary_production
+  #   database: zapmail_production_cache
+  #   migrations_paths: db/cache_migrate
+  # # Separate db of background job queues
+  # queue:
+  #   <<: *primary_production
+  #   database: zapmail_production_queue
+  #   migrations_paths: db/queue_migrate
+  # # Separate db for actioncable (websockets)
+  # cable:
+  #   <<: *primary_production
+  #   database: zapmail_production_cable
+  #   migrations_paths: db/cable_migrate
