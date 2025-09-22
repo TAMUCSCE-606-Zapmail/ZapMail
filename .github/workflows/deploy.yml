@@ -29,6 +29,6 @@ jobs:
         uses: akhileshns/heroku-deploy@v4
         with:
           heroku_api_key: ${{ secrets.HEROKU_API_KEY }}
-          heroku_app_name: "Zapmail" # replace with Heroku app name
+          heroku_app_name: "zapmail"
           heroku_email: "aurawra@outlook.com"
           branch: prod
