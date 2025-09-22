@@ -2,7 +2,7 @@ class StrategiesController < ApplicationController
   before_action :set_strategy, only: %i[show edit update destroy]
 
   def index
-    @strategies = current_user.strategies
+    @strategies = current_user.strategies.includes(:rules, :automations => :automation_histories)
   end
 
   def show

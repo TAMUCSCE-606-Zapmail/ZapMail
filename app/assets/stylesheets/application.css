@@ -8,3 +8,21 @@
  *
  * Consider organizing styles into separate files for maintainability.
  */
+
+ .accordion-button {
+  background: #f8f9fa;
+  border: none;
+  padding: 1rem;
+  font-size: 1.2rem;
+  cursor: pointer;
+}
+
+.accordion-button:hover {
+  background: #e2e6ea;
+}
+
+.accordion-body {
+  padding: 1rem;
+  background: #fff;
+  border: 1px solid #ddd;
+}

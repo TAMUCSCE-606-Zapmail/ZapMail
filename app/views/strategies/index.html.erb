@@ -1,16 +1,65 @@
 <p style="color: green"><%= notice %></p>
 
 <% content_for :title, "Strategies" %>
+<!-- app/views/strategies/index.html.erb -->
+<h1>Your Strategies</h1>
 
-<h1>Strategies</h1>
+<div class="accordion" id="strategiesAccordion">
+  <% @strategies.each_with_index do |strategy, idx| %>
+    <div class="accordion-item">
+      <h2 class="accordion-header" id="heading-<%= idx %>">
+        <button class="accordion-button collapsed" type="button"
+                data-bs-toggle="collapse"
+                data-bs-target="#collapse-<%= idx %>"
+                aria-expanded="false"
+                aria-controls="collapse-<%= idx %>">
+          <%= strategy.name %>
+        </button>
+      </h2>
+      <div id="collapse-<%= idx %>" class="accordion-collapse collapse"
+           aria-labelledby="heading-<%= idx %>"
+           data-bs-parent="#strategiesAccordion">
+        <div class="accordion-body">
+          
+          <!-- Rules dropdown -->
+          <h5>Rules</h5>
+          <ul>
+            <% strategy.rules.each do |rule| %>
+              <li>
+                Rule <%= rule.order %>:
+                <ul>
+                  <% rule.conditions.each do |condition| %>
+                    <li>
+                      <%= condition.column_name %> 
+                      <%= condition.operator %> 
+                      <%= condition.value %>
+                    </li>
+                  <% end %>
+                  <% rule.strategy_actions.each do |action| %>
+                    <li><strong>Action:</strong> <%= action.action_type %> – <%= truncate(action.prompt_template, length: 50) %></li>
+                  <% end %>
+                </ul>
+              </li>
+            <% end %>
+          </ul>
 
-<div id="strategies">
-  <% @strategies.each do |strategy| %>
-    <%= render strategy %>
-    <p>
-      <%= link_to "Show this strategy", strategy %>
-    </p>
+          <!-- Automations links -->
+          <h5>Automations</h5>
+          <ul>
+            <% strategy.automations.each do |automation| %>
+              <li>
+                <%= link_to "Automation ##{automation.id} (#{automation.status})", strategy_automations_path(strategy, automation) %>
+                –
+                <%= link_to "History", strategy_automation_automation_histories_path(strategy_id: strategy.id, automation_id: automation.id) %>
+              </li>
+            <% end %>
+          </ul>
+
+        </div>
+      </div>
+    </div>
   <% end %>
 </div>
 
 <%= link_to "New strategy", new_strategy_path %>
+<%= link_to "Back to Home", root_path %>
