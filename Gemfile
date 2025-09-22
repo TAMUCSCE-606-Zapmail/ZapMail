@@ -56,6 +56,11 @@ group :development do
   gem "web-console"
 end
 
+group :test do
+  gem 'rspec-rails'
+  gem 'cucumber-rails', require: false
+end
+
 gem "sqlite3", "~> 2.7"
 
 gem "bcrypt", "~> 3.1"

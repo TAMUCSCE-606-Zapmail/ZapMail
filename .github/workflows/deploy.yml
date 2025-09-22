@@ -20,10 +20,11 @@ jobs:
 
       - name: Install dependencies
         run: |
-          bundle install
+          bundle install --jobs 4 --retry 3
 
       - name: Run tests
-        run: bundle exec cucumber && bundle exec rspec
+        run: |
+          bundle exec cucumber && bundle exec rspec
 
       - name: Deploy to Heroku
         uses: akhileshns/heroku-deploy@v4
