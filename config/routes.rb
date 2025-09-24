@@ -2,6 +2,7 @@ Rails.application.routes.draw do
   get "pages/home"
   devise_for :users
   resources :strategies do
+    resources :rules
     resources :automations do
       resources :automation_histories
     end

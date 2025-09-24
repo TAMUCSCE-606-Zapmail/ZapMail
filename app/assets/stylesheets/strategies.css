@@ -1,6 +1,7 @@
 body.strategies {
     font-family: 'Verdana';
     font-size: 18px;
+    background-color: rgb(246, 246, 246);
 }
 
 .strategies-title {
@@ -17,10 +18,11 @@ body.strategies {
     margin-left: 40px;
     margin-right: 40px;
 
-    border: solid 1px #ddd;
+    border: solid 1px rgb(170, 170, 170);
     border-radius: 25px;
     height: fit-content;
     min-height: 80vh;
+    background-color: white;
 }
 
 .accordion-item {

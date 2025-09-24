@@ -60,9 +60,9 @@ Condition.create!(rule: rule2, column_name: "click_rate", operator: "==", value:
 Condition.create!(rule: rule3, column_name: "absences", operator: ">=", value: "3")
 
 # --- Actions ---
-StrategyAction.create!(rule: rule1, action_type: "send_email", prompt_template: "Send a reminder email to {{email}}.")
-StrategyAction.create!(rule: rule2, action_type: "send_email", prompt_template: "Send a discount code to {{email}}.")
-StrategyAction.create!(rule: rule3, action_type: "send_email", prompt_template: "Send a absence email to {{email}}")
+StrategyAction.create!(rule: rule1, action_type: "send_email", prompt_template: "Send a reminder email to {email}.")
+StrategyAction.create!(rule: rule2, action_type: "send_email", prompt_template: "Send a discount code to {email}.")
+StrategyAction.create!(rule: rule3, action_type: "send_email", prompt_template: "Send a absence email to {email}")
 
 # --- Automations ---
 automation1 = Automation.create!(

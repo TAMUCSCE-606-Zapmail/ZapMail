@@ -8,3 +8,7 @@
  *
  * Consider organizing styles into separate files for maintainability.
  */
+
+html {
+  background-color: rgb(248, 248, 248);
+}
