@@ -46,9 +46,10 @@ group :development, :test do
 
   # Omakase Ruby styling [https://github.com/rails/rubocop-rails-omakase/]
   gem "rubocop-rails-omakase", require: false
-  gem 'rspec-rails'
+  gem 'rspec-rails', require: false
   gem 'cucumber-rails', require: false
-  gem 'capybara'
+  gem 'capybara', require: false
+  gem 'simplecov', require: false
 end
 
 group :development do
