@@ -2,7 +2,7 @@
 
 <% content_for :title, "Strategies" %>
 <!-- app/views/strategies/index.html.erb -->
-<h1>Your Strategies</h1>
+<h1 class="strategies-title">Your Strategies</h1>
 
 <div class="accordion" id="strategiesAccordion">
   <% @strategies.each_with_index do |strategy, idx| %>
@@ -49,7 +49,6 @@
             <% strategy.automations.each do |automation| %>
               <li>
                 <%= link_to "Automation ##{automation.id} (#{automation.status})", strategy_automations_path(strategy, automation) %>
-                –
                 <%= link_to "History", strategy_automation_automation_histories_path(strategy_id: strategy.id, automation_id: automation.id) %>
               </li>
             <% end %>
@@ -59,7 +58,12 @@
       </div>
     </div>
   <% end %>
+  <div class="new-strategy-button-container">
+    <%= button_to "+ New strategy", new_strategy_path, class: "new-strategy-button" %>
+  </div>
 </div>
 
-<%= link_to "New strategy", new_strategy_path %>
-<%= link_to "Back to Home", root_path %>
+
+<div style="margin-left: 60px; margin-top: 10px;">
+  <%= link_to "Back to Home", root_path %>
+</div>
