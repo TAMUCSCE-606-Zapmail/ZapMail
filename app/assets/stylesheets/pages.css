@@ -1,0 +1,26 @@
+body.home {
+    font-family: 'Verdana';
+    font-size: 18px;
+    background-color: rgb(246, 246, 246);
+}
+
+.home-header {
+    position: fixed;
+    height: 80px;
+    left: 0;
+    right: 0;
+    top: 0;
+    background-color: white;
+    box-shadow: 0, 0, 0.5, rgb(0,0,0);
+    display: flex;
+    align-items: center;
+}
+
+.home-title {
+    margin-top: 100px;
+    margin-left: 20px;
+}
+
+.home-body {
+    margin-left: 20px;
+}
