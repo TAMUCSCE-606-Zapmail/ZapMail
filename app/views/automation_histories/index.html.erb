@@ -1,6 +1,6 @@
-<% content_for :title, "Automation Logs" %>
+<% content_for :title, "Automation History" %>
 
-<h1>Automation Logs</h1>
+<h1>Automation History</h1>
 
 <table class="automation-logs-table">
   <thead>
@@ -24,3 +24,18 @@
     <% end %>
   </tbody>
 </table>
+<nav class="pagination">
+  <% if @page > 1 %>
+    <%= link_to "Prev", automation_histories_path(page: @page - 1) %>
+  <% else %>
+    <span class="disabled">Prev</span>
+  <% end %>
+
+  <span>Page <%= @page %> of <%= @total_pages.zero? ? 1 : @total_pages %></span>
+
+  <% if @page < @total_pages %>
+    <%= link_to "Next", automation_histories_path(page: @page + 1) %>
+  <% else %>
+    <span class="disabled">Next</span>
+  <% end %>
+</nav>
