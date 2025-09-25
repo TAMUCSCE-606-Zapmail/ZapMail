@@ -1,9 +1,9 @@
 # Start SimpleCov
 require 'simplecov'
 SimpleCov.start 'rails' do
-  add_filter '/spec/'       
-  add_filter '/features/'    
-  add_filter '/config/'     
+  add_filter '/spec/'
+  add_filter '/features/'
+  add_filter '/config/'
   add_group 'Models', 'app/models'
   add_group 'Controllers', 'app/controllers'
   add_group 'Helpers', 'app/helpers'
@@ -80,4 +80,24 @@ RSpec.configure do |config|
   config.filter_rails_from_backtrace!
   # arbitrary gems may also be filtered via:
   # config.filter_gems_from_backtrace("gem name")
+end
+
+require 'shoulda/matchers'
+Shoulda::Matchers.configure do |config|
+  config.integrate do |with|
+    with.test_framework :rspec
+    with.library :rails
+  end
+end
+
+RSpec.configure do |config|
+  config.include FactoryBot::Syntax::Methods
+end
+
+RSpec.configure do |config|
+  config.include Devise::Test::ControllerHelpers, type: :controller
+end
+
+RSpec.configure do |config|
+  config.include Warden::Test::Helpers
 end

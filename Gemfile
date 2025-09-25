@@ -46,10 +46,14 @@ group :development, :test do
 
   # Omakase Ruby styling [https://github.com/rails/rubocop-rails-omakase/]
   gem "rubocop-rails-omakase", require: false
-  gem 'rspec-rails', require: false
-  gem 'cucumber-rails', require: false
-  gem 'capybara', require: false
-  gem 'simplecov', require: false
+  gem "rspec-rails", require: false
+  gem "cucumber-rails", require: false
+  gem "capybara", require: false
+  gem "simplecov", require: false
+  gem "shoulda-matchers"
+  gem "factory_bot_rails"
+  gem "rails-controller-testing"
+  gem "database_cleaner-active_record"
 end
 
 group :development do
