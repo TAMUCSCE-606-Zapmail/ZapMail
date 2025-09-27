@@ -1,5 +1,4 @@
 Rails.application.routes.draw do
-  get "automation_histories/index"
   get "pages/home"
   devise_for :users
   resources :strategies do

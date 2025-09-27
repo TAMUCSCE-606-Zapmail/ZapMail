@@ -96,7 +96,16 @@ AutomationHistory.create!(
   api_response: "200 OK",
   error_message: nil
 )
-
+# Seed more data for checking pagination
+20.times do |i|
+  AutomationHistory.create!(
+    automation: automation1,
+    row_data: { "email" => "test#{i+3}@example.com", "open_rate" => rand.round(2) },
+    email_status: ["sent", "failed", "successful"].sample,
+    api_response: ["200 OK", "500 Internal Server Error"].sample,
+    error_message: [nil, "SMTP timeout"].sample
+  )
+end
 AutomationHistory.create!(
   automation: automation2,
   row_data: { "email" => "test2@example.com", "click_rate" => 1.0 },

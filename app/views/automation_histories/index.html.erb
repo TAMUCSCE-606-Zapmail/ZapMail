@@ -24,18 +24,8 @@
     <% end %>
   </tbody>
 </table>
-<nav class="pagination">
-  <% if @page > 1 %>
-    <%= link_to "Prev", automation_histories_path(page: @page - 1) %>
-  <% else %>
-    <span class="disabled">Prev</span>
-  <% end %>
 
-  <span>Page <%= @page %> of <%= @total_pages.zero? ? 1 : @total_pages %></span>
-
-  <% if @page < @total_pages %>
-    <%= link_to "Next", automation_histories_path(page: @page + 1) %>
-  <% else %>
-    <span class="disabled">Next</span>
-  <% end %>
-</nav>
+<!-- Pagy navigation -->
+<div class="pagination">
+  <%= pagy_nav(@pagy).html_safe %>
+</div>

@@ -61,3 +61,5 @@ gem "sqlite3", "~> 2.7"
 gem "bcrypt", "~> 3.1"
 
 gem "devise", "~> 4.9"
+
+gem "pagy" 

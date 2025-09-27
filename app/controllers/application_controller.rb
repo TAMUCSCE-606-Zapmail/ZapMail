@@ -3,6 +3,7 @@ class ApplicationController < ActionController::Base
   allow_browser versions: :modern
   before_action :mock_dev_user
   before_action :authenticate_user!
+  include Pagy::Backend
 
   private
 
