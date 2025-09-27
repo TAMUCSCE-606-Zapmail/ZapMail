@@ -2,6 +2,17 @@
 
 <h1>Automation History</h1>
 
+<!-- Search form -->
+<div class="search-form" style="margin-bottom: 1em;">
+  <%= form_with url: automation_histories_path, method: :get, local: true do %>
+    <%= text_field_tag :query, @query, placeholder: "Search...", class: "search-input" %>
+    <%= submit_tag "Search", class: "search-button" %>
+    <% if @query.present? %>
+      <%= link_to "Clear", automation_histories_path, class: "clear-search" %>
+    <% end %>
+  <% end %>
+</div>
+
 <table class="automation-logs-table">
   <thead>
     <tr>
@@ -13,13 +24,19 @@
     </tr>
   </thead>
   <tbody>
-    <% @automation_histories.each do |log| %>
-      <tr id="<%= dom_id(log) %>">
-        <td><%= log.created_at.strftime("%Y-%m-%d %H:%M:%S") %></td>
-        <td><%= link_to log.automation.strategy.name, log.automation.strategy %></td>
-        <td><%= log.row_data.fetch("email", nil) %></td>
-        <td><%= truncate(log.api_response.to_s, length: 60) %></td>
-        <td><%= truncate(log.error_message.to_s, length: 60) %></td>
+    <% if @automation_histories.any? %>
+      <% @automation_histories.each do |log| %>
+        <tr id="<%= dom_id(log) %>">
+          <td><%= log.created_at.strftime("%Y-%m-%d %H:%M:%S") %></td>
+          <td><%= link_to log.automation.strategy.name, log.automation.strategy %></td>
+          <td><%= log.row_data.fetch("email", nil) %></td>
+          <td><%= truncate(log.api_response.to_s, length: 60) %></td>
+          <td><%= truncate(log.error_message.to_s, length: 60) %></td>
+        </tr>
+      <% end %>
+    <% else %>
+      <tr>
+        <td colspan="5">No automation history records match your search.</td>
       </tr>
     <% end %>
   </tbody>
