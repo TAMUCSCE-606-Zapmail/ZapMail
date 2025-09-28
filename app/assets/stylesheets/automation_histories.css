@@ -1,21 +1,154 @@
+/* Base Table */
 .automation-logs-table {
   width: 100%;
   border-collapse: collapse;
   background: #fff;
   box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
-}
-.automation-logs-table th,
-.automation-logs-table td {
-  padding: 12px 15px;
-  border: 1px solid #ddd;
-  text-align: left;
+  font-size: 14px;
+  border-radius: 6px;
+  overflow: hidden;
 }
 
-/* Pagination styling */
+/* Table Headings */
+.automation-logs-table thead {
+  background-color: #f5f7fa;
+}
+
+.automation-logs-table th {
+  padding: 12px 15px;
+  text-align: left;
+  font-weight: 600;
+  color: #333;
+  border-bottom: 2px solid #ddd;
+  text-transform: uppercase;
+  font-size: 13px;
+  letter-spacing: 0.5px;
+}
+
+/* Table Cells */
+.automation-logs-table td {
+  padding: 12px 15px;
+  border-bottom: 1px solid #eee;
+  color: #555;
+  vertical-align: middle;
+}
+
+/* Row Striping */
+.automation-logs-table tbody tr:nth-child(even) {
+  background-color: #fafafa;
+}
+
+/* Hover Effect */
+.automation-logs-table tbody tr:hover {
+  background-color: #f0f8ff;
+  transition: background-color 0.2s ease-in-out;
+}
+
+/* Links inside table */
+.automation-logs-table a {
+  color: #007bff;
+  text-decoration: none;
+}
+
+.automation-logs-table a:hover {
+  text-decoration: underline;
+}
+
+/* Pagination Container */
 .pagination {
   margin-top: 1rem;
   display: flex;
-  justify-content: center; /* centers horizontally */
+  justify-content: center;
   align-items: center;
-  gap: 1.5rem; /* spacing between Prev, Page info, and Next */
+  gap: 0.5rem;
+  font-size: 14px;
+}
+
+/* Pagination Links */
+.pagination a {
+  padding: 0.4em 0.8em;
+  border: 1px solid #ddd;
+  border-radius: 4px;
+  text-decoration: none;
+  color: #007bff;
+  background-color: #fff;
+  transition: all 0.2s ease;
+}
+
+.pagination a:hover {
+  background-color: #007bff;
+  color: #fff;
+  border-color: #007bff;
+}
+
+/* Active Page */
+.pagination .active a,
+.pagination .page.current {
+  padding: 0.4em 0.8em;
+  border-radius: 4px;
+  background-color: #007bff;
+  color: #fff;
+  border: 1px solid #007bff;
+  font-weight: bold;
+  cursor: default;
+}
+
+/* Disabled (Prev/Next when not available) */
+.pagination .disabled a {
+  color: #aaa;
+  border-color: #eee;
+  background-color: #f9f9f9;
+  cursor: not-allowed;
+  pointer-events: none;
+}
+/* Search Form Styles */
+.search-form {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  margin-bottom: 1em;
+}
+
+.search-input {
+  flex: 1;
+  max-width: 250px;
+  padding: 0.5em 0.75em;
+  border: 1px solid #ccc;
+  border-radius: 6px;
+  font-size: 14px;
+  transition: border-color 0.2s ease, box-shadow 0.2s ease;
+}
+
+.search-input:focus {
+  border-color: #007bff;
+  outline: none;
+  box-shadow: 0 0 4px rgba(0, 123, 255, 0.25);
+}
+
+.search-button {
+  background-color: #007bff;
+  color: #fff;
+  padding: 0.5em 1em;
+  border: none;
+  border-radius: 6px;
+  font-size: 14px;
+  cursor: pointer;
+  transition: background-color 0.2s ease;
+}
+
+.search-button:hover {
+  background-color: #0056b3;
+}
+
+.clear-search {
+  color: #666;
+  text-decoration: none;
+  font-size: 14px;
+  margin-left: 0.5rem;
+  transition: color 0.2s ease;
+}
+
+.clear-search:hover {
+  color: #000;
+  text-decoration: underline;
 }
