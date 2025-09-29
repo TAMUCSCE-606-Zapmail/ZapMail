@@ -1,0 +1,34 @@
+<%# app/views/users/show.html.erb %>
+<div class="max-w-2xl mx-auto bg-white p-8 rounded-lg shadow-md">
+  <div class="flex justify-between items-start">
+    <h1 class="text-3xl font-bold text-gray-800 mb-6">My Profile</h1>
+    <%= link_to 'Edit Profile', profile_edit_path, class: 'bg-gray-200 text-gray-700 font-semibold py-2 px-4 rounded-lg hover:bg-gray-300 transition duration-200' %>
+  </div>
+
+  <div class="space-y-4">
+    <div class="flex border-b pb-2">
+      <strong class="w-1/3 text-gray-600">Name:</strong>
+      <span class="w-2/3 text-gray-800"><%= @user.name %></span>
+    </div>
+    <div class="flex border-b pb-2">
+      <strong class="w-1/3 text-gray-600">Email:</strong>
+      <span class="w-2/3 text-gray-800"><%= @user.email %></span>
+    </div>
+    <div class="flex border-b pb-2">
+      <strong class="w-1/3 text-gray-600">Date of Birth:</strong>
+      <span class="w-2/3 text-gray-800"><%= @user.date_of_birth&.strftime('%B %d, %Y') || 'Not provided' %></span>
+    </div>
+    <div class="flex border-b pb-2">
+      <strong class="w-1/3 text-gray-600">Major:</strong>
+      <span class="w-2/3 text-gray-800"><%= @user.major || 'Not provided' %></span>
+    </div>
+    <div class="flex border-b pb-2">
+      <strong class="w-1/3 text-gray-600">Classification:</strong>
+      <span class="w-2/3 text-gray-800"><%= @user.classification || 'Not provided' %></span>
+    </div>
+    <div class="flex pb-2">
+      <strong class="w-1/3 text-gray-600">UIN:</strong>
+      <span class="w-2/3 text-gray-800"><%= @user.uin || 'Not provided' %></span>
+    </div>
+  </div>
+</div>
