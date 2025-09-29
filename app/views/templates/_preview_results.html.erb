@@ -1,0 +1,43 @@
+<%# This partial renders the table of matching rows %>
+<% if results.empty? %>
+  <p class="text-slate-400 text-center">No rows in your spreadsheet match the current rules.</p>
+<% else %>
+  <h3 class="font-semibold mb-3 text-lg"><%= pluralize(results.count, "matching row") %> found:</h3>
+  <div class="overflow-x-auto">
+    <table class="w-full text-sm text-left">
+      <thead class="bg-slate-700">
+        <tr>
+          <th class="p-2">Row #</th>
+          <th class="p-2">Email To</th>
+          <th class="p-2">Action Preview</th>
+          <th class="p-2">Conditional Data</th>
+        </tr>
+      </thead>
+      <tbody class="bg-slate-800">
+        <% results.each do |result| %>
+          <tr class="border-b border-slate-700">
+            <td class="p-2 align-top"><%= result[:row_number] %></td>
+            <td class="p-2 align-top text-sky-400"><%= result[:row][result[:action]['toColumn']] %></td>
+            <td class="p-2 align-top">
+              <div class="font-semibold text-slate-200">
+                Subject: <%= result[:substituted_subject] %>
+              </div>
+              <div class="text-slate-400 mt-1 border-t border-slate-700 pt-1">
+                <%# The 'simple_format' helper preserves newlines from the textarea %>
+                <%= simple_format(result[:substituted_body]) %>
+              </div>
+            </td>
+            <td class="p-2 align-top text-slate-400 text-xs">
+              <% result[:conditional_data].each do |key, value| %>
+                <div class="whitespace-nowrap">
+                  <strong class="font-semibold text-slate-300"><%= key %>:</strong> <%= value %>
+                </div>
+              <% end %>
+            </td>
+          </tr>
+        <% end %>
+      </tbody>
+    </table>
+  </div>
+<% end %>
+
