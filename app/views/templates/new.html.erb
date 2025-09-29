@@ -1,0 +1,8 @@
+<div class="max-w-4xl mx-auto py-8">
+  <h1 class="text-3xl font-bold mb-6 text-slate-100">Create a New Template</h1>
+
+  <%# This line renders the form partial you already have %>
+  <%= render 'form', template: @template %>
+
+  <%= link_to 'Back to templates', templates_path, class: "mt-6 inline-block text-sky-400 hover:text-sky-300 transition-colors" %>
+</div>
