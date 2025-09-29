@@ -1,0 +1,12 @@
+<div class="max-w-4xl mx-auto py-8">
+  <div class="flex justify-between items-center mb-6">
+    <h1 class="text-3xl font-bold text-slate-100">
+      Editing: <span class="text-sky-400"><%= @template.name %></span>
+    </h1>
+  </div>
+
+  <%# This line renders the same form partial, but for editing %>
+  <%= render 'form', template: @template %>
+
+  <%= link_to 'Back to templates', templates_path, class: "mt-6 inline-block text-sky-400 hover:text-sky-300 transition-colors" %>
+</div>
