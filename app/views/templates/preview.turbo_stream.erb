@@ -1,0 +1,6 @@
+<%# This file tells the browser which part of the page to update %>
+<% if @error_message %>
+  <%= turbo_stream.update "preview_results_frame", partial: "templates/preview_error", locals: { error: @error_message } %>
+<% else %>
+  <%= turbo_stream.update "preview_results_frame", partial: "templates/preview_results", locals: { results: @preview_results } %>
+<% end %>

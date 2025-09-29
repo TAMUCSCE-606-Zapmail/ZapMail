@@ -1,0 +1,64 @@
+# app/controllers/users_controller.rb
+class UsersController < ApplicationController
+    before_action :authorize, only: [:show, :edit, :update]
+    before_action :set_user, only: [:show, :edit, :update]
+  
+    # GET /signup
+    def new
+      @user = User.new
+    end
+  
+    # POST /users
+    def create
+      @user = User.new(user_params)
+      if @user.save
+        # Automatically log in the user after signup
+        token = encode_token({ user_id: @user.id })
+        cookies[:jwt] = { value: token, httponly: true, expires: 24.hours.from_now }
+        flash[:success] = "Welcome to the TAMU App! Your account was created successfully."
+        redirect_to profile_path
+      else
+        render :new, status: :unprocessable_entity
+      end
+    end
+  
+    # GET /profile
+    def show
+      # @user is set by set_user
+    end
+  
+    # GET /profile/edit
+    def edit
+      # @user is set by set_user
+    end
+  
+    # PATCH /profile
+    def update
+      if @user.update(user_params)
+        flash[:success] = "Your profile has been updated successfully."
+        redirect_to profile_path
+      else
+        render :edit, status: :unprocessable_entity
+      end
+    end
+  
+    private
+  
+    def set_user
+      @user = current_user
+    end
+  
+    def user_params
+      params.require(:user).permit(
+        :name,
+        :email,
+        :password,
+        :password_confirmation,
+        :date_of_birth,
+        :major,
+        :classification,
+        :uin
+      )
+    end
+  end
+  

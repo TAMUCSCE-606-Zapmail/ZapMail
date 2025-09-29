@@ -1,0 +1,59 @@
+<%# app/views/users/edit.html.erb %>
+<div class="max-w-lg mx-auto bg-white p-8 rounded-lg shadow-md">
+  <h1 class="text-3xl font-bold text-center text-gray-800 mb-6">Edit Your Profile</h1>
+
+  <%= render 'shared/form_errors', object: @user %>
+
+  <%= form_with(model: @user, url: profile_path, method: :patch, class: "space-y-6") do |form| %>
+    <div>
+      <%= form.label :name, class: "block text-sm font-medium text-gray-700" %>
+      <%= form.text_field :name, class: "mt-1 block w-full px-3 py-2 border rounded-md shadow-sm form-input focus:outline-none", required: true %>
+    </div>
+    
+    <div>
+      <%= form.label :email, class: "block text-sm font-medium text-gray-700" %>
+      <%= form.email_field :email, class: "mt-1 block w-full px-3 py-2 border rounded-md shadow-sm form-input focus:outline-none", required: true %>
+    </div>
+
+    <hr/>
+    <p class="text-sm text-gray-500">Fill out the fields below only if you want to change your password.</p>
+
+    <div>
+      <%= form.label :password, 'New Password', class: "block text-sm font-medium text-gray-700" %>
+      <%= form.password_field :password, class: "mt-1 block w-full px-3 py-2 border rounded-md shadow-sm form-input focus:outline-none" %>
+    </div>
+
+    <div>
+      <%= form.label :password_confirmation, 'Confirm New Password', class: "block text-sm font-medium text-gray-700" %>
+      <%= form.password_field :password_confirmation, class: "mt-1 block w-full px-3 py-2 border rounded-md shadow-sm form-input focus:outline-none" %>
+    </div>
+    
+    <hr/>
+    <p class="text-sm text-gray-500">Update your academic details.</p>
+
+     <div>
+      <%= form.label :date_of_birth, class: "block text-sm font-medium text-gray-700" %>
+      <%= form.date_field :date_of_birth, class: "mt-1 block w-full px-3 py-2 border rounded-md shadow-sm form-input focus:outline-none" %>
+    </div>
+
+    <div>
+      <%= form.label :major, class: "block text-sm font-medium text-gray-700" %>
+      <%= form.text_field :major, class: "mt-1 block w-full px-3 py-2 border rounded-md shadow-sm form-input focus:outline-none" %>
+    </div>
+    
+    <div>
+      <%= form.label :classification, class: "block text-sm font-medium text-gray-700" %>
+      <%= form.select :classification, ['Freshman', 'Sophomore', 'Junior', 'Senior', 'Graduate', 'Other'], { include_blank: 'Select one...' }, class: "mt-1 block w-full px-3 py-2 border rounded-md shadow-sm form-input focus:outline-none" %>
+    </div>
+    
+    <div>
+      <%= form.label :uin, 'UIN (9 digits)', class: "block text-sm font-medium text-gray-700" %>
+      <%= form.text_field :uin, class: "mt-1 block w-full px-3 py-2 border rounded-md shadow-sm form-input focus:outline-none" %>
+    </div>
+
+    <div class="flex justify-between items-center">
+      <%= link_to 'Cancel', profile_path, class: 'text-gray-600 font-medium' %>
+      <%= form.submit "Update Profile", class: "cursor-pointer btn-primary font-semibold py-3 px-6 rounded-lg hover:bg-opacity-90 transition duration-200" %>
+    </div>
+  <% end %>
+</div>
