@@ -66,3 +66,5 @@ group :development do
 end
 
 gem "csv", "~> 3.3"
+
+gem "test", "~> 1.0", group: :development

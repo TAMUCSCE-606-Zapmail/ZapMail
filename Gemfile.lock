@@ -286,6 +286,7 @@ GEM
       rubocop-performance (>= 1.24)
       rubocop-rails (>= 2.30)
     ruby-progressbar (1.13.0)
+    rubytest (0.8.1)
     securerandom (0.4.1)
     solid_cable (3.0.12)
       actioncable (>= 7.2)
@@ -319,6 +320,8 @@ GEM
     tailwindcss-ruby (4.1.13-arm64-darwin)
     tailwindcss-ruby (4.1.13-x64-mingw-ucrt)
     tailwindcss-ruby (4.1.13-x86_64-linux-gnu)
+    test (1.0.0)
+      rubytest
     thor (1.4.0)
     thruster (0.1.15)
     thruster (0.1.15-arm64-darwin)
@@ -374,6 +377,7 @@ DEPENDENCIES
   solid_queue
   stimulus-rails
   tailwindcss-rails
+  test (~> 1.0)
   thruster
   turbo-rails
   tzinfo-data
