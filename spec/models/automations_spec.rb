@@ -63,6 +63,7 @@ RSpec.describe Automation, type: :model do
       automation = Automation.new(
         user: user,
         template: template,
+        status: nil,  # Explicitly set to nil
         send_at: 1.hour.from_now,
         enabled: true,
         action_data: { to: 'test@example.com' }
@@ -102,7 +103,7 @@ RSpec.describe Automation, type: :model do
         template: template,
         status: 'scheduled',
         enabled: true,
-        send_at: 1.hour.from_now,
+        send_at: 3.hours.from_now,  # Most recent
         action_data: { to: 'test1@example.com' }
       )
     end
@@ -112,7 +113,7 @@ RSpec.describe Automation, type: :model do
         template: template,
         status: 'scheduled',
         enabled: false,
-        send_at: 1.hour.from_now,
+        send_at: 2.hours.from_now,
         action_data: { to: 'test2@example.com' }
       )
     end
@@ -132,7 +133,7 @@ RSpec.describe Automation, type: :model do
         template: template,
         status: 'failed',
         enabled: true,
-        send_at: 2.hours.ago,
+        send_at: 3.hours.ago,  # Oldest
         action_data: { to: 'test4@example.com' }
       )
     end
@@ -180,8 +181,8 @@ RSpec.describe Automation, type: :model do
     describe '.recent' do
       it 'orders automations by send_at descending' do
         result = Automation.recent
-        expect(result.first).to eq(scheduled_enabled)
-        expect(result.last).to eq(failed_automation)
+        expect(result.first).to eq(scheduled_enabled)  # 3 hours from now (most recent)
+        expect(result.last).to eq(failed_automation)   # 3 hours ago (oldest)
       end
     end
 
