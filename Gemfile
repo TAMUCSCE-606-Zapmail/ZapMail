@@ -31,11 +31,13 @@ gem "csv", "~> 3.3"
 gem "kaminari" # For pagination
 
 group :development, :test do
-  # Debugging and Testing
-  gem "debug", platforms: %i[ mri windows ], require: "prelude"
+  # FIX: Correct the require path for the debug gem
+  gem "debug", platforms: %i[ mri windows ], require: "debug/prelude"
+
+  # Testing
   gem "rspec-rails"
   gem "rails-controller-testing"
-  gem "dotenv-rails" # Manages environment variables for dev and test
+  gem "dotenv-rails"
 
   # Static Analysis
   gem "brakeman", require: false
@@ -45,5 +47,5 @@ end
 group :development do
   # Development-specific tools
   gem "web-console"
-  gem "letter_opener_web" # For previewing emails locally
+  gem "letter_opener_web"
 end
