@@ -1,0 +1,5 @@
+# This file defines the schedule for our cron jobs.
+automation_scheduler:
+  cron: "* * * * *"
+  class: "AutomationSchedulerJob"
+  queue: "default"

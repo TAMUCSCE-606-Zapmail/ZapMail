@@ -1,0 +1,10 @@
+# This file configures the Sidekiq worker process
+:concurrency: 5
+:queues:
+  - default
+
+# This is the most important section.
+# It tells Sidekiq to load the sidekiq-cron plugin and find its schedule.
+:schedule:
+  # This points to the schedule file below.
+  file: config/sidekiq_schedule.yml
