@@ -88,3 +88,94 @@
     </main>
   </body>
 </html>
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>TAMU Auth App</title>
+    <meta name="viewport" content="width=device-width,initial-scale=1">
+    <%= csrf_meta_tags %>
+    <%= csp_meta_tag %>
+
+    <%# Tailwind CSS via CDN for simplicity. For production, use the tailwindcss-rails gem build process. %>
+    <script src="https://cdn.tailwindcss.com"></script>
+    
+    <%# Google Fonts: Inter %>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    
+    <style>
+      /* TAMU Color Theme */
+      :root {
+        --tamu-maroon: #500000;
+        --tamu-white: #FFFFFF;
+        --tamu-gray-light: #f7fafc;
+        --tamu-gray-medium: #e2e8f0;
+        --tamu-gray-dark: #4a5568;
+        --tamu-accent: #8A6319; /* A subtle gold/tan accent */
+      }
+      body {
+        font-family: 'Inter', sans-serif;
+        background-color: var(--tamu-gray-light);
+      }
+      .btn-primary {
+        background-color: var(--tamu-maroon);
+        color: var(--tamu-white);
+      }
+      .btn-primary:hover {
+        background-color: #400000;
+      }
+      .link-primary {
+        color: var(--tamu-maroon);
+      }
+      .link-primary:hover {
+        text-decoration: underline;
+      }
+      .form-input {
+        border-color: var(--tamu-gray-medium);
+      }
+      .form-input:focus {
+        border-color: var(--tamu-maroon);
+        box-shadow: 0 0 0 2px rgba(80, 0, 0, 0.2);
+      }
+    </style>
+    <%= javascript_importmap_tags %>
+  </head>
+
+  <body class="antialiased text-gray-800">
+    <header class="bg-white shadow-md">
+      <nav class="container mx-auto px-6 py-4 flex justify-between items-center">
+        <div>
+          <a href="/" class="text-2xl font-bold text-gray-800">Zap Mail</a>
+        </div>
+        <div class="flex items-center space-x-4">
+          <% if logged_in? %>
+            <%= link_to 'Automation History', automations_path, class: 'link-primary font-medium' %>
+            <%= link_to 'My Profile', profile_path, class: 'link-primary font-medium' %>
+            <%= button_to 'Logout', logout_path, method: :delete, class: 'bg-red-500 text-white font-semibold py-2 px-4 rounded-lg hover:bg-red-600 transition duration-200' %>
+          <% else %>
+            <%= link_to 'Login', login_path, class: 'link-primary font-medium' %>
+            <%= link_to 'Sign Up', signup_path, class: 'btn-primary font-semibold py-2 px-4 rounded-lg hover:bg-opacity-90 transition duration-200' %>
+          <% end %>
+        </div>
+      </nav>
+    </header>
+
+    <main class="container mx-auto px-6 py-8">
+      <%# Flash Messages %>
+      <% flash.each do |type, message| %>
+        <% if type == 'success' %>
+          <div class="bg-green-100 border border-green-400 text-green-700 px-4 py-3 rounded relative mb-4" role="alert">
+            <span class="block sm:inline"><%= message %></span>
+          </div>
+        <% elsif type == 'error' %>
+           <div class="bg-red-100 border border-red-400 text-red-700 px-4 py-3 rounded relative mb-4" role="alert">
+            <span class="block sm:inline"><%= message %></span>
+          </div>
+        <% end %>
+      <% end %>
+      
+      <%= yield %>
+    </main>
+  </body>
+</html>
