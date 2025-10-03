@@ -24,4 +24,17 @@ class User < ApplicationRecord
     def downcase_email
       self.email = email.downcase
     end
-  end
+
+
+  #emaiL issue
+  VALID_EMAIL_REGEX = /\A[\w+\-.]+@[a-z\d\-.]+\.(com|edu)\z/i
+
+  validates :email, presence: true,
+                    format: { with: VALID_EMAIL_REGEX,
+                              message: "must include @ and end with .com or .edu" }
+# password 
+  validates :password, length: { minimum: 8 }, allow_blank: true
+  validates :password, confirmation: true, allow_blank: true
+
+
+end
