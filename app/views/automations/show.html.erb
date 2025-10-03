@@ -1,4 +1,76 @@
-<div>
-  <h1 class="font-bold text-4xl">Automations#show</h1>
-  <p>Find me in app/views/automations/show.html.erb</p>
+<div class="container mx-auto px-4 py-8 max-w-4xl">
+  <header class="flex justify-between items-center mb-6">
+    <h1 class="text-3xl font-bold text-gray-900">Automation Details</h1>
+    <%= link_to "← Back to History", automations_path, class: "text-blue-600 hover:text-blue-800 font-medium" %>
+  </header>
+
+  <!-- Template Information -->
+  <div class="bg-white shadow-md rounded-lg p-6 mb-6">
+    <h2 class="text-xl font-semibold text-gray-800 mb-4 border-b pb-2">Template Information</h2>
+    <dl class="grid grid-cols-1 md:grid-cols-3 gap-x-4 gap-y-2">
+      <dt class="font-medium text-gray-600">Template Name:</dt>
+      <dd class="col-span-2">
+        <%= link_to @automation.template.name, 
+            edit_template_path(@automation.template), 
+            class: "text-blue-600 hover:text-blue-800" %>
+      </dd>
+      
+      <dt class="font-medium text-gray-600">Spreadsheet URL:</dt>
+      <dd class="col-span-2">
+        <%= link_to @automation.template.spreadsheet_url, 
+            @automation.template.spreadsheet_url, 
+            target: "_blank", 
+            class: "text-blue-600 hover:text-blue-800 break-all" %>
+      </dd>
+    </dl>
+  </div>
+
+  <!-- Execution Details -->
+  <div class="bg-white shadow-md rounded-lg p-6 mb-6">
+    <h2 class="text-xl font-semibold text-gray-800 mb-4 border-b pb-2">Execution Details</h2>
+    <dl class="grid grid-cols-1 md:grid-cols-3 gap-x-4 gap-y-2">
+      <dt class="font-medium text-gray-600">Status:</dt>
+      <dd class="col-span-2">
+        <% case @automation.status %>
+        <% when 'scheduled' %>
+          <span class="px-2 inline-flex text-xs leading-5 font-semibold rounded-full bg-blue-100 text-blue-800">
+            Scheduled
+          </span>
+        <% when 'completed' %>
+          <span class="px-2 inline-flex text-xs leading-5 font-semibold rounded-full bg-green-100 text-green-800">
+            Completed
+          </span>
+        <% when 'failed' %>
+          <span class="px-2 inline-flex text-xs leading-5 font-semibold rounded-full bg-red-100 text-red-800">
+            Failed
+          </span>
+        <% end %>
+      </dd>
+      
+      <dt class="font-medium text-gray-600">Scheduled For:</dt>
+      <dd class="col-span-2 text-gray-800">
+        <%= @automation.send_at.strftime("%B %d, %Y at %I:%M %p") %>
+      </dd>
+      
+      <dt class="font-medium text-gray-600">Executed At:</dt>
+      <dd class="col-span-2 text-gray-800">
+        <%= @automation.executed? ? @automation.executed_at.strftime("%B %d, %Y at %I:%M %p") : "Not executed yet" %>
+      </dd>
+    </dl>
+  </div>
+
+  <!-- Action Data -->
+  <div class="bg-white shadow-md rounded-lg p-6">
+    <h2 class="text-xl font-semibold text-gray-800 mb-4 border-b pb-2">Action Data</h2>
+    <p class="text-sm text-gray-500 mb-2">This is the raw data that was used for this specific automation job.</p>
+    <pre class="bg-gray-100 p-4 rounded text-sm overflow-x-auto"><%= JSON.pretty_generate(@automation.action_data) %></pre>
+  </div>
+
+  <!-- Error Message (if any) -->
+  <% if @automation.error_message.present? %>
+    <div class="bg-red-50 border border-red-200 rounded-lg shadow-md p-6 mt-6">
+      <h2 class="text-xl font-semibold text-red-800 mb-4 border-b border-red-200 pb-2">Error Message</h2>
+      <p class="text-red-700 font-mono"><%= @automation.error_message %></p>
+    </div>
+  <% end %>
 </div>
