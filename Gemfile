@@ -44,7 +44,7 @@ gem "thruster", require: false
 gem 'bcrypt', '~> 3.1.7' # For securing passwords
 gem 'jwt', '~> 2.7'     # For JSON Web Token authentication
 gem 'dotenv-rails'      # For managing environment variables
-
+gem "kaminari"  # For pagination
 # For styling
 gem 'tailwindcss-rails' # Modern CSS framework
 
