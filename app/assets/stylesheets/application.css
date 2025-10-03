@@ -8,3 +8,29 @@
  *
  * Consider organizing styles into separate files for maintainability.
  */
+
+.tribute-container {
+  background-color: rgb(51 65 85);
+  font-family: "Arial", sans-serif;
+  z-index: 1000; /* make sure it's above other elements */
+  color: white;
+  margin-top: 10px;
+  border-radius: 0.25rem;
+  border: solid;
+  border-width: 1px;
+  border-color: rgb(56, 189, 248);
+}
+
+.tribute-container li {
+  padding: 6px 12px;
+  cursor: pointer;
+}
+
+.tribute-container li:hover {
+    background-color: rgb(56, 189, 248);
+}
+
+.tribute-container li.tribute-highlight {
+  background-color: #0077ff;
+  color: white;
+}
