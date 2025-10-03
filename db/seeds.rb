@@ -122,20 +122,6 @@ end
   )
 end
 
-# Some disabled scheduled automations
-3.times do |i|
-  user1.automations.create!(
-    template: [template1, template2, template3].sample,
-    status: 'scheduled',
-    send_at: (i + 1).days.from_now,
-    enabled: false,
-    action_data: {
-      to: "disabled#{i}@example.com",
-      subject: "Disabled Campaign #{i + 1}",
-      body: "This automation is disabled"
-    }
-  )
-end
 
 # Create some automations for user2 (to test user isolation)
 5.times do |i|
