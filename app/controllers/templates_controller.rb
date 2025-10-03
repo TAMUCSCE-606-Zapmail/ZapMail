@@ -11,6 +11,7 @@ class TemplatesController < ApplicationController
       @rules = rules
       @data = data
     end
+    
     def run
       results = []
       @data.each_with_index do |row, index|
@@ -28,6 +29,7 @@ class TemplatesController < ApplicationController
       end
       results
     end
+
     private
     def substitute_placeholders(text, row)
       return "" if text.blank?

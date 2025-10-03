@@ -11,6 +11,7 @@ Rails.application.routes.draw do
       post :preview
     end
   end
+  
   resources :automations, only: [:index, :show]
 
   get 'signup', to: 'users#new'

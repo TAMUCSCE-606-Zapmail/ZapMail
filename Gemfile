@@ -17,9 +17,6 @@ gem "stimulus-rails"
 # Build JSON APIs with ease [https://github.com/rails/jbuilder]
 gem "jbuilder"
 
-# Use Active Model has_secure_password [https://guides.rubyonrails.org/active_model_basics.html#securepassword]
-# gem "bcrypt", "~> 3.1.7"
-
 # Windows does not include zoneinfo files, so bundle the tzinfo-data gem
 gem "tzinfo-data", platforms: %i[ windows jruby ]
 
@@ -37,9 +34,6 @@ gem "kamal", require: false
 # Add HTTP asset caching/compression and X-Sendfile acceleration to Puma [https://github.com/basecamp/thruster/]
 gem "thruster", require: false
 
-# Use Active Storage variants [https://guides.rubyonrails.org/active_storage_overview.html#transforming-images]
-# gem "image_processing", "~> 1.2"
-
 # Additions for Authentication & API
 gem 'bcrypt', '~> 3.1.7' # For securing passwords
 gem 'jwt', '~> 2.7'     # For JSON Web Token authentication
@@ -47,6 +41,12 @@ gem 'dotenv-rails'      # For managing environment variables
 
 # For styling
 gem 'tailwindcss-rails' # Modern CSS framework
+
+# Misc
+gem "csv", "~> 3.3"
+
+gem "test", "~> 1.0", group: :development
+
 
 group :development, :test do
   # See https://guides.rubyonrails.org/debugging_rails_applications.html#debugging-with-the-debug-gem
@@ -57,15 +57,15 @@ group :development, :test do
 
   # Omakase Ruby styling [https://github.com/rails/rubocop-rails-omakase/]
   gem "rubocop-rails-omakase", require: false
-  gem "rspec-rails" # Or your preferred testing framework
+  gem "rspec-rails"
   gem "rails-controller-testing"
+  gem 'cucumber-rails', require: false
+  gem 'capybara'           
+  gem 'database_cleaner-active_record'
+  gem 'simplecov', require: false
 end
 
 group :development do
   # Use console on exceptions pages [https://github.com/rails/web-console]
   gem "web-console"
 end
-
-gem "csv", "~> 3.3"
-
-gem "test", "~> 1.0", group: :development
