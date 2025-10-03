@@ -3,13 +3,13 @@ require 'sidekiq/web'
 require 'sidekiq/cron/web'
 
 Rails.application.routes.draw do
-
+  # Mount developer tools only in the development environment for security
   if Rails.env.development?
     mount Sidekiq::Web => '/sidekiq'
-    # FIX: Add this line to mount the letter_opener UI
     mount LetterOpenerWeb::Engine, at: "/letter_opener"
   end
 
+  # Defines the root path route ("/")
   root "templates#index"
 
   resources :templates do
@@ -19,7 +19,6 @@ Rails.application.routes.draw do
     end
     collection do
       post :verify_spreadsheet
-      # The duplicate 'preview' route has been removed from here
     end
   end
 
@@ -28,15 +27,18 @@ Rails.application.routes.draw do
 
   # --- User and Session Routes ---
   get 'signup', to: 'users#new'
-  resources :users, only: [:create] # Simplified to only what's needed for signup
+  # This single line handles create, show, edit, and update for users
+  resources :users, only: [:create, :show, :edit, :update]
 
   get 'login', to: 'sessions#new'
   post 'login', to: 'sessions#create'
   delete 'logout', to: 'sessions#destroy'
 
+  # Profile routes that map to the users controller
   get 'profile', to: 'users#show'
   get 'profile/edit', to: 'users#edit'
   patch 'profile', to: 'users#update'
 
+  # Health check route
   get "up" => "rails/health#show", as: :rails_health_check
 end

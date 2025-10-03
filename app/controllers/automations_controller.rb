@@ -2,14 +2,18 @@ class AutomationsController < ApplicationController
   before_action :authorize
 
   def index
-    @automations = current_user.automations
-                               .includes(:template)
-                               .recent
+    # Start with the base relation
+    automations = current_user.automations
+                              .includes(:template)
+                              .recent
 
     # Filter by status if provided
     if params[:status].present? && params[:status] != 'all'
-      @automations = @automations.where(status: params[:status])
+      automations = automations.where(status: params[:status])
     end
+
+    # Apply pagination using Kaminari
+    @automations = automations.page(params[:page]).per(10)
   end
 
   def show
