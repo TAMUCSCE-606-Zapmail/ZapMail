@@ -4,6 +4,7 @@ class User < ApplicationRecord
     has_secure_password
   
     has_many :templates, dependent: :destroy
+    has_many :automations, dependent: :destroy
     
     # Validations
     validates :name, presence: true, length: { maximum: 50 }

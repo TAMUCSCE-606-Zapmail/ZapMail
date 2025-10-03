@@ -60,6 +60,7 @@
         </div>
         <div class="flex items-center space-x-4">
           <% if logged_in? %>
+            <%= link_to 'Automation History', automations_path, class: 'link-primary font-medium' %>
             <%= link_to 'My Profile', profile_path, class: 'link-primary font-medium' %>
             <%= button_to 'Logout', logout_path, method: :delete, class: 'bg-red-500 text-white font-semibold py-2 px-4 rounded-lg hover:bg-red-600 transition duration-200' %>
           <% else %>

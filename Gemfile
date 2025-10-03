@@ -58,6 +58,7 @@ group :development, :test do
   # Omakase Ruby styling [https://github.com/rails/rubocop-rails-omakase/]
   gem "rubocop-rails-omakase", require: false
   gem "rspec-rails" # Or your preferred testing framework
+  gem "rails-controller-testing"
 end
 
 group :development do
@@ -66,3 +67,5 @@ group :development do
 end
 
 gem "csv", "~> 3.3"
+
+gem "test", "~> 1.0", group: :development
