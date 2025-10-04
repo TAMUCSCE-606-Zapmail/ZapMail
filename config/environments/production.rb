@@ -43,18 +43,19 @@ Rails.application.configure do
   # --- FIX: Configure Action Mailer for Production (SendGrid) ---
   config.action_mailer.perform_caching = false
   config.action_mailer.raise_delivery_errors = true
-  config.action_mailer.delivery_method = :smtp
   config.action_mailer.default_url_options = { host: "zapmail-pradeep-a162d897f0b7.herokuapp.com" } # Use your Heroku app URL
 
+  config.action_mailer.delivery_method = :smtp
   config.action_mailer.smtp_settings = {
-    :user_name => ENV['SENDGRID_USERNAME'],
-    :password => ENV['SENDGRID_PASSWORD'],
-    :domain => 'herokuapp.com',
-    :address => 'smtp.sendgrid.net',
-    :port => 587,
-    :authentication => :plain,
-    :enable_starttls_auto => true
+    address: ENV['MAILGUN_SMTP_SERVER'], # smtp.mailgun.org
+    port: ENV['MAILGUN_SMTP_PORT'],      # 587
+    domain: ENV['MAILGUN_DOMAIN'],       # your sandbox domain
+    user_name: ENV['MAILGUN_SMTP_LOGIN'], # check this, should be in config vars
+    password: ENV['MAILGUN_API_KEY'],    # use the API key here if login missing
+    authentication: :plain,
+    enable_starttls_auto: true
   }
+  
   # --- END OF FIX ---
 
   # Enable locale fallbacks for I18n.
