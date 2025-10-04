@@ -3,6 +3,7 @@ require 'sidekiq/web'
 require 'sidekiq/cron/web'
 
 Rails.application.routes.draw do
+  get "pages/home"
   # Mount developer tools only in the development environment for security
   if Rails.env.development?
     mount Sidekiq::Web => '/sidekiq'
@@ -10,7 +11,8 @@ Rails.application.routes.draw do
   end
 
   # Defines the root path route ("/")
-  root "templates#index"
+  # root "templates#index"
+  root "pages#home"
 
   resources :templates do
     member do

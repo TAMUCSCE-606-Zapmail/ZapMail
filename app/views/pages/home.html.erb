@@ -1,0 +1,63 @@
+<div class="min-h-screen bg-tamu-gray-light flex flex-col">
+
+  <!-- HERO SECTION -->
+  <section class="bg-tamu-maroon text-tamu-white py-20 flex flex-col items-center text-center">
+    <div class="w-64 h-32 mb-12 rounded-full bg-tamu-white flex items-center justify-center shadow-lg">
+      <%= image_tag "zapmail-logo.png", alt: "ZapMail Logo", class: "w-32 h-32 object-contain" %>
+    </div>
+    <h1 class="text-5xl font-bold mb-4">Welcome to ZapMail</h1>
+    <p class="text-xl max-w-2xl">
+      Automate your email campaigns with a click of a button. Streamline your workflows and save time for what matters most.
+    </p>
+    <div class="mt-8 flex gap-4">
+      <%= link_to "Get Started", signup_path, class: "transition hover:bg-tamu-accent-bright bg-tamu-accent text-tamu-white px-6 py-3 rounded font-semibold transition" %>
+      <%= link_to "Learn More", "#about", class: "border border-tamu-white hover:bg-tamu-white hover:text-tamu-maroon px-6 py-3 rounded font-semibold transition" %>
+    </div>
+  </section>
+
+  <!-- ABOUT / MISSION SECTION -->
+  <section id="about" class="py-20 px-6 bg-tamu-gray-light text-tamu-gray-dark">
+    <div class="max-w-4xl mx-auto text-center">
+      <h2 class="text-4xl font-bold mb-6 text-tamu-maroon">Our Mission</h2>
+      <p class="text-lg leading-relaxed mb-4">
+        We are students at Texas A&M University taking <strong>CSCE 606 Software Engineering</strong>. 
+        We built ZapMail to learn, grow, and create a tool that is useful for automating email campaigns. 
+        Our goal is to simplify repetitive workflows so users can focus on the creative aspects of their campaigns.
+      </p>
+      <p class="text-lg leading-relaxed">
+        ZapMail allows you to manage, schedule, and streamline your email campaigns effortlessly — giving you more time to focus on what matters.
+      </p>
+    </div>
+  </section>
+
+  <!-- CONTRIBUTORS SECTION -->
+  <section id="contributors" class="py-20 px-6 bg-tamu-white">
+    <div class="max-w-6xl mx-auto text-center">
+      <h2 class="text-4xl font-bold mb-12 text-tamu-maroon">Contributors</h2>
+      <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-10">
+        <div class="bg-tamu-gray-light rounded-lg p-6 shadow hover:shadow-lg transition">
+          <p class="text-xl font-semibold mb-2">Aurora Jitrskul</p>
+          <p class="text-tamu-gray-dark text-sm">TAMU Undergraduate Student</p>
+        </div>
+        <div class="bg-tamu-gray-light rounded-lg p-6 shadow hover:shadow-lg transition">
+          <p class="text-xl font-semibold mb-2">Pradeep Periyasamy</p>
+          <p class="text-tamu-gray-dark text-sm">TAMU Master's Student</p>
+        </div>
+        <div class="bg-tamu-gray-light rounded-lg p-6 shadow hover:shadow-lg transition">
+          <p class="text-xl font-semibold mb-2">Charlie Chiu</p>
+          <p class="text-tamu-gray-dark text-sm">TAMU Master's Student</p>
+        </div>
+        <div class="bg-tamu-gray-light rounded-lg p-6 shadow hover:shadow-lg transition">
+          <p class="text-xl font-semibold mb-2">Wang Yifei</p>
+          <p class="text-tamu-gray-dark text-sm">TAMU Master's Student</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- FOOTER -->
+  <footer class="bg-tamu-maroon text-tamu-white py-6 mt-auto text-center">
+    <p class="text-sm">&copy; <%= Time.current.year %> ZapMail | Built by Texas A&M CSCE 606 Students</p>
+  </footer>
+
+</div>
