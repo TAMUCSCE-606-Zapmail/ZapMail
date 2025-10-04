@@ -5,10 +5,13 @@ require 'sidekiq/cron/web'
 Rails.application.routes.draw do
   get "pages/home"
   # Mount developer tools only in the development environment for security
-  if Rails.env.development?
-    mount Sidekiq::Web => '/sidekiq'
-    mount LetterOpenerWeb::Engine, at: "/letter_opener"
-  end
+  # if Rails.env.development?
+  #   mount Sidekiq::Web => '/sidekiq'
+  #   mount LetterOpenerWeb::Engine, at: "/letter_opener"
+  # end
+
+  mount Sidekiq::Web => '/sidekiq'
+  mount LetterOpenerWeb::Engine, at: "/letter_opener"
 
   # Defines the root path route ("/")
   # root "templates#index"
