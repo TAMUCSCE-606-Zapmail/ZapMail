@@ -61,11 +61,30 @@
 .border-tamu-gray-dark { border-color: var(--tamu-gray-dark); }
 .border-tamu-accent { border-color: var(--tamu-accent); }
 
-/* Hover states (optional) */
+/* Background color hover */
 .hover\:bg-tamu-maroon:hover { background-color: var(--tamu-maroon); }
-.hover\:text-tamu-maroon:hover { color: var(--tamu-maroon); }
-.hover\:border-tamu-maroon:hover { border-color: var(--tamu-maroon); }
-
+.hover\:bg-tamu-white:hover { background-color: var(--tamu-white); }
+.hover\:bg-tamu-gray-light:hover { background-color: var(--tamu-gray-light); }
+.hover\:bg-tamu-gray-medium:hover { background-color: var(--tamu-gray-medium); }
+.hover\:bg-tamu-gray-dark:hover { background-color: var(--tamu-gray-dark); }
 .hover\:bg-tamu-accent:hover { background-color: var(--tamu-accent); }
+/* Hover background for TAMU accent (gold) */
+.hover\:bg-tamu-accent-bright:hover {
+  background-color: #C59B6B; /* brighter gold variant */
+}
+
+/* Text color hover */
+.hover\:text-tamu-maroon:hover { color: var(--tamu-maroon); }
+.hover\:text-tamu-white:hover { color: var(--tamu-white); }
+.hover\:text-tamu-gray-light:hover { color: var(--tamu-gray-light); }
+.hover\:text-tamu-gray-medium:hover { color: var(--tamu-gray-medium); }
+.hover\:text-tamu-gray-dark:hover { color: var(--tamu-gray-dark); }
 .hover\:text-tamu-accent:hover { color: var(--tamu-accent); }
+
+/* Border color hover */
+.hover\:border-tamu-maroon:hover { border-color: var(--tamu-maroon); }
+.hover\:border-tamu-white:hover { border-color: var(--tamu-white); }
+.hover\:border-tamu-gray-light:hover { border-color: var(--tamu-gray-light); }
+.hover\:border-tamu-gray-medium:hover { border-color: var(--tamu-gray-medium); }
+.hover\:border-tamu-gray-dark:hover { border-color: var(--tamu-gray-dark); }
 .hover\:border-tamu-accent:hover { border-color: var(--tamu-accent); }
