@@ -1,10 +1,9 @@
 source "https://rubygems.org"
 
-# Main Rails Framework
+# --- CORE GEMS (needed everywhere) ---
 gem "rails", "~> 8.0.2", ">= 8.0.2.1"
-gem "pg", "~> 1.1"
+gem "pg", "~> 1.1" # For PostgreSQL
 gem "puma", ">= 5.0"
-gem "propshaft"
 gem "jbuilder"
 
 # Asset Pipeline & Frontend
@@ -28,30 +27,26 @@ gem 'jwt', '~> 2.7'
 gem "tzinfo-data", platforms: %i[ windows jruby ]
 gem "bootsnap", require: false
 gem "csv", "~> 3.3"
-gem "kaminari" # For pagination
+gem "kaminari"
 
+# --- DEVELOPMENT & TEST GEMS ---
+# These gems will NOT be installed in production on Heroku.
 group :development, :test do
-  # FIX: Correct the require path for the debug gem
   gem "debug", platforms: %i[ mri windows ], require: "debug/prelude"
-
-  # Testing
   gem "rspec-rails"
   gem "rails-controller-testing"
   gem "dotenv-rails"
-
-  # Static Analysis
-  gem "brakeman", require: false
-  gem "rubocop-rails-omakase", require: false
-  gem "rspec-rails"
-  gem "rails-controller-testing"
   gem 'cucumber-rails', require: false
-  gem 'capybara'           
+  gem 'capybara'
   gem 'database_cleaner-active_record'
   gem 'simplecov', require: false
+  gem "brakeman", require: false
+  gem "rubocop-rails-omakase", require: false
 end
 
+# --- DEVELOPMENT-ONLY GEMS ---
+# These gems will only be used on your local machine.
 group :development do
-  # Development-specific tools
   gem "web-console"
   gem "letter_opener_web"
 end
