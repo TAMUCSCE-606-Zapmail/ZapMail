@@ -6,6 +6,7 @@ gem "rails", "~> 8.0.2", ">= 8.0.2.1"
 gem "pg", "~> 1.1" # For PostgreSQL
 gem "puma", ">= 5.0"
 gem "jbuilder"
+gem 'dotenv-rails'
 
 # Asset Pipeline & Frontend
 gem "importmap-rails"
@@ -35,7 +36,6 @@ group :development, :test do
   gem "debug", platforms: %i[ mri windows ], require: "debug/prelude"
   gem "rspec-rails"
   gem "rails-controller-testing"
-  gem "dotenv-rails"
   gem 'cucumber-rails', require: false
   gem 'capybara'
   gem 'database_cleaner-active_record'
