@@ -7,6 +7,7 @@ gem "pg", "~> 1.1" # For PostgreSQL
 gem "puma", ">= 5.0"
 gem "jbuilder"
 gem 'dotenv-rails'
+gem "propshaft"
 
 # Asset Pipeline & Frontend
 gem "importmap-rails"
