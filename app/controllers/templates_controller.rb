@@ -11,7 +11,6 @@ class TemplatesController < ApplicationController
       @rules = rules
       @data = data
     end
-    
     def run
       results = []
       @data.each_with_index do |row, index|
@@ -29,7 +28,6 @@ class TemplatesController < ApplicationController
       end
       results
     end
-
     private
     def substitute_placeholders(text, row)
       return "" if text.blank?
@@ -60,7 +58,9 @@ class TemplatesController < ApplicationController
   end
 
   def index
-    @templates = current_user.templates.order(updated_at: :desc)
+    # FIX: Paginate the templates, showing 6 per page.
+    # The .page(params[:page]) part is what makes Kaminari work.
+    @templates = current_user.templates.order(updated_at: :desc).page(params[:page]).per(6)
   end
 
   def new
@@ -137,21 +137,18 @@ class TemplatesController < ApplicationController
       scheduled_count = 0
       results.each do |result|
         action = result[:action]
-        send_at = action['isRepeating'] ? Time.current : Time.parse(action['oneTimeSendAt'])
+        # Simplified to only handle one-time scheduling
+        send_at = Time.parse(action['oneTimeSendAt'])
         
         @template.automations.create!(
-          user: current_user, # FIX: Associate the automation with the current user
+          user: current_user,
           send_at: send_at,
           status: 'scheduled',
           action_data: {
             to: result[:row][action['toColumn']],
             subject: result[:substituted_subject],
             body: result[:substituted_body],
-            scheduling_options: {
-              is_repeating: action['isRepeating'],
-              frequency: action['repeatFrequency'],
-              deadline: action['repeatDeadline']
-            }
+            # We no longer need to store complex scheduling options
           }
         )
         scheduled_count += 1

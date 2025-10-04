@@ -1,6 +1,5 @@
 <div class="flex justify-between items-center mb-6">
   <h1 class="text-3xl font-bold text-gray-800">Your Templates</h1>
-  <%# This uses the btn-maroon class for consistency with your theme %>
   <%= link_to "+ New Template", new_template_path, class: "btn-maroon font-bold py-2 px-4 rounded-lg" %>
 </div>
 
@@ -15,16 +14,29 @@
       <div class="bg-white rounded-lg shadow-md p-6 flex flex-col justify-between border border-gray-200">
         <div>
           <h2 class="text-xl font-bold text-gray-800 mb-2"><%= template.name %></h2>
-          <%# This logic correctly accesses the nested 'rules' array from your JSON data %>
           <p class="text-gray-500 text-sm mb-4">Rules: <%= template.rules_data['rules']&.count || 0 %></p>
           <p class="text-gray-400 text-xs">Last Modified: <%= time_ago_in_words(template.updated_at) %> ago</p>
         </div>
         <div class="flex gap-3 mt-6">
+          <%# FIX: The "Edit" button now uses a consistent secondary style %>
           <%= link_to "Edit", edit_template_path(template), class: "w-full text-center py-2 bg-gray-200 hover:bg-gray-300 rounded-lg text-sm font-semibold text-gray-700 transition-colors" %>
-          <%# This uses the modern turbo_confirm for a better user experience %>
-          <%= button_to "Delete", template_path(template), method: :delete, data: { turbo_confirm: 'Are you sure?' }, class: "w-full py-2 bg-red-600 hover:bg-red-700 text-white rounded-lg text-sm font-semibold transition-colors" %>
+          
+          <%# FIX: The "Delete" button is now an icon-only button with the correct TAMU maroon color on hover and a tooltip %>
+          <%= button_to template_path(template), method: :delete, 
+              data: { turbo_confirm: 'Are you sure you want to delete this template?' }, 
+              class: "p-2 bg-gray-200 hover:bg-maroon-600 hover:text-white rounded-lg text-gray-500 transition-colors",
+              title: "Delete Template" do %>
+            <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" viewBox="0 0 20 20" fill="currentColor">
+              <path fill-rule="evenodd" d="M9 2a1 1 0 00-.894.553L7.382 4H4a1 1 0 000 2v10a2 2 0 002 2h8a2 2 0 002-2V6a1 1 0 100-2h-3.382l-.724-1.447A1 1 0 0011 2H9zM7 8a1 1 0 012 0v6a1 1 0 11-2 0V8zm5-1a1 1 0 00-1 1v6a1 1 0 102 0V8a1 1 0 00-1-1z" clip-rule="evenodd" />
+            </svg>
+          <% end %>
         </div>
       </div>
     <% end %>
+  </div>
+
+  <%# FIX: This adds the pagination links at the bottom of the page %>
+  <div class="mt-8 flex justify-center">
+    <%= paginate @templates %>
   </div>
 <% end %>
