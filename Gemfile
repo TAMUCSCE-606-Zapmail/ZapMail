@@ -9,8 +9,6 @@ gem "jbuilder"
 gem 'dotenv-rails'
 gem "propshaft"
 gem "slack-notifier"
-gem "web-console"
-gem "letter_opener_web"
 
 # Asset Pipeline & Frontend
 gem "importmap-rails"
@@ -51,6 +49,6 @@ end
 # --- DEVELOPMENT-ONLY GEMS ---
 # These gems will only be used on your local machine.
 group :development do
-  # gem "web-console"
-  # gem "letter_opener_web"
+  gem "web-console"
+  gem "letter_opener_web"
 end
