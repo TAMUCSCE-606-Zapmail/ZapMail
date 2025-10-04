@@ -6,4 +6,5 @@
 //= link controllers/rule_editor_controller.js
 //= link controllers/home_animations_controller.js
 //= link application.tailwind.css
+//= link application.css
 //= link_tree ../images
