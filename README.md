@@ -1,6 +1,6 @@
 # Zapmail
 ## Description
-An application designed to automate bulk email campaigns based on data from CSV files. The first team project for CSCE 606 Software Engineering ran using agile methodology and designed to function with JavaScript disabled as per the initial application requirements.
+An application designed to automate bulk email campaigns based on data from CSV files. The first team project for CSCE 606 Software Engineering ran using agile methodology and designed to meet the class project 1 requirements.
 
 ## Deployment
 ### Details
