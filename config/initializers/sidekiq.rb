@@ -1,24 +1,30 @@
 # config/initializers/sidekiq.rb
 
 require 'sidekiq'
-require 'openssl' # <--- CRITICAL: Make sure this line is present!
+require 'openssl'
 
 redis_url = ENV.fetch('REDIS_URL', 'redis://localhost:6379/1')
 
-# This logic attempts to disable verification (OpenSSL::SSL::VERIFY_NONE is 0)
-ssl_params = if redis_url.start_with?('rediss://')
-               # NOTE: verify_mode: OpenSSL::SSL::VERIFY_NONE is a security risk.
-               # Only use this if required by your hosting provider.
-               { ssl: { verify_mode: OpenSSL::SSL::VERIFY_NONE } }
-             else
-               {}
-             end
+# Configure SSL parameters for Redis connections
+redis_config = if redis_url.start_with?('rediss://')
+                 # For production Redis with SSL, disable certificate verification
+                 # WARNING: This is a security risk but may be required for some hosting providers
+                 {
+                   url: redis_url,
+                   ssl: {
+                     verify_mode: OpenSSL::SSL::VERIFY_NONE,
+                     verify_hostname: false
+                   }
+                 }
+               else
+                 # For non-SSL Redis connections
+                 { url: redis_url }
+               end
 
 Sidekiq.configure_server do |config|
-  # Merge the ssl parameters directly into the redis configuration hash
-  config.redis = { url: redis_url }.merge(ssl_params)
+  config.redis = redis_config
 end
 
 Sidekiq.configure_client do |config|
-  config.redis = { url: redis_url }.merge(ssl_params)
+  config.redis = redis_config
 end
