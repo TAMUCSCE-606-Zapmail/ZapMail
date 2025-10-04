@@ -42,6 +42,12 @@ group :development, :test do
   # Static Analysis
   gem "brakeman", require: false
   gem "rubocop-rails-omakase", require: false
+  gem "rspec-rails"
+  gem "rails-controller-testing"
+  gem 'cucumber-rails', require: false
+  gem 'capybara'           
+  gem 'database_cleaner-active_record'
+  gem 'simplecov', require: false
 end
 
 group :development do

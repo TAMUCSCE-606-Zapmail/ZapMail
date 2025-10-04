@@ -14,7 +14,7 @@
         </div>
         <div class="flex gap-2 mt-4">
           <%= link_to "Edit", edit_template_path(template), class: "w-full text-center py-2 bg-gray-200 hover:bg-gray-300 rounded text-sm font-semibold" %>
-          <%= button_to "Delete", template_path(template), method: :delete, data: { confirm: 'Are you sure?' }, class: "w-full py-2 bg-red-500 hover:bg-red-600 text-white rounded text-sm font-semibold" %>
+          <%= button_to "Delete", template_path(template), method: :delete, data: { confirm: 'Are you sure?' }, class: "w-full py-2 px-2 bg-red-500 hover:bg-red-600 text-white rounded text-sm font-semibold" %>
         </div>
       </div>
     <% end %>

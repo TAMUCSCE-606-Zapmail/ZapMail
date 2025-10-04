@@ -32,3 +32,9 @@
 
 # Ignore master key for decrypting credentials and more.
 /config/master.key
+.idea/dataSources.xml
+.idea/modules.xml
+.idea/ZapMail.iml
+.gitignore
+.idea/vcs.xml
+.idea/*
