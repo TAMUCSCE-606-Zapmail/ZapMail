@@ -6,7 +6,10 @@ class EmailSenderJob
       # FIX: Get the user who created the automation
       user = automation.user
       action_data = automation.action_data
-      scheduling_options = action_data['scheduling_options']
+      
+      # FIX: The 'scheduling_options' variable is removed as it is no longer being saved by the controller.
+      # This was the source of the "undefined method '[]' for nil" error.
+      # scheduling_options = action_data['scheduling_options']
   
       # 1. Generate AI Content
       ai_service = AiContentService.new
@@ -23,26 +26,13 @@ class EmailSenderJob
         body: generated_content[:body]
       ).deliver_now
   
-      # 3. Update Automation Status and Reschedule if necessary
-      if scheduling_options['is_repeating']
-        deadline = scheduling_options['deadline'].present? ? Date.parse(scheduling_options['deadline']) : nil
-        
-        if deadline && Date.current > deadline
-          automation.update!(enabled: false, status: 'completed')
-        else
-          next_send_at = case scheduling_options['frequency']
-                         when 'daily'
-                           1.day.from_now
-                         when 'weekly'
-                           1.week.from_now
-                         end
-          automation.update!(send_at: next_send_at, status: 'scheduled')
-        end
-      else
-        automation.update!(enabled: false, status: 'sent')
-      end
+      # 3. Update Automation Status
+      # FIX: The complex repeating logic has been replaced with the simple, correct
+      # logic for a one-time job. This will resolve the error.
+      automation.update!(enabled: false, status: 'sent')
   
     rescue StandardError => e
+      # If anything goes wrong, log the error and mark the job as failed
       automation.update!(status: 'failed', error_message: e.message)
       Rails.logger.error "Failed to send automation email for ID #{automation_id}: #{e.message}"
     end

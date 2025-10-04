@@ -119,17 +119,58 @@ export default class extends Controller {
     this.tributeInstances.push(tribute);
   }
 
-  // --- FIX: New method to handle clicks on pagination links ---
+  // --- FIX: New validation method ---
+  validate() {
+    if (this.ruleTargets.length === 0) {
+      return "Please add at least one rule before proceeding.";
+    }
+
+    for (const ruleEl of this.ruleTargets) {
+      const ruleName = ruleEl.querySelector('[data-rule-action="name"]').value || "Unnamed Rule";
+      const conditions = ruleEl.querySelectorAll('[data-rule-editor-target="condition"]');
+
+      if (conditions.length === 0) {
+        return `Error in "${ruleName}": Each rule must have at least one 'If' condition.`;
+      }
+
+      for (const condEl of conditions) {
+        const column = condEl.querySelector('[data-rule-condition="column"]').value;
+        const operator = condEl.querySelector('[data-rule-condition="operator"]').value;
+        const value = condEl.querySelector('[data-rule-condition="value"]').value;
+        if (!column || !operator || value === '') {
+          return `Error in "${ruleName}": Please fill out all fields (Column, Operator, Value) in every condition.`;
+        }
+      }
+
+      const toColumn = ruleEl.querySelector('[data-rule-action="toColumn"]').value;
+      const subject = ruleEl.querySelector('[data-rule-action="subject"]').value;
+      const body = ruleEl.querySelector('[data-rule-action="body"]').value;
+      const sendAt = ruleEl.querySelector('[data-rule-action="oneTimeSendAt"]').value;
+
+      if (!toColumn || !subject || !body || !sendAt) {
+        return `Error in "${ruleName}": Please fill out all 'Then' action fields, including 'Email To', 'Subject', 'Body', and 'Send At'.`;
+      }
+    }
+
+    return null; // If all checks pass, return null (no error)
+  }
+
   changePage(event) {
     event.preventDefault();
     const page = event.currentTarget.dataset.page;
-    // Re-run the preview, passing the desired page number
     this.preview(event, page);
   }
 
-  // --- FIX: The preview method now accepts a 'page' argument ---
   async preview(event, page = 1) {
     event.preventDefault();
+
+    // FIX: Run validation before proceeding
+    const validationError = this.validate();
+    if (validationError) {
+      alert(validationError);
+      return;
+    }
+
     const templateId = this.element.dataset.templateId;
     if (!templateId) {
       alert("Please save the template before running a preview.");
@@ -144,7 +185,7 @@ export default class extends Controller {
       body: { 
         rules_data: rulesData, 
         spreadsheet_url: spreadsheetUrl,
-        page: page // Send the requested page number to the controller
+        page: page
       },
       responseKind: 'turbo-stream'
     });
@@ -152,8 +193,16 @@ export default class extends Controller {
   
   async schedule(event) {
     event.preventDefault();
+
+    // FIX: Run validation before proceeding
+    const validationError = this.validate();
+    if (validationError) {
+      alert(validationError);
+      return;
+    }
+
     const templateId = this.element.dataset.templateId;
-     if (!templateId) {
+    if (!templateId) {
       alert("Please save the template before scheduling actions.");
       return;
     }
