@@ -29,6 +29,9 @@ gem "bootsnap", require: false
 gem "csv", "~> 3.3"
 gem "kaminari"
 
+# Frontend Gem for assets:precompile
+gem 'sprockets-rails'
+
 # --- DEVELOPMENT & TEST GEMS ---
 # These gems will NOT be installed in production on Heroku.
 group :development, :test do
