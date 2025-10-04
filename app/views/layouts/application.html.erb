@@ -61,10 +61,14 @@
     <header class="bg-white shadow-sm border-b border-gray-200">
       <nav class="container mx-auto px-6 py-4 flex justify-between items-center">
         <div>
-          <a href="/" class="text-2xl font-bold text-gray-800">Zap Mail</a>
+          <%# This uses the image_tag from the other branch for a logo %>
+          <a href="/">
+            <%= image_tag "zapmail-logo.png", alt: "Zapmail Logo", class: "h-10 w-auto object-contain" %>
+          </a>
         </div>
         <div class="flex items-center space-x-4">
           <% if logged_in? %>
+            <%# These links are from your branch, with the correct classes %>
             <%= link_to 'Automation History', automations_path, class: 'link-maroon' %>
             <%= link_to 'My Profile', profile_path, class: 'link-maroon' %>
             <%= button_to 'Logout', logout_path, method: :delete, class: 'bg-red-600 text-white font-semibold py-2 px-4 rounded-lg hover:bg-red-700 transition' %>
@@ -77,7 +81,7 @@
     </header>
 
     <main class="container mx-auto px-6 py-8">
-      <%# Flash Messages with updated styling %>
+      <%# This uses your branch's improved flash message styling %>
       <% flash.each do |type, message| %>
         <% color_class = type == 'success' ? 'bg-green-100 border-green-400 text-green-800' : 'bg-red-100 border-red-400 text-red-800' %>
         <div class="<%= color_class %> border px-4 py-3 rounded-lg relative mb-6" role="alert">
