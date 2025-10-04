@@ -1,22 +1,27 @@
-<div class="container mx-auto p-8">
-  <div class="flex justify-between items-center mb-6">
-    <h1 class="text-3xl font-bold">Your Templates</h1>
-    <%= link_to "+ New Template", new_template_path, class: "bg-blue-600 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded" %>
-  </div>
+<div class="flex justify-between items-center mb-6">
+  <h1 class="text-3xl font-bold text-gray-800">Your Templates</h1>
+  <%= link_to "+ New Template", new_template_path, class: "btn-maroon font-bold py-2 px-4 rounded-lg" %>
+</div>
 
+<% if @templates.empty? %>
+  <div class="text-center bg-white p-12 rounded-lg shadow-md">
+    <h3 class="text-xl font-medium text-gray-700">No templates found.</h3>
+    <p class="mt-2 text-gray-500">Click "+ New Template" to get started.</p>
+  </div>
+<% else %>
   <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
     <% @templates.each do |template| %>
-      <div class="bg-white rounded-lg shadow p-6 flex flex-col justify-between">
+      <div class="bg-white rounded-lg shadow-md p-6 flex flex-col justify-between">
         <div>
-          <h2 class="text-xl font-bold mb-2"><%= template.name %></h2>
-          <p class="text-gray-600 text-sm mb-4">Rules: <%= template.rules&.count || 0 %></p>
+          <h2 class="text-xl font-bold text-gray-800 mb-2"><%= template.name %></h2>
+          <p class="text-gray-500 text-sm mb-4">Rules: <%= template.rules_data['rules']&.count || 0 %></p>
           <p class="text-gray-400 text-xs">Last Modified: <%= time_ago_in_words(template.updated_at) %> ago</p>
         </div>
-        <div class="flex gap-2 mt-4">
-          <%= link_to "Edit", edit_template_path(template), class: "w-full text-center py-2 bg-gray-200 hover:bg-gray-300 rounded text-sm font-semibold" %>
-          <%= button_to "Delete", template_path(template), method: :delete, data: { confirm: 'Are you sure?' }, class: "w-full py-2 bg-red-500 hover:bg-red-600 text-white rounded text-sm font-semibold" %>
+        <div class="flex gap-3 mt-6">
+          <%= link_to "Edit", edit_template_path(template), class: "w-full text-center py-2 bg-gray-200 hover:bg-gray-300 rounded-lg text-sm font-semibold transition-colors" %>
+          <%= button_to "Delete", template_path(template), method: :delete, data: { turbo_confirm: 'Are you sure?' }, class: "w-full py-2 bg-red-600 hover:bg-red-700 text-white rounded-lg text-sm font-semibold transition-colors" %>
         </div>
       </div>
     <% end %>
   </div>
-</div>
+<% end %>
