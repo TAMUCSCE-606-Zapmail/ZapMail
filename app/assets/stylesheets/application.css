@@ -1,3 +1,27 @@
+.tribute-container {
+  background-color: white;
+  font-family: "Arial", sans-serif;
+  z-index: 1000; /* make sure it's above other elements */
+  color: black;
+  margin-top: 10px;
+  border-radius: 0.25rem;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+}
+
+.tribute-container li {
+  padding: 6px 12px;
+  cursor: pointer;
+}
+
+.tribute-container li:hover {
+    background-color: rgb(240, 240, 240);
+}
+
+.tribute-container li.tribute-highlight {
+  background-color: var(--tamu-maroon);
+  color: white;
+}
+
 /* --- TAMU Custom Tailwind-like Utilities --- */
 
 /* Text colors */
