@@ -64,6 +64,12 @@ group :development, :test do
   # Testing
   gem "rspec-rails"
   gem "rails-controller-testing"
+
+  #cucumber
+  gem 'cucumber-rails', require: false
+  gem 'database_cleaner-active_record'
+  gem 'capybara'
+
 end
 
 group :development do
@@ -76,3 +82,6 @@ gem "csv", "~> 3.3"
 
 # Development only test helper gem
 gem "test", "~> 1.0", group: :development
+
+#cucumber support
+gem 'warden'
