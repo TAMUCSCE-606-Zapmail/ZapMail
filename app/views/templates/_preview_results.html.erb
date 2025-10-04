@@ -1,9 +1,12 @@
+<%# This partial now receives a paginated collection and includes dynamic pagination links %>
 <% if results.empty? %>
   <div class="text-center py-6">
     <p class="text-gray-500">No rows in your spreadsheet match the current rules.</p>
   </div>
 <% else %>
-  <h3 class="font-semibold mb-3 text-gray-800"><%= pluralize(results.count, "matching row") %> found:</h3>
+  <h3 class="font-semibold mb-3 text-gray-800">
+    Showing <%= results.count %> of <%= results.total_count %> matching rows
+  </h3>
   <div class="overflow-x-auto border border-gray-200 rounded-lg">
     <table class="w-full text-sm text-left">
       <thead class="bg-gray-50">
@@ -18,14 +21,10 @@
         <% results.each do |result| %>
           <tr>
             <td class="p-3 align-top text-gray-500"><%= result[:row_number] %></td>
-            <td class="p-3 align-top font-medium text-maroon-600"><%= result[:row][result[:action]['toColumn']] %></td>
+            <td class="p-3 align-top font-medium text-[#500000]"><%= result[:row][result[:action]['toColumn']] %></td>
             <td class="p-3 align-top">
-              <div class="font-semibold text-gray-800">
-                <%= result[:substituted_subject] %>
-              </div>
-              <div class="text-gray-600 mt-1 text-xs">
-                <%= simple_format(result[:substituted_body]) %>
-              </div>
+              <div class="font-semibold text-gray-800"><%= result[:substituted_subject] %></div>
+              <div class="text-gray-600 mt-1 text-xs"><%= simple_format(result[:substituted_body]) %></div>
             </td>
             <td class="p-3 align-top text-gray-500">
               <div class="space-y-1">
@@ -41,4 +40,31 @@
       </tbody>
     </table>
   </div>
+
+  <%# --- FIX: Custom pagination controls that trigger the Stimulus controller --- %>
+  <% if results.total_pages > 1 %>
+    <div class="mt-6">
+      <nav class="flex items-center justify-center space-x-2" aria-label="Pagination">
+        <% if results.first_page? %>
+          <span class="px-3 py-2 text-sm font-medium text-gray-400 bg-gray-100 border border-gray-300 rounded-md cursor-not-allowed"><%= ("&larr; Previous").html_safe %></span>
+        <% else %>
+          <a href="#" data-action="click->rule-editor#changePage" data-page="<%= results.prev_page %>" class="px-3 py-2 text-sm font-medium text-gray-700 bg-white border border-gray-300 rounded-md hover:bg-gray-50">
+            <%= ("&larr; Previous").html_safe %>
+          </a>
+        <% end %>
+
+        <span class="px-3 py-2 text-sm font-medium text-gray-700">
+          Page <%= results.current_page %> of <%= results.total_pages %>
+        </span>
+
+        <% if results.last_page? %>
+          <span class="px-3 py-2 text-sm font-medium text-gray-400 bg-gray-100 border border-gray-300 rounded-md cursor-not-allowed"><%= ("Next &rarr;").html_safe %></span>
+        <% else %>
+          <a href="#" data-action="click->rule-editor#changePage" data-page="<%= results.next_page %>" class="px-3 py-2 text-sm font-medium text-gray-700 bg-white border border-gray-300 rounded-md hover:bg-gray-50">
+            <%= ("Next &rarr;").html_safe %>
+          </a>
+        <% end %>
+      </nav>
+    </div>
+  <% end %>
 <% end %>

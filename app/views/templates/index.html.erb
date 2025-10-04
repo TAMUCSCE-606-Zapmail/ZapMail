@@ -1,116 +1,120 @@
-<div class="container mx-auto p-8">
-  <div class="flex justify-between items-center mb-6">
-    <h1 class="text-3xl font-bold">Your Templates</h1>
-    <%= link_to "+ New Template", new_template_path, class: "bg-blue-600 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded" %>
-  </div>
+<div class="flex justify-between items-center mb-6">
+  <h1 class="text-3xl font-bold text-gray-800">Your Templates</h1>
+  <a href="<%= new_template_path %>" class="bg-[#500000] hover:bg-[#400000] text-white font-bold py-2 px-4 rounded-lg">+ New Template</a>
+</div>
 
+<% if @templates.empty? %>
+  <div class="text-center bg-white p-12 rounded-lg shadow-md border border-gray-200">
+    <h3 class="text-xl font-medium text-gray-700">No templates found.</h3>
+    <p class="mt-2 text-gray-500">Click "+ New Template" to get started.</p>
+  </div>
+<% else %>
   <div class="flex flex-col space-y-4">
     <% @templates.each do |template| %>
-      <details class="bg-white rounded-lg shadow">
-        <summary class="cursor-pointer select-none p-4 text-xl font-semibold flex justify-between items-center">
+      <details class="bg-white rounded-lg shadow-md border border-gray-200 group">
+        <summary class="cursor-pointer select-none p-4 flex justify-between items-center">
           <div>
-            <span class="text-2xl"><%= template.name %></span>
-            <p class="text-gray-600 text-sm mb-2">
-              Rules: <%= template.rules&.count || 0 %>
-            </p>
-            <p class="text-gray-400 text-xs mb-4">
-              Last Modified: <%= time_ago_in_words(template.updated_at) %> ago
+            <span class="text-2xl font-bold text-gray-800"><%= template.name %></span>
+            <p class="text-gray-500 text-sm mt-1">
+              Rules: <%= template.rules_data['rules']&.count || 0 %> | 
+              <span class="text-gray-400 text-xs">Last Modified: <%= time_ago_in_words(template.updated_at) %> ago</span>
             </p>
           </div>
-          <div class="flex gap-2 items-center">
-            <%= link_to "Edit", edit_template_path(template),
-                class: "w-full md:w-auto text-center py-2 px-4 bg-gray-200 hover:bg-gray-300 rounded text-sm font-semibold" %>
-            <%= button_to "Delete", template_path(template), method: :delete,
-                data: { confirm: 'Are you sure?' },
-                class: "w-full md:w-auto py-2 px-4 bg-red-500 hover:bg-red-600 text-white rounded text-sm font-semibold" %>
-            <svg
-              class="w-5 h-5 transition-transform duration-200 group-open:rotate-180 ml-4"
-              fill="none"
-              stroke="currentColor"
-              stroke-width="2"
-              viewBox="0 0 24 24"
-            >
-              <path stroke-linecap="round" stroke-linejoin="round" d="M19 9l-7 7-7-7" />
-            </svg>
+          <div class="flex gap-3 items-center">
+            <%= link_to "Edit", edit_template_path(template), class: "text-center py-2 px-4 bg-gray-200 hover:bg-gray-300 rounded-lg text-sm font-semibold text-gray-700 transition-colors" %>
+            
+            <%# FIX: Added the new "Copy" button with an icon and tooltip %>
+            <%= button_to duplicate_template_path(template), method: :post,
+                class: "p-2 bg-gray-200 hover:bg-[#500000] hover:text-white rounded-lg text-gray-500 transition-colors",
+                title: "Duplicate Template" do %>
+              <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" viewBox="0 0 20 20" fill="currentColor">
+                <path d="M7 9a2 2 0 012-2h6a2 2 0 012 2v6a2 2 0 01-2 2H9a2 2 0 01-2-2V9z" />
+                <path d="M5 3a2 2 0 00-2 2v6a2 2 0 002 2V5h6a2 2 0 00-2-2H5z" />
+              </svg>
+            <% end %>
+
+            <%= button_to template_path(template), method: :delete, 
+                data: { turbo_confirm: 'Are you sure?' }, 
+                class: "p-2 bg-gray-200 hover:bg-[#500000] hover:text-white rounded-lg text-gray-500 transition-colors",
+                title: "Delete Template" do %>
+              <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" viewBox="0 0 20 20" fill="currentColor"><path fill-rule="evenodd" d="M9 2a1 1 0 00-.894.553L7.382 4H4a1 1 0 000 2v10a2 2 0 002 2h8a2 2 0 002-2V6a1 1 0 100-2h-3.382l-.724-1.447A1 1 0 0011 2H9zM7 8a1 1 0 012 0v6a1 1 0 11-2 0V8zm5-1a1 1 0 00-1 1v6a1 1 0 102 0V8a1 1 0 00-1-1z" clip-rule="evenodd" /></svg>
+            <% end %>
+
+            <svg class="w-5 h-5 transition-transform duration-200 group-open:rotate-180 ml-2" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M19 9l-7 7-7-7" /></svg>
           </div>
         </summary>
 
         <div class="p-6 border-t border-gray-200">
+          <%# This is the detailed view content from your original code %>
           <% rules_data = template.rules_data %>
           <% if rules_data && rules_data["rules"].present? %>
-            <div class="space-y-3 text-sm text-gray-700">
-              <div class="border tamu-gray-medium rounded p-3">
-                <p><span class="font-semibold text-tamu-maroon">CSV URL:</span> <a class="text-blue-500 hover:underline hover:text-blue-800" href="<%= template.spreadsheet_url %>" target="blank"><%= template.spreadsheet_url %></a></p>
+             <div class="space-y-4 text-sm text-gray-700">
+              <div class="border border-gray-200 rounded-lg p-3">
+                <p><strong class="font-semibold text-gray-800">CSV URL:</strong> <a class="text-[#500000] hover:underline" href="<%= template.spreadsheet_url %>" target="_blank" rel="noopener noreferrer"><%= template.spreadsheet_url %></a></p>
               </div>
               <% rules_data["rules"].each_with_index do |rule, i| %>
-                <div class="border border-tamu-gray-medium rounded p-3 bg-white shadow-sm">
-                  <p class="font-semibold mb-1 text-lg">Rule <%= i + 1 %></p>
-                  <p class="text-tamu-maroon font-bold mt-4 mb-2">Conditions</p>
-                  <div class="flex border border-tamu-maroon rounded-lg overflow-hidden">
-
-                    <!-- Left column: "If" -->
-                    <div class="bg-tamu-maroon text-tamu-white font-bold flex items-center justify-center w-16">
-                      If
-                    </div>
-
-                    <!-- Right column: table -->
-                    <div class="flex-1 p-2">
-                      <table class="w-full table-fixed border-collapse">
-                        <thead>
-                          <tr class="bg-tamu-gray-light">
-                            <th class="text-left font-semibold px-2 py-1 border-b border-tamu-gray-medium">Column</th>
-                            <th class="text-left font-semibold px-2 py-1 border-b border-tamu-gray-medium">Operator</th>
-                            <th class="text-left font-semibold px-2 py-1 border-b border-tamu-gray-medium">Value</th>
-                          </tr>
-                        </thead>
+                <div class="border border-gray-200 rounded-lg p-4 bg-gray-50">
+                  <p class="font-bold text-lg text-gray-800 mb-3"><%= rule["name"].present? ? rule["name"] : "Rule #{i + 1}" %></p>
+                  <h5 class="font-semibold text-[#500000] mb-2">Conditions</h5>
+                  <div class="border border-[#500000] rounded-lg overflow-hidden flex">
+                    <div class="bg-[#500000] text-white font-bold flex items-center justify-center w-12 text-sm">IF</div>
+                    <div class="flex-1">
+                      <table class="w-full text-left">
                         <tbody>
                           <% rule["conditions"].each do |cond| %>
-                            <tr class="hover:bg-tamu-gray-light">
-                              <td class="px-2 py-1 text-tamu-maroon"><%= cond["column"] %></td>
-                              <td class="px-2 py-1 text-tamu-accent font-semibold"><%= cond["operator"] %></td>
-                              <td class="px-2 py-1 text-black">"<%= cond["value"] %>"</td>
+                            <tr class="border-b border-gray-200 last:border-b-0">
+                              <td class="px-3 py-2 font-medium text-gray-800"><%= cond["column"] %></td>
+                              <td class="px-3 py-2 text-gray-500"><%= cond["operator"] %></td>
+                              <td class="px-3 py-2 text-gray-800 font-semibold">"<%= cond["value"] %>"</td>
                             </tr>
                           <% end %>
                         </tbody>
                       </table>
                     </div>
-
                   </div>
-                  <p class="text-tamu-maroon font-bold mt-4 mb-2">Email Template</p>
-                  
-                  <div class="border border-tamu-maroon rounded-lg p-3">
-                    <div class="flex flex-row items-center border border-tamu-gray-medium bg-tamu-gray-light rounded-lg p-3 mb-2">
-                      <p class="text-tamu-gray-dark text-sm font-semibold">
-                        To:
-                      </p>
-                      <p class="text-tamu-accent text-sm ml-4">
-                        <%= rule["action"]["toColumn"] || "—" %>
-                      </p>
-                    </div>
-
-                    <div class="flex flex-row items-center border border-tamu-gray-medium bg-tamu-gray-light rounded-lg p-3 mb-4">
-                      <p class="text-tamu-gray-dark text-sm font-semibold">Subject:</p>
-                      <p class="text-tamu-maroon text-sm ml-4 text-tamu-accent">
-                        <%= rule["action"]["subject"] || "—" %>
-                      </p>
-                    </div>
-
-                    <div class="border border-tamu-gray-medium bg-tamu-gray-light rounded-lg p-3">
-                      <p class="text-tamu-gray-dark text-sm font-semibold mb-1">Body:</p>
-                      <p class="text-tamu-maroon text-sm whitespace-pre-line">
-                        <%= rule["action"]["body"] || "—" %>
-                      </p>
+                  <h5 class="font-semibold text-[#500000] mt-4 mb-2">Action</h5>
+                  <div class="border border-gray-300 rounded-lg p-3 bg-white space-y-2">
+                    <p><strong class="text-gray-600">To:</strong> <span class="font-mono"><%= rule["action"]["toColumn"] || "—" %></span></p>
+                    <p><strong class="text-gray-600">Subject:</strong> <%= rule["action"]["subject"] || "—" %></p>
+                    <div class="border-t border-gray-200 pt-2 mt-2">
+                      <strong class="text-gray-600">Body:</strong>
+                      <p class="whitespace-pre-line text-gray-700 mt-1"><%= rule["action"]["body"] || "—" %></p>
                     </div>
                   </div>
                 </div>
               <% end %>
             </div>
           <% else %>
-            <p class="text-gray-400 italic">No rules defined.</p>
+            <p class="text-gray-500 italic">No rules are defined for this template.</p>
           <% end %>
         </div>
       </details>
     <% end %>
   </div>
 
-</div>
+  <% if @templates.total_pages > 1 %>
+    <div class="mt-8">
+      <nav class="flex items-center justify-center space-x-2" aria-label="Pagination">
+        <%# Previous Page Link %>
+        <% if @templates.prev_page %>
+          <%= link_to ("&larr; Previous").html_safe, templates_path(page: @templates.prev_page), class: "px-3 py-2 text-sm font-medium text-gray-700 bg-white border border-gray-300 rounded-md hover:bg-gray-50" %>
+        <% else %>
+          <span class="px-3 py-2 text-sm font-medium text-gray-400 bg-gray-100 border border-gray-300 rounded-md cursor-not-allowed"><%= ("&larr; Previous").html_safe %></span>
+        <% end %>
+
+        <%# Page Info %>
+        <span class="px-3 py-2 text-sm font-medium text-gray-700">
+          Page <%= @templates.current_page %> of <%= @templates.total_pages %>
+        </span>
+
+        <%# Next Page Link %>
+        <% if @templates.next_page %>
+          <%= link_to ("Next &rarr;").html_safe, templates_path(page: @templates.next_page), class: "px-3 py-2 text-sm font-medium text-gray-700 bg-white border border-gray-300 rounded-md hover:bg-gray-50" %>
+        <% else %>
+          <span class="px-3 py-2 text-sm font-medium text-gray-400 bg-gray-100 border border-gray-300 rounded-md cursor-not-allowed"><%= ("Next &rarr;").html_safe %></span>
+        <% end %>
+      </nav>
+    </div>
+  <% end %>
+  
+<% end %>

@@ -2,8 +2,7 @@ class TemplatesController < ApplicationController
   require 'open-uri'
   require 'csv'
 
-  before_action :authorize
-  before_action :set_template, only: [:edit, :update, :destroy, :preview, :schedule]
+  before_action :set_template, only: [:edit, :update, :destroy, :preview, :schedule, :duplicate]
 
   class RuleProcessorService
     # ... (service code remains the same) ...
@@ -58,8 +57,6 @@ class TemplatesController < ApplicationController
   end
 
   def index
-    # FIX: Paginate the templates, showing 6 per page.
-    # The .page(params[:page]) part is what makes Kaminari work.
     @templates = current_user.templates.order(updated_at: :desc).page(params[:page]).per(6)
   end
 
@@ -91,6 +88,16 @@ class TemplatesController < ApplicationController
     redirect_to templates_url, notice: 'Template destroyed.'
   end
 
+  def duplicate
+    new_template = @template.dup
+    new_template.name = "#{@template.name} (Copy)"
+    if new_template.save
+      redirect_to templates_path, notice: "Template was successfully duplicated."
+    else
+      redirect_to templates_path, alert: "Could not duplicate the template."
+    end
+  end
+
   def verify_spreadsheet
     url = params[:spreadsheet_url]
     begin
@@ -117,11 +124,20 @@ class TemplatesController < ApplicationController
       rules = rules_data['rules']
       data = fetch_spreadsheet_data(params[:spreadsheet_url])
       processor = RuleProcessorService.new(rules, data)
-      @preview_results = processor.run
-      render turbo_stream: turbo_stream.update("preview_results_frame", partial: "templates/preview_results", locals: { results: @preview_results })
+      all_results = processor.run
+
+      # FIX: Paginate the array of results using Kaminari.
+      # It will use the 'page' param from the Stimulus controller.
+      @paginated_results = Kaminari.paginate_array(all_results).page(params[:page]).per(5)
+
+      render turbo_stream: turbo_stream.update("preview_results_frame", 
+        partial: "templates/preview_results", 
+        locals: { results: @paginated_results }) # Pass the paginated collection to the view
     rescue StandardError => e
       @error_message = e.message
-      render turbo_stream: turbo_stream.update("preview_results_frame", partial: "templates/preview_error", locals: { error: @error_message })
+      render turbo_stream: turbo_stream.update("preview_results_frame", 
+        partial: "templates/preview_error", 
+        locals: { error: @error_message })
     end
   end
 
@@ -130,14 +146,12 @@ class TemplatesController < ApplicationController
       rules_data = JSON.parse(params[:rules_data])
       rules = rules_data['rules']
       data = fetch_spreadsheet_data(params[:spreadsheet_url])
-
       processor = RuleProcessorService.new(rules, data)
       results = processor.run
       
       scheduled_count = 0
       results.each do |result|
         action = result[:action]
-        # Simplified to only handle one-time scheduling
         send_at = Time.parse(action['oneTimeSendAt'])
         
         @template.automations.create!(
@@ -148,7 +162,6 @@ class TemplatesController < ApplicationController
             to: result[:row][action['toColumn']],
             subject: result[:substituted_subject],
             body: result[:substituted_body],
-            # We no longer need to store complex scheduling options
           }
         )
         scheduled_count += 1

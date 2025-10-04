@@ -97,17 +97,13 @@ export default class extends Controller {
 
   addCondition(container, conditionData = null) {
     const content = this.conditionTemplateTarget.content.cloneNode(true);
-    
     const columnSelect = content.querySelector('[data-rule-condition="column"]');
     this._populateColumns(columnSelect, this.columns.map(c => c.name), conditionData?.column);
-    
     const operatorSelect = content.querySelector('[data-rule-condition="operator"]');
     this._updateOperators(operatorSelect, conditionData?.column);
     if(conditionData) operatorSelect.value = conditionData.operator;
-
     const valueInput = content.querySelector('[data-rule-condition="value"]');
     valueInput.value = conditionData?.value || '';
-
     columnSelect.addEventListener('change', (e) => this._updateOperators(operatorSelect, e.target.value));
     container.appendChild(content);
   }
@@ -123,18 +119,33 @@ export default class extends Controller {
     this.tributeInstances.push(tribute);
   }
 
-  async preview(event) {
+  // --- FIX: New method to handle clicks on pagination links ---
+  changePage(event) {
+    event.preventDefault();
+    const page = event.currentTarget.dataset.page;
+    // Re-run the preview, passing the desired page number
+    this.preview(event, page);
+  }
+
+  // --- FIX: The preview method now accepts a 'page' argument ---
+  async preview(event, page = 1) {
     event.preventDefault();
     const templateId = this.element.dataset.templateId;
     if (!templateId) {
       alert("Please save the template before running a preview.");
       return;
     }
+
     this.save();
     const rulesData = this.outputTarget.value;
     const spreadsheetUrl = document.querySelector('[data-form-verification-target="urlInput"]').value;
+
     await post(`/templates/${templateId}/preview`, {
-      body: { rules_data: rulesData, spreadsheet_url: spreadsheetUrl },
+      body: { 
+        rules_data: rulesData, 
+        spreadsheet_url: spreadsheetUrl,
+        page: page // Send the requested page number to the controller
+      },
       responseKind: 'turbo-stream'
     });
   }

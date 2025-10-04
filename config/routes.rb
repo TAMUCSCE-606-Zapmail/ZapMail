@@ -18,6 +18,7 @@ Rails.application.routes.draw do
     member do
       post :preview
       post :schedule
+      post :duplicate
     end
     collection do
       post :verify_spreadsheet
