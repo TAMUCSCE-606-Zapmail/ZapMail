@@ -41,6 +41,14 @@
     </nav>
   </div>
 
+  <!-- Pagination Info -->
+  <% if @automations.total_count > 0 %>
+    <div class="mb-4 text-sm text-gray-600">
+      Showing <%= @automations.offset_value + 1 %> - <%= [@automations.offset_value + @automations.size, @automations.total_count].min %> 
+      of <%= @automations.total_count %> automations
+    </div>
+  <% end %>
+
   <!-- Automations Table -->
   <% if @automations.any? %>
     <div class="bg-white shadow-md rounded-lg overflow-hidden">
@@ -113,6 +121,39 @@
         </tbody>
       </table>
     </div>
+
+    <!-- Pagination Controls -->
+    <% if @automations.total_pages > 1 %>
+      <div class="mt-6">
+        <nav class="flex items-center justify-center space-x-2" aria-label="Pagination">
+          <% if @automations.prev_page %>
+            <%= link_to automations_path(page: @automations.prev_page, status: params[:status]), 
+                class: "px-3 py-2 text-sm font-medium text-gray-700 bg-white border border-gray-300 rounded-md hover:bg-gray-50" do %>
+              &larr; Previous
+            <% end %>
+          <% else %>
+            <span class="px-3 py-2 text-sm font-medium text-gray-400 bg-gray-100 border border-gray-300 rounded-md cursor-not-allowed">
+              &larr; Previous
+            </span>
+          <% end %>
+
+          <span class="px-3 py-2 text-sm font-medium text-gray-700">
+            Page <%= @automations.current_page %> of <%= @automations.total_pages %>
+          </span>
+
+          <% if @automations.next_page %>
+            <%= link_to automations_path(page: @automations.next_page, status: params[:status]), 
+                class: "px-3 py-2 text-sm font-medium text-gray-700 bg-white border border-gray-300 rounded-md hover:bg-gray-50" do %>
+              Next &rarr;
+            <% end %>
+          <% else %>
+            <span class="px-3 py-2 text-sm font-medium text-gray-400 bg-gray-100 border border-gray-300 rounded-md cursor-not-allowed">
+              Next &rarr;
+            </span>
+          <% end %>
+        </nav>
+      </div>
+    <% end %>
   <% else %>
     <div class="bg-white shadow-md rounded-lg p-12 text-center">
       <svg class="mx-auto h-12 w-12 text-gray-400" fill="none" viewBox="0 0 24 24" stroke="currentColor">

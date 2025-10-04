@@ -49,16 +49,25 @@ class UsersController < ApplicationController
     end
   
     def user_params
-      params.require(:user).permit(
-        :name,
-        :email,
-        :password,
-        :password_confirmation,
-        :date_of_birth,
-        :major,
-        :classification,
-        :uin
-      )
-    end
+  permitted = params.require(:user).permit(
+    :name,
+    :email,
+    :password,
+    :password_confirmation,
+    :date_of_birth,
+    :major,
+    :classification,
+    :uin
+  )
+
+  # If password fields are left blank, don’t include them in the update
+  if permitted[:password].blank?
+    permitted.delete(:password)
+    permitted.delete(:password_confirmation)
+  end
+
+  permitted
+end
+
   end
   
