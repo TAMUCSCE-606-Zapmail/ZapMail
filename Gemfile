@@ -8,6 +8,7 @@ gem "puma", ">= 5.0"
 gem "jbuilder"
 gem 'dotenv-rails'
 gem "propshaft"
+gem "slack-notifier"
 
 # Asset Pipeline & Frontend
 gem "importmap-rails"
