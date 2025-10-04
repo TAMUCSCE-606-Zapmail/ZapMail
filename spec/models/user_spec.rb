@@ -32,18 +32,19 @@ RSpec.describe User, type: :model do
     end
 
     it "rejects if password confirmation does not match" do
-  user = User.new(
-    name: "yifei",
-    email: "yifeiwang@tamu.edu",
-    password: "newpassword",
-    password_confirmation: "wrongpassword"
-  )
-  expect(user).not_to be_valid
-  expect(user.errors[:password_confirmation]).to include("doesn't match Password")
-end
+      user = User.new(
+        name: "yifei",
+        email: "yifeiwang@tamu.edu",
+        password: "newpassword",
+        password_confirmation: "wrongpassword"
+      )
+      expect(user).not_to be_valid
+      expect(user.errors[:password_confirmation]).to include("doesn't match Password")
+    end
 
-#blank password won't overwrite old password
- it "allows profile update without changing password (blank password)" do
+
+    #blank password won't overwrite old password
+    it "allows profile update without changing password (blank password)" do
       user = User.create!(
         name: "Yifei",
         email: "yifei@example.com",
@@ -56,8 +57,8 @@ end
       expect(user).to be_valid
       expect(user.authenticate("password123")).to eq(user)  # original password still works
     end
-end
-end
+  end
+  
   describe 'associations' do
     it 'has many templates' do
       user = User.create!(
