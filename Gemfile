@@ -47,7 +47,6 @@ end
 # --- DEVELOPMENT-ONLY GEMS ---
 # These gems will only be used on your local machine.
 group :development do
-  gem "tailwindcss-rails"
   gem "web-console"
   gem "letter_opener_web"
 end
