@@ -22,7 +22,7 @@
         --tamu-gray-light: #f7fafc;
         --tamu-gray-medium: #e2e8f0;
         --tamu-gray-dark: #4a5568;
-        --tamu-accent: #8A6319; /* A subtle gold/tan accent */
+        --tamu-accent: #8A6319; 
       }
       body {
         font-family: 'Inter', sans-serif;
@@ -63,6 +63,7 @@
         </div>
         <div class="flex items-center space-x-4">
           <% if logged_in? %>
+            <%= link_to 'My Templates', templates_path, class: 'link-primary font-medium' %>
             <%= link_to 'Automation History', automations_path, class: 'link-primary font-medium' %>
             <%= link_to 'My Profile', profile_path, class: 'link-primary font-medium' %>
             <%= button_to 'Logout', logout_path, method: :delete, class: 'bg-red-500 text-white font-semibold py-2 px-4 rounded-lg hover:bg-red-600 transition duration-200' %>
