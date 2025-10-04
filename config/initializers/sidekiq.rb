@@ -2,24 +2,35 @@
 
 require 'sidekiq'
 require 'openssl'
+require 'redis'
 
 redis_url = ENV.fetch('REDIS_URL', 'redis://localhost:6379/1')
 
-# Configure SSL parameters for Redis connections
-redis_config = if redis_url.start_with?('rediss://')
-                 # For production Redis with SSL, disable certificate verification
-                 # WARNING: This is a security risk but may be required for some hosting providers
-                 {
-                   url: redis_url,
-                   ssl: {
-                     verify_mode: OpenSSL::SSL::VERIFY_NONE,
-                     verify_hostname: false
-                   }
-                 }
-               else
-                 # For non-SSL Redis connections
-                 { url: redis_url }
-               end
+# Configure Redis connection with SSL bypass for production
+if redis_url.start_with?('rediss://')
+  # Create a custom Redis connection that bypasses SSL verification
+  # WARNING: This is a security risk but may be required for some hosting providers
+  
+  # Parse the Redis URL to extract components
+  uri = URI.parse(redis_url)
+  
+  # Create Redis client with SSL verification disabled
+  redis_client = Redis.new(
+    host: uri.host,
+    port: uri.port,
+    password: uri.password,
+    db: uri.path&.split('/')&.last&.to_i || 0,
+    ssl: true,
+    ssl_params: {
+      verify_mode: OpenSSL::SSL::VERIFY_NONE,
+      verify_hostname: false
+    }
+  )
+  
+  redis_config = { client: redis_client }
+else
+  redis_config = { url: redis_url }
+end
 
 Sidekiq.configure_server do |config|
   config.redis = redis_config
