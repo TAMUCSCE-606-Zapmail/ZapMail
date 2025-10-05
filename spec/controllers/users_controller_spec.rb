@@ -85,7 +85,7 @@ RSpec.describe UsersController, type: :controller do
       it 'renders the new template' do
         post :create, params: { user: invalid_attributes }
         expect(response).to render_template(:new)
-        expect(response).to have_http_status(:unprocessable_entity)
+        expect(response).to have_http_status(:unprocessable_content)
       end
 
       it 'does not log in the user' do
@@ -208,7 +208,7 @@ RSpec.describe UsersController, type: :controller do
         it 'renders the edit template' do
           patch :update, params: { user: { email: 'invalid' } }
           expect(response).to render_template(:edit)
-          expect(response).to have_http_status(:unprocessable_entity)
+          expect(response).to have_http_status(:unprocessable_content)
         end
 
         it 'sends Slack warning notification' do
