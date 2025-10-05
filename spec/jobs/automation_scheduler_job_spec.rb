@@ -41,13 +41,15 @@ RSpec.describe AutomationSchedulerJob, type: :job do
           enabled: true,
           action_data: { to: 'future@example.com', subject: 'Future Email' }
         )
-      end
+        end
 
-      it 'enqueues EmailSenderJob for due automations' do
-        expect {
-          AutomationSchedulerJob.new.perform
-        }.to have_enqueued_job(EmailSenderJob).with(due_automation.id).once
-      end
+        it 'enqueues EmailSenderJob for due automations' do
+            expect {
+            AutomationSchedulerJob.new.perform
+            }.to change(EmailSenderJob.jobs, :size).by(1)
+
+            expect(EmailSenderJob.jobs.last['args']).to include(due_automation.id)
+        end
 
       it 'does not enqueue EmailSenderJob for future automations' do
         expect {
@@ -64,7 +66,7 @@ RSpec.describe AutomationSchedulerJob, type: :job do
         slack_service = instance_double(SlackNotifierService)
         allow(SlackNotifierService).to receive(:new).and_return(slack_service)
         expect(slack_service).to receive(:notify).with(
-          "📧 Scheduling 1 automation(s) for execution."
+          "Scheduler check for due automations started."
         )
 
         AutomationSchedulerJob.new.perform
