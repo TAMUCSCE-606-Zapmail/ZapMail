@@ -504,6 +504,12 @@
           null
         ]
       },
+      "/Users/charliechiu/Documents/2025Fall/CSCE606/new/ZapMail/app/jobs/application_job.rb": {
+        "lines": [
+          1,
+          null
+        ]
+      },
       "/Users/charliechiu/Documents/2025Fall/CSCE606/new/ZapMail/app/jobs/automation_scheduler_job.rb": {
         "lines": [
           1,
@@ -708,6 +714,69 @@
           null
         ]
       },
+      "/Users/charliechiu/Documents/2025Fall/CSCE606/new/ZapMail/app/services/ai_content_service.rb": {
+        "lines": [
+          1,
+          1,
+          null,
+          null,
+          5,
+          null,
+          null,
+          1,
+          null,
+          5,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          5,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          2,
+          2,
+          null,
+          null,
+          null,
+          2,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          3,
+          null,
+          null,
+          null,
+          null,
+          null,
+          3,
+          null,
+          null,
+          null,
+          3,
+          null,
+          null,
+          null,
+          null,
+          null
+        ]
+      },
       "/Users/charliechiu/Documents/2025Fall/CSCE606/new/ZapMail/app/models/template.rb": {
         "lines": [
           1,
@@ -759,69 +828,6 @@
           null
         ]
       },
-      "/Users/charliechiu/Documents/2025Fall/CSCE606/new/ZapMail/app/services/ai_content_service.rb": {
-        "lines": [
-          1,
-          1,
-          null,
-          null,
-          0,
-          null,
-          null,
-          1,
-          null,
-          0,
-          null,
-          null,
-          null,
-          null,
-          null,
-          null,
-          null,
-          null,
-          null,
-          null,
-          null,
-          0,
-          null,
-          null,
-          null,
-          null,
-          null,
-          null,
-          null,
-          null,
-          null,
-          0,
-          0,
-          null,
-          null,
-          null,
-          0,
-          null,
-          null,
-          null,
-          null,
-          null,
-          null,
-          0,
-          null,
-          null,
-          null,
-          null,
-          null,
-          0,
-          null,
-          null,
-          null,
-          0,
-          null,
-          null,
-          null,
-          null,
-          null
-        ]
-      },
       "/Users/charliechiu/Documents/2025Fall/CSCE606/new/ZapMail/app/mailers/automation_mailer.rb": {
         "lines": [
           1,
@@ -853,15 +859,8 @@
           null,
           null
         ]
-      },
-      "/Users/charliechiu/Documents/2025Fall/CSCE606/new/ZapMail/app/jobs/application_job.rb": {
-        "lines": [
-          0,
-          0
-        ],
-        "branches": {}
       }
     },
-    "timestamp": 1759685531
+    "timestamp": 1759685819
   }
 }
