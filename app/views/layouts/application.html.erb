@@ -11,7 +11,6 @@
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
-    
     <style>
       :root {
         --tamu-maroon: #500000;
@@ -21,6 +20,10 @@
         --tamu-gray-500: #a0aec0;
         --tamu-gray-700: #4a5568;
         --tamu-gray-800: #2d3748;
+        --tamu-gray-light: #f7fafc;
+        --tamu-gray-medium: #e2e8f0;
+        --tamu-gray-dark: #4a5568;
+         --tamu-accent: #8A6319; 
       }
       body {
         font-family: 'Inter', sans-serif;
@@ -36,8 +39,6 @@
         color: var(--tamu-white);
       }
       .btn-maroon:hover { background-color: #400000; }
-      .text-tamu-maroon { color: var(--tamu-maroon); }
-      .hover\:text-tamu-maroon:hover { color: var(--tamu-maroon); }
       .form-input:focus {
         border-color: var(--tamu-maroon);
         box-shadow: 0 0 0 2px rgba(80, 0, 0, 0.2);
@@ -45,6 +46,7 @@
       }
     </style>
     <%= javascript_importmap_tags %>
+    <%= stylesheet_link_tag "application", "data-turbo-track": "reload" %>
   </head>
 
   <body class="antialiased">
