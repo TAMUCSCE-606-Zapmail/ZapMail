@@ -47,6 +47,8 @@ group :development, :test do
   gem 'simplecov', require: false
   gem "brakeman", require: false
   gem "rubocop-rails-omakase", require: false
+  gem 'selenium-webdriver'
+  gem 'webdrivers'
 end
 
 # --- DEVELOPMENT-ONLY GEMS ---

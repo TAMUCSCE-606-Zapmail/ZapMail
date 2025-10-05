@@ -1,4 +1,0 @@
-Feature: Automation Scheduling
-    As a user
-    So that I can automate delivery
-    I want to schedule my strategy as a one-time or recurring automation, with confirmation displayed immediately after scheduling

@@ -1,8 +1,18 @@
-# features/support/env.rb
 require 'cucumber/rails'
 require 'capybara/rails'
 require 'database_cleaner/active_record'
 require 'simplecov'
+require 'capybara/rails'
+require 'capybara/cucumber'
+require 'rspec/mocks'
+
+World(RSpec::Mocks::ExampleMethods)
+Before { RSpec::Mocks.setup }
+After  { RSpec::Mocks.verify; RSpec::Mocks.teardown }
+
+
+Capybara.default_driver = :rack_test        # default, fast, no JS
+Capybara.javascript_driver = :selenium_chrome_headless # for JS tests
 
 # ✅ Enable SimpleCov for test coverage
 SimpleCov.start 'rails' do
