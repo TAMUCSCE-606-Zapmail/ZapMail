@@ -212,16 +212,17 @@ RSpec.describe UsersController, type: :controller do
         end
 
         it 'sends Slack warning notification' do
-          slack_service = instance_double(SlackNotifierService)
-          allow(SlackNotifierService).to receive(:new).and_return(slack_service)
-          expect(slack_service).to receive(:notify).with(
-            /User `#{user.email}` failed to update their profile/,
-            :warning
-          )
+            slack_service = instance_double(SlackNotifierService)
+            allow(SlackNotifierService).to receive(:new).and_return(slack_service)
+            expect(slack_service).to receive(:notify) do |message, level|
+                expect(message).to match(/User `.*` failed to update their profile/)
+                expect(message).to include("Errors:")
+                expect(level).to eq(:warning)
+            end
 
-          patch :update, params: { user: { email: 'invalid' } }
+            patch :update, params: { user: { email: 'invalid' } }
+            end
         end
-      end
 
       context 'updating password' do
         it 'allows password update' do
