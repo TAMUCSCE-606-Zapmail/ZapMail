@@ -137,7 +137,7 @@ RSpec.describe AutomationsController, type: :controller do
       it 'redirects to index with error' do
         get :show, params: { id: 99999 }
         expect(response).to redirect_to(automations_path)
-        expect(flash[:error]).to eq("Automation not found")
+        expect(flash[:error]).to eq("The automation you were looking for could not be found.")
       end
     end
 
@@ -172,7 +172,7 @@ RSpec.describe AutomationsController, type: :controller do
       it 'redirects with error' do
         get :show, params: { id: other_automation.id }
         expect(response).to redirect_to(automations_path)
-        expect(flash[:error]).to eq("Automation not found")
+        expect(flash[:error]).to eq("The automation you were looking for could not be found.")
       end
     end
   end
