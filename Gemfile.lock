@@ -252,6 +252,10 @@ GEM
       prettyprint
     prettyprint (0.2.0)
     prism (1.5.1)
+    propshaft (1.3.1)
+      actionpack (>= 7.0.0)
+      activesupport (>= 7.0.0)
+      rack
     psych (5.2.6)
       date
       stringio
@@ -381,25 +385,13 @@ GEM
       simplecov_json_formatter (~> 0.1)
     simplecov-html (0.13.2)
     simplecov_json_formatter (0.1.4)
-    sprockets (4.2.2)
-      concurrent-ruby (~> 1.0)
-      logger
-      rack (>= 2.2.4, < 4)
-    sprockets-rails (3.5.2)
-      actionpack (>= 6.1)
-      activesupport (>= 6.1)
-      sprockets (>= 3.0.0)
+    slack-notifier (2.4.0)
     stimulus-rails (1.3.4)
       railties (>= 6.0.0)
     stringio (3.1.7)
     sys-uname (1.4.1)
       ffi (~> 1.1)
       memoist3 (~> 1.0.0)
-    tailwindcss-rails (4.3.0)
-      railties (>= 7.0.0)
-      tailwindcss-ruby (~> 4.0)
-    tailwindcss-ruby (4.1.13-x64-mingw-ucrt)
-    tailwindcss-ruby (4.1.13-x86_64-linux-gnu)
     thor (1.4.0)
     timeout (0.4.3)
     tsort (0.2.0)
@@ -449,6 +441,7 @@ DEPENDENCIES
   kaminari
   letter_opener_web
   pg (~> 1.1)
+  propshaft
   puma (>= 5.0)
   rails (~> 8.0.2, >= 8.0.2.1)
   rails-controller-testing
@@ -458,12 +451,14 @@ DEPENDENCIES
   sidekiq
   sidekiq-cron
   simplecov
-  sprockets-rails
+  slack-notifier
   stimulus-rails
-  tailwindcss-rails
   turbo-rails
   tzinfo-data
   web-console
+
+RUBY VERSION
+   ruby 3.4.5p51
 
 BUNDLED WITH
    2.7.2

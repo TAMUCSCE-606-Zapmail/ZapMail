@@ -3,38 +3,64 @@ class EmailSenderJob
   
     def perform(automation_id)
       automation = Automation.find(automation_id)
-      # FIX: Get the user who created the automation
       user = automation.user
       action_data = automation.action_data
-      
-      # FIX: The 'scheduling_options' variable is removed as it is no longer being saved by the controller.
-      # This was the source of the "undefined method '[]' for nil" error.
-      # scheduling_options = action_data['scheduling_options']
   
-      # 1. Generate AI Content
-      ai_service = AiContentService.new
-      generated_content = ai_service.generate(
-        subject: action_data['subject'],
-        body: action_data['body']
+      slack_notifier = SlackNotifierService.new
+  
+      # Send an INFO log to show the job has started.
+      slack_notifier.notify(
+        "Starting email job for Template '#{automation.template.name}' (Automation ID: #{automation_id})."
       )
   
-      # 2. Send the Email, now passing the user object
+      begin
+        # 1. Generate AI Content
+        ai_service = AiContentService.new
+        generated_content = ai_service.generate(
+          subject: action_data['subject'],
+          body: action_data['body']
+        )
+      rescue StandardError => e
+        # Send a WARNING log if the AI fails, then fall back to the original content.
+        slack_notifier.notify(
+          "AI content generation failed for Automation ID: #{automation_id}. Falling back to original content. Error: `#{e.message}`",
+          :warning
+        )
+        generated_content = { subject: action_data['subject'], body: action_data['body'] }
+      end
+  
+      # 2. Send the Email
       AutomationMailer.send_automation_email(
-        user: user, # Pass the user to the mailer
+        user: user,
         to: action_data['to'],
         subject: generated_content[:subject],
         body: generated_content[:body]
       ).deliver_now
   
-      # 3. Update Automation Status
-      # FIX: The complex repeating logic has been replaced with the simple, correct
-      # logic for a one-time job. This will resolve the error.
+      # 3. Update the job status for a one-time job.
       automation.update!(enabled: false, status: 'sent')
   
+      # Send a SUCCESS log to show the job is complete.
+      slack_notifier.notify(
+        "Successfully sent email for Template '#{automation.template.name}' to #{action_data['to']}.",
+        :success
+      )
+  
     rescue StandardError => e
-      # If anything goes wrong, log the error and mark the job as failed
+      # If anything else goes wrong, update the job and send a critical ERROR log.
       automation.update!(status: 'failed', error_message: e.message)
-      Rails.logger.error "Failed to send automation email for ID #{automation_id}: #{e.message}"
+      
+      error_message = <<~MSG
+        *Email Sender Job Failed!*
+        *Automation ID:* #{automation_id}
+        *Template:* #{automation.template.name}
+        *User:* #{user.email}
+        *Error:* `#{e.message}`
+      MSG
+      slack_notifier.notify(error_message, :error)
+  
+      # Re-raise the error so Sidekiq can handle retries if configured.
+      raise e
     end
   end
   

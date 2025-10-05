@@ -2,33 +2,42 @@ class AutomationSchedulerJob
     include Sidekiq::Job
   
     def perform
-      # Log that the job has started. This confirms that sidekiq-cron is working.
-      Rails.logger.info "--- AutomationSchedulerJob: Starting check for due automations ---"
+      slack_notifier = SlackNotifierService.new
+      
+      # Send a quiet log message to Slack just to show the job is running.
+      # This acts as a "heartbeat" for your system.
+      slack_notifier.notify("Scheduler check for due automations started.")
   
-      # Find all automations that are enabled and due to be sent.
       due_automations = Automation.due_to_run
   
-      # If no jobs are found, log that and exit. This is very useful for debugging.
-      if due_automations.empty?
-        Rails.logger.info "AutomationSchedulerJob: No automations are due to run at this time."
-        return
-      end
+      # If no jobs are due, we don't need to send another notification.
+      # The initial "heartbeat" is enough.
+      return if due_automations.empty?
   
-      # If jobs are found, log how many were discovered.
-      Rails.logger.info "AutomationSchedulerJob: Found #{due_automations.count} automations to schedule."
+      # If jobs ARE found, send a success message with the count.
+      slack_notifier.notify(
+        "Found #{due_automations.count} automations to process. Enqueuing now...",
+        :success
+      )
   
       due_automations.find_each do |automation|
-        # Log which specific automation is being processed.
-        Rails.logger.info "--> Processing Automation ID: #{automation.id}"
-  
-        # Mark the job as 'processing' to prevent it from being picked up again.
+        # Immediately mark the job as 'processing' to prevent race conditions.
         automation.update!(status: 'processing')
         
-        # Log that the email sending job is being enqueued.
-        Rails.logger.info "--> Enqueuing EmailSenderJob for Automation ID: #{automation.id}"
+        # Enqueue the actual email sending job.
         EmailSenderJob.perform_async(automation.id)
       end
-      
-      Rails.logger.info "--- AutomationSchedulerJob: Finished scheduling ---"
+  
+    rescue StandardError => e
+      # --- Send a critical ERROR log if the scheduler job itself fails ---
+      # This is a high-priority alert because it means no jobs can be scheduled.
+      error_message = <<~MSG
+        *Automation Scheduler Job Failed!*
+        The scheduler crashed and is unable to enqueue new jobs. This requires immediate attention.
+        *Error:* `#{e.message}`
+      MSG
+      slack_notifier.notify(error_message, :error)
+      raise e
     end
   end
+  

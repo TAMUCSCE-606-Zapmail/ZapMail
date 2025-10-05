@@ -5,7 +5,6 @@ class TemplatesController < ApplicationController
   before_action :set_template, only: [:edit, :update, :destroy, :preview, :schedule, :duplicate]
 
   class RuleProcessorService
-    # ... (service code remains the same) ...
     def initialize(rules, data)
       @rules = rules
       @data = data
@@ -67,6 +66,7 @@ class TemplatesController < ApplicationController
   def create
     @template = current_user.templates.build(processed_template_params)
     if @template.save
+      SlackNotifierService.new.notify("User `#{current_user.email}` created a new template: '#{@template.name}'.")
       redirect_to edit_template_path(@template), notice: 'Template created.'
     else
       render :new, status: :unprocessable_entity
@@ -77,6 +77,7 @@ class TemplatesController < ApplicationController
 
   def update
     if @template.update(processed_template_params)
+      SlackNotifierService.new.notify("User `#{current_user.email}` updated the template: '#{@template.name}'.")
       redirect_to edit_template_path(@template), notice: 'Template updated.'
     else
       render :edit, status: :unprocessable_entity
@@ -84,7 +85,9 @@ class TemplatesController < ApplicationController
   end
 
   def destroy
+    template_name = @template.name
     @template.destroy
+    SlackNotifierService.new.notify("User `#{current_user.email}` deleted the template: '#{template_name}'.", :warning)
     redirect_to templates_url, notice: 'Template destroyed.'
   end
 
@@ -92,6 +95,7 @@ class TemplatesController < ApplicationController
     new_template = @template.dup
     new_template.name = "#{@template.name} (Copy)"
     if new_template.save
+      SlackNotifierService.new.notify("User `#{current_user.email}` duplicated the template: '#{@template.name}'.")
       redirect_to templates_path, notice: "Template was successfully duplicated."
     else
       redirect_to templates_path, alert: "Could not duplicate the template."
@@ -114,6 +118,7 @@ class TemplatesController < ApplicationController
         render json: { success: true, message: 'Spreadsheet verified!', columns: columns, emailColumns: email_columns }
       end
     rescue StandardError => e
+      SlackNotifierService.new.notify("Spreadsheet verification failed for user `#{current_user.email}`. Error: `#{e.message}`", :error)
       render json: { success: false, message: "Could not access spreadsheet: #{e.message}" }, status: :unprocessable_entity
     end
   end
@@ -125,15 +130,13 @@ class TemplatesController < ApplicationController
       data = fetch_spreadsheet_data(params[:spreadsheet_url])
       processor = RuleProcessorService.new(rules, data)
       all_results = processor.run
-
-      # FIX: Paginate the array of results using Kaminari.
-      # It will use the 'page' param from the Stimulus controller.
       @paginated_results = Kaminari.paginate_array(all_results).page(params[:page]).per(5)
 
       render turbo_stream: turbo_stream.update("preview_results_frame", 
         partial: "templates/preview_results", 
-        locals: { results: @paginated_results }) # Pass the paginated collection to the view
+        locals: { results: @paginated_results })
     rescue StandardError => e
+      SlackNotifierService.new.notify("Rule preview failed for template '#{@template.name}'. Error: `#{e.message}`", :error)
       @error_message = e.message
       render turbo_stream: turbo_stream.update("preview_results_frame", 
         partial: "templates/preview_error", 
@@ -167,8 +170,10 @@ class TemplatesController < ApplicationController
         scheduled_count += 1
       end
 
+      SlackNotifierService.new.notify("User `#{current_user.email}` scheduled #{scheduled_count} emails from template '#{@template.name}'.", :success)
       render json: { success: true, scheduled_count: scheduled_count }
     rescue StandardError => e
+      SlackNotifierService.new.notify("Failed to schedule jobs for template '#{@template.name}'. Error: `#{e.message}`", :error)
       render json: { success: false, error: e.message }, status: :unprocessable_entity
     end
   end
