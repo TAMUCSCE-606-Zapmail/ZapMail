@@ -10,7 +10,7 @@ class Automation < ApplicationRecord
   scope :due_to_run, -> { scheduled.where("send_at <= ?", Time.current) }
 
   # New scopes for history page
-  scope :completed, -> { where(status: ['completed', 'sent']) } 
+  scope :completed, -> { where(status: ['completed']) } 
   scope :failed, -> { where(status: 'failed') }
   scope :recent, -> { order(send_at: :desc) }
   scope :for_user, ->(user) { where(user: user) }

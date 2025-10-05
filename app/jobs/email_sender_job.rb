@@ -38,7 +38,7 @@ class EmailSenderJob
       ).deliver_now
   
       # 3. Update the job status for a one-time job.
-      automation.update!(enabled: false, status: 'sent')
+      automation.update!(enabled: false, status: 'completed')
   
       # Send a SUCCESS log to show the job is complete.
       slack_notifier.notify(
