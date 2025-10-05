@@ -1,4 +1,7 @@
 class TemplatesController < ApplicationController
+
+  before_action :authorize
+
   require 'open-uri'
   require 'csv'
 
