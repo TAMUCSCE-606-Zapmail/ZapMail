@@ -3,6 +3,13 @@ class EmailSenderJob
   
     def perform(automation_id)
       automation = Automation.find(automation_id)
+      if automation.nil?
+        SlackNotifierService.new.notify(
+          "Automation ID #{automation_id} not found. Skipping job.",
+          :warning
+        )
+        return
+      end
       user = automation.user
       action_data = automation.action_data
   
