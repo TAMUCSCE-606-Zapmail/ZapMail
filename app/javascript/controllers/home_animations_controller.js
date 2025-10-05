@@ -2,9 +2,7 @@
 import { Controller } from "@hotwired/stimulus"
 
 export default class extends Controller {
-  connect() {
-    console.log("Home animation controller connected!")
-    
+  connect() {    
     // Put your animation logic here — for example:
     const animationStyles = `
       @keyframes fadeIn { from { opacity: 0; } to { opacity: 1; } }
@@ -17,15 +15,6 @@ export default class extends Controller {
     document.head.appendChild(styleSheet);
 
     const animatedElements = document.querySelectorAll("[data-animate]");
-    // const observer = new IntersectionObserver((entries) => {
-    //   entries.forEach((entry) => {
-    //     if (entry.isIntersecting) {
-    //       entry.target.classList.add("is-visible");
-    //       observer.unobserve(entry.target);
-    //     }
-    //   });
-    // }, { threshold: 0.1 });
-    // animatedElements.forEach((el) => observer.observe(el));
 
     const observer = new IntersectionObserver((entries) => {
     entries.forEach((entry) => {
