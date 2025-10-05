@@ -22,6 +22,17 @@
   color: white;
 }
 
+/* app/assets/stylesheets/application.css or tailwind.css */
+.flash-notifier {
+  position: fixed;      /* stays at top of screen */
+  top: 1rem;            /* small margin from top */
+  left: 50%;            /* center horizontally */
+  transform: translateX(-50%);
+  z-index: 50;          /* on top of everything */
+  max-width: 90%;       /* optional: constrain width */
+  text-align: center;   /* center text */
+}
+
 /* --- TAMU Custom Tailwind-like Utilities --- */
 
 /* Text colors */
@@ -75,3 +86,4 @@
 .hover\:border-tamu-gray-medium:hover { border-color: var(--tamu-gray-medium); }
 .hover\:border-tamu-gray-dark:hover { border-color: var(--tamu-gray-dark); }
 .hover\:border-tamu-accent:hover { border-color: var(--tamu-accent); }
+

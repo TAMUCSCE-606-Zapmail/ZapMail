@@ -50,6 +50,16 @@
   </head>
 
   <body class="antialiased">
+    <% if flash[:success] %>
+      <div class="flash-notifier bg-green-500 text-white font-semibold px-6 py-3 rounded shadow-lg">
+        <%= flash[:success] %>
+      </div>
+    <% end %>
+    <% if flash[:error] %>
+      <div class="flash-notifier bg-red-500 text-white font-semibold px-6 py-3 rounded shadow-lg">
+        <%= flash[:error] %>
+      </div>
+    <% end %>
     <header class="bg-white shadow-sm border-b border-gray-200">
       <nav class="container mx-auto px-6 py-4 flex justify-between items-center">
         <div>

@@ -44,4 +44,9 @@ Rails.application.routes.draw do
 
   # Health check route
   get "up" => "rails/health#show", as: :rails_health_check
+
+  if Rails.env.test? || Rails.env.development?
+    get "/raise_error_test", to: "errors#raise_test"
+    get "/protected_test", to: "test#protected_action"
+  end
 end

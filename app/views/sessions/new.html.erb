@@ -16,17 +16,6 @@
       <%= form.submit "Log In", class: "w-full cursor-pointer btn-primary font-semibold py-3 px-4 rounded-lg hover:bg-tamu-white hover:text-tamu-maroon transition duration-200 bg-tamu-maroon text-tamu-white border border-tamu-maroon" %>
     </div>
   <% end %>
-  <% if flash[:error] %>
-  <div class="text-red-600 font-semibold mb-4">
-    <%= flash[:error] %>
-    </div>
-  <% end %>
-
-  <% if flash[:success] %>
-    <div class="text-green-600 font-semibold mb-4">
-      <%= flash[:success] %>
-    </div>
-  <% end %>
 
   <p class="text-center mt-6 text-sm text-gray-600">
     Don't have an account? <%= link_to 'Sign Up', signup_path, class: 'link-primary font-medium' %>
