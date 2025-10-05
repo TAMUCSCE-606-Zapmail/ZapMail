@@ -66,7 +66,7 @@ RSpec.describe AutomationSchedulerJob, type: :job do
         slack_service = instance_double(SlackNotifierService)
         allow(SlackNotifierService).to receive(:new).and_return(slack_service)
         expect(slack_service).to receive(:notify).with(
-          "Scheduler check for due automations started."
+          "Found 1 automations to process. Enqueuing now...", :success
         )
 
         AutomationSchedulerJob.new.perform
@@ -84,7 +84,7 @@ RSpec.describe AutomationSchedulerJob, type: :job do
         slack_service = instance_double(SlackNotifierService)
         allow(SlackNotifierService).to receive(:new).and_return(slack_service)
         expect(slack_service).to receive(:notify).with(
-          "📧 Scheduling 0 automation(s) for execution."
+          "Scheduling 0 automation(s) for execution."
         )
 
         AutomationSchedulerJob.new.perform
@@ -132,7 +132,7 @@ RSpec.describe AutomationSchedulerJob, type: :job do
         slack_service = instance_double(SlackNotifierService)
         allow(SlackNotifierService).to receive(:new).and_return(slack_service)
         expect(slack_service).to receive(:notify).with(
-          "📧 Scheduling 3 automation(s) for execution."
+          "Scheduling 3 automation(s) for execution."
         )
 
         AutomationSchedulerJob.new.perform
