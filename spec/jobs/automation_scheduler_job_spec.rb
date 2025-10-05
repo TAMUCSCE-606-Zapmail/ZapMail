@@ -44,18 +44,18 @@ RSpec.describe AutomationSchedulerJob, type: :job do
 
       it 'enqueues EmailSenderJob for due automations' do
         expect {
-          AutomationSchedulerJob.perform_now
+          AutomationSchedulerJob.new.perform
         }.to have_enqueued_job(EmailSenderJob).with(due_automation.id).once
       end
 
       it 'does not enqueue EmailSenderJob for future automations' do
         expect {
-          AutomationSchedulerJob.perform_now
+          AutomationSchedulerJob.new.perform
         }.not_to have_enqueued_job(EmailSenderJob).with(future_automation.id)
       end
 
       it 'updates automation status to processing' do
-        AutomationSchedulerJob.perform_now
+        AutomationSchedulerJob.new.perform
         expect(due_automation.reload.status).to eq('processing')
       end
 
@@ -66,14 +66,14 @@ RSpec.describe AutomationSchedulerJob, type: :job do
           "📧 Scheduling 1 automation(s) for execution."
         )
 
-        AutomationSchedulerJob.perform_now
+        AutomationSchedulerJob.new.perform
       end
     end
 
     context 'with no automations due' do
       it 'does not enqueue any jobs' do
         expect {
-          AutomationSchedulerJob.perform_now
+          AutomationSchedulerJob.new.perform
         }.not_to have_enqueued_job(EmailSenderJob)
       end
 
@@ -84,7 +84,7 @@ RSpec.describe AutomationSchedulerJob, type: :job do
           "📧 Scheduling 0 automation(s) for execution."
         )
 
-        AutomationSchedulerJob.perform_now
+        AutomationSchedulerJob.new.perform
       end
     end
 
@@ -101,7 +101,7 @@ RSpec.describe AutomationSchedulerJob, type: :job do
 
       it 'does not enqueue job for disabled automations' do
         expect {
-          AutomationSchedulerJob.perform_now
+          AutomationSchedulerJob.new.perform
         }.not_to have_enqueued_job(EmailSenderJob)
       end
     end
@@ -121,7 +121,7 @@ RSpec.describe AutomationSchedulerJob, type: :job do
 
       it 'enqueues jobs for all due automations' do
         expect {
-          AutomationSchedulerJob.perform_now
+          AutomationSchedulerJob.new.perform
         }.to have_enqueued_job(EmailSenderJob).exactly(3).times
       end
 
@@ -132,7 +132,7 @@ RSpec.describe AutomationSchedulerJob, type: :job do
           "📧 Scheduling 3 automation(s) for execution."
         )
 
-        AutomationSchedulerJob.perform_now
+        AutomationSchedulerJob.new.perform
       end
     end
 
@@ -150,7 +150,7 @@ RSpec.describe AutomationSchedulerJob, type: :job do
         )
 
         expect {
-          AutomationSchedulerJob.perform_now
+          AutomationSchedulerJob.new.perform
         }.to raise_error(StandardError)
       end
     end
