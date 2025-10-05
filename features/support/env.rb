@@ -6,6 +6,9 @@ require 'capybara/rails'
 require 'capybara/cucumber'
 require 'rspec/mocks'
 
+ActionMailer::Base.delivery_method = :test
+ActionMailer::Base.deliveries.clear
+
 World(RSpec::Mocks::ExampleMethods)
 Before { RSpec::Mocks.setup }
 After  { RSpec::Mocks.verify; RSpec::Mocks.teardown }
