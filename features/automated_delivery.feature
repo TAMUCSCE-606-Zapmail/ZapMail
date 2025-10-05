@@ -27,5 +27,23 @@ Feature: Automated Delivery
         Given I have an automation with a template and action data
         And sending email is stubbed to raise an error
         When I perform the email sender job for that automation
-        Then Slack should be notified of a critical error
+        Then Slack should be notified of a emailsender critical error
         And the automation's status should be "failed"
+    
+    Scenario: No automations due
+        Given there are no due automations
+        When I run the scheduler job
+        Then Slack should be notified that the scheduler started
+        And no jobs should be enqueued
+
+    Scenario: Some automations are due
+        Given a due automation exists for "test@example.com" and template "TestTemplate" scheduled at "2025-10-05 10:00"
+        When I run the scheduler job
+        Then Slack should be notified about found automations
+        And the due automation should be marked as processing
+        And the EmailSenderJob should be enqueued for the due automation
+
+    Scenario: Scheduler fails
+        Given the scheduler job will raise an error
+        When I run the scheduler job
+        Then Slack should be notified of a scheduler critical error

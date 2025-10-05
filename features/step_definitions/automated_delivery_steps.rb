@@ -83,7 +83,7 @@ Then("Slack should be notified of AI failure") do
   expect(@slack_spy).to have_received(:notify).with(/AI content generation failed/, :warning)
 end
 
-Then("Slack should be notified of a critical error") do
+Then("Slack should be notified of a emailsender critical error") do
   expect(@slack_spy).to have_received(:notify).with(/Email Sender Job Failed!/, :error)
 end
 
@@ -93,4 +93,73 @@ end
 
 Then("the automation's status should be {string}") do |status|
   expect(@automation.reload.status).to eq(status)
+end
+
+Given("there are no due automations") do
+  allow(Automation).to receive(:due_to_run).and_return([])
+end
+
+Given("a due automation exists for {string} and template {string} scheduled at {string}") do |user_email, template_name, send_at|
+  user = User.find_by(email: user_email)
+  template = Template.find_by(name: template_name)
+  @due_automation = Automation.create!(
+    template: template,
+    user: user,
+    send_at: send_at,
+    status: 'scheduled',
+    action_data: { "to" => user.email, "subject" => "Hello", "body" => "World" }
+  )
+end
+
+Given("the scheduler job will raise an error") do
+  @automation_raise_error = true
+end
+
+When("I run the scheduler job") do
+    if @automation_raise_error
+       slack_spy = @slack_spy
+
+        # Override Automation.due_to_run with a spy object whose `find_each` raises
+        dummy_relation = double(
+            "relation",
+            empty?: false,
+            count: 1
+        )
+        allow(dummy_relation).to receive(:find_each).and_raise(StandardError, "Scheduler Failure")
+        allow(Automation).to receive(:due_to_run).and_return(dummy_relation)
+
+        begin
+            AutomationSchedulerJob.new.perform
+        rescue StandardError
+            # swallow error so scenario can continue
+        end
+    else
+        AutomationSchedulerJob.new.perform
+    end
+end
+
+Then("Slack should be notified that the scheduler started") do
+  expect(@slack_spy).to have_received(:notify).with(/Scheduler check for due automations started/)
+end
+
+Then("Slack should be notified about found automations") do
+  expect(@slack_spy).to have_received(:notify).with(/Found \d+ automations to process/, :success)
+end
+
+Then("no jobs should be enqueued") do
+  expect(EmailSenderJob.jobs.size).to eq(0)
+end
+
+Then("the due automation should be marked as processing") do
+  expect(@due_automation.reload.status).to eq('processing')
+end
+
+Then("the EmailSenderJob should be enqueued for the due automation") do
+  expect(EmailSenderJob.jobs.size).to eq(1)
+  enqueued_job = EmailSenderJob.jobs.first
+  expect(enqueued_job['args']).to include(@due_automation.id)
+end
+
+Then("Slack should be notified of a scheduler critical error") do
+  expect(@slack_spy).to have_received(:notify).with(/Automation Scheduler Job Failed!/, :error)
 end
