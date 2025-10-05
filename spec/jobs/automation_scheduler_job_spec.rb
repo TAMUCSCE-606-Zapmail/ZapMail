@@ -1,5 +1,6 @@
 require 'rails_helper'
-
+require 'sidekiq/testing'
+Sidekiq::Testing.fake!
 RSpec.describe AutomationSchedulerJob, type: :job do
   include ActiveJob::TestHelper
 
