@@ -1,0 +1,484 @@
+# ZapMail User Guide
+
+**Version 1.0** | Updated October 2025
+
+---
+
+## Table of Contents
+
+1. Welcome to ZapMail
+2. Getting Started
+3. Managing Your Profile
+4. Creating Email Templates
+5. Building Conditional Rules)
+6. Previewing Campaigns
+7. Scheduling Email Campaigns
+8. Viewing Campaign History
+9. Tips and Best Practices
+10. Troubleshooting
+
+---
+
+## Welcome to ZapMail
+
+ZapMail is an automated email campaign platform designed to help you send personalized bulk emails based on data from CSV files or Google Sheets. Whether you're managing student recruitment, event notifications, or marketing campaigns, ZapMail streamlines your workflow with powerful rule-based automation.
+
+### What You Can Do with ZapMail
+
+- **Automate bulk email campaigns** based on CSV/Google Sheets data
+- **Create conditional rules** to target specific recipients (e.g., "Send to students with GPA > 3.5")
+- **Personalize emails** using placeholders that automatically fill with recipient data
+- **Schedule campaigns** to send at specific dates and times
+- **Track delivery status** of all sent emails
+- **Preview campaigns** before sending to ensure accuracy
+
+### Who is This Guide For?
+
+This guide is for end-users who want to create and manage automated email campaigns. No programming knowledge is required.
+
+---
+
+## Getting Started
+
+### Creating Your Account
+
+1. **Visit the ZapMail website** at your institution's ZapMail URL
+2. Click **"Sign Up"** in the top navigation bar
+3. Fill in the registration form:
+   - **Name**: Your full name
+   - **Email**: Must end in `.com` or `.edu`
+   - **Password**: Minimum 8 characters
+   - **Password Confirmation**: Re-enter your password
+4. Click **"Create Account"**
+
+You'll be automatically logged in and redirected to your Templates dashboard.
+
+### Logging In
+
+1. Click **"Login"** in the top navigation
+2. Enter your **email** and **password**
+3. Click **"Log In"**
+
+You'll be taken to the Templates page where you can manage your email campaigns.
+
+### Navigation Overview
+
+Once logged in, you'll see four icons in the top-right corner:
+
+| Icon | Function |
+|------|----------|
+| 📦 (Templates) | View and manage your email templates |
+| 🕐 (Automation History) | View all scheduled and sent campaigns |
+| 👤 (Profile) | Manage your account information |
+| 🚪 (Logout) | Sign out of your account |
+
+---
+
+## Managing Your Profile
+
+### Viewing Your Profile
+
+1. Click the **Profile icon** (👤) in the top-right corner
+2. You'll see your account information:
+   - Name
+   - Email
+   - Date of Birth (if provided)
+   - Major (if provided)
+   - Classification (Freshman, Sophomore, etc.)
+   - UIN (University ID Number)
+
+### Editing Your Profile
+
+1. From your profile page, click **"Edit Profile"**
+2. Update any of the following:
+   - **Name**
+   - **Email** (must end in `.com` or `.edu`)
+   - **Password** (leave blank to keep current password)
+   - **Academic Details**: Date of Birth, Major, Classification, UIN
+
+3. Click **"Update Profile"** to save changes
+
+
+---
+
+## Creating Email Templates
+
+Templates are the foundation of your email campaigns. Each template contains:
+- A link to your data source (CSV or Google Sheet)
+- Conditional rules that determine who receives emails
+- Email content with personalization placeholders
+
+### Step 1: Create a New Template
+
+1. Click the **Templates icon** (📦) in the navigation
+2. Click **"+ New Template"** button
+3. Enter a descriptive **Template Name** (e.g., "Fall 2025 Recruitment")
+
+### Step 2: Link Your Data Source
+
+**Prerequisites**: You need a Google Sheet or CSV file with your recipient data.
+
+**Google Sheets Setup:**
+1. Make sure your Google Sheet is **shared as "Anyone with the link can view"**
+2. Copy the Google Sheets URL (e.g., `https://docs.google.com/spreadsheets/d/...`)
+
+**Connecting Your Data:**
+1. Paste your Google Sheet URL in the **Spreadsheet URL** field
+2. Click **"Verify & Load"**
+3. Wait for verification (usually 1-2 seconds)
+
+**What Happens:**
+- ZapMail reads your spreadsheet columns
+- Identifies potential email columns (columns with "email" in the name)
+- Validates that the data is accessible
+
+**Success**: You'll see "Spreadsheet verified!" and can proceed to build rules.
+
+**Error**: If verification fails, check that:
+- The sheet is publicly accessible
+- The URL is correct
+- The sheet contains at least one "email" column
+
+### Step 3: Build Conditional Rules
+
+After verifying your spreadsheet, the **"Build Rules"** section appears.
+
+**What are Rules?**
+
+Rules determine which recipients receive emails based on conditions you set. For example:
+- "Send to students with GPA > 3.0"
+- "Send to majors containing 'Engineering'"
+- "Send to classification equals 'Senior'"
+
+**Creating Your First Rule:**
+
+1. Click **"+ Add Rule"** button
+2. Give your rule a descriptive name (e.g., "High GPA Students")
+
+**Adding Conditions:**
+
+3. Click **"+ Add Condition"**
+4. Select a **Column** from your spreadsheet (e.g., "GPA")
+5. Select an **Operator**:
+   - `==` (equals)
+   - `!=` (not equals)
+   - `>` (greater than)
+   - `<` (less than)
+   - `contains` (text contains)
+   - `not_contains` (text does not contain)
+6. Enter a **Value** (e.g., "3.0")
+
+You can add multiple conditions to the same rule. All conditions must be met for a recipient to match.
+
+**Configuring the Email Action:**
+
+7. **Email To**: Select the column containing recipient email addresses
+8. **Subject**: Enter your email subject
+   - Use `@ColumnName` to insert data from your spreadsheet
+   - Example: `Welcome, @FirstName!`
+9. **Body**: Enter your email message
+   - Use `@ColumnName` for personalization
+   - Example: `Hello @FirstName, your GPA is @GPA...`
+10. **Send At**: Choose when this email should be sent (date and time)
+
+**Creating Multiple Rules:**
+
+You can create multiple rules in one template. Each rule targets different recipient groups based on different conditions.
+
+### Step 4: Preview Your Campaign
+
+Before scheduling, preview which recipients will receive emails.
+
+1. Click **"Run Preview"** button
+2. Wait 2-5 seconds for results
+3. Review the preview table showing:
+   - **Row Number**: Which row in your spreadsheet
+   - **Email To**: Recipient email address
+   - **Action Preview**: How the email will look with data substituted
+   - **Conditional Data**: The data that matched your conditions
+
+
+
+### Step 5: Save Your Template
+
+1. Click **"Save Template"** at the bottom of the page
+2. You'll see a confirmation message
+3. Your template is now saved and can be edited or scheduled later
+
+---
+
+## Building Conditional Rules
+
+### Understanding Rule Logic
+
+Each rule has two parts:
+1. **Conditions** (IF): Criteria that must be met
+2. **Action** (THEN): The email to send
+
+**Example Rule:**
+```
+IF:
+  - Column "Major" contains "Computer Science"
+  - Column "GPA" > 3.5
+
+THEN:
+  - Send email to {Email column}
+  - Subject: "Exclusive Research Opportunity"
+  - Body: "Dear {FirstName}, based on your {GPA} GPA..."
+```
+
+### Available Operators
+
+| Operator | Use Case | Example |
+|----------|----------|---------|
+| `==` | Exact match | Classification == "Senior" |
+| `!=` | Not equal | Status != "Inactive" |
+| `>` | Greater than (numbers) | GPA > 3.0 |
+| `<` | Less than (numbers) | Age < 25 |
+| `contains` | Text contains substring | Major contains "Engineering" |
+| `not_contains` | Text does not contain | Email not_contains "gmail" |
+
+### Using Placeholders for Personalization
+
+**Placeholder Syntax:** `@ColumnName`
+
+**Example Spreadsheet Columns:**
+- FirstName
+- LastName
+- Email
+- GPA
+- Major
+
+**Example Email:**
+```
+Subject: Welcome to @Major Program, @FirstName!
+
+Body:
+Hello @FirstName @LastName,
+
+Congratulations on maintaining a @GPA GPA! We're excited 
+to have you in the @Major program.
+
+Best regards,
+The ZapMail Team
+```
+
+**Result for row: FirstName="John", LastName="Doe", GPA="3.8", Major="Computer Science"**
+```
+Subject: Welcome to Computer Science Program, John!
+
+Body:
+Hello John Doe,
+
+Congratulations on maintaining a 3.8 GPA! We're excited
+to have you in the Computer Science program.
+
+Best regards,
+The ZapMail Team
+```
+
+### Multiple Conditions in One Rule
+
+All conditions in a rule must be true for a recipient to match.
+
+**Example: Target high-performing engineering seniors**
+```
+Conditions:
+1. Major contains "Engineering"
+2. GPA > 3.5
+3. Classification == "Senior"
+```
+
+Only students who meet ALL three criteria will receive the email.
+
+### Multiple Rules in One Template
+
+You can create multiple rules targeting different groups:
+
+**Rule 1: High Achievers**
+- Condition: GPA > 3.5
+- Subject: "Congratulations on Your Achievement!"
+
+**Rule 2: At-Risk Students**
+- Condition: GPA < 2.5
+- Subject: "Academic Support Resources"
+
+**Rule 3: Graduating Seniors**
+- Condition: Classification == "Senior"
+- Subject: "Graduation Information"
+
+Each rule will send different emails to different recipients based on the conditions.
+
+---
+
+## Previewing Campaigns
+
+### Why Preview?
+
+Previewing allows you to:
+- Verify the correct recipients are selected
+- Check that personalization works correctly
+- Ensure email content looks professional
+- Catch errors before sending
+
+### How to Preview
+
+1. After building your rules, click **"Run Preview"**
+2. The system will:
+   - Read your spreadsheet
+   - Apply all rule conditions
+   - Show matching recipients
+   - Display how emails will look with actual data
+
+### Understanding Preview Results
+
+The preview table shows:
+
+| Column | Description |
+|--------|-------------|
+| **Row #** | Which row in your spreadsheet matched |
+| **Email To** | Recipient's email address |
+| **Action Preview** | Email subject and body with placeholders replaced |
+| **Conditional Data** | The data that matched your conditions |
+
+**Pagination**: If you have many matching recipients, use "Previous" and "Next" buttons to view all pages.
+
+---
+
+## Scheduling Email Campaigns
+
+### How to Schedule
+
+1. After previewing and verifying everything looks correct
+2. Click **"Schedule Actions"** button at the bottom of the template edit page
+3. The system will:
+   - Create individual email jobs for each matching recipient
+   - Schedule them to send at the specified time
+   - Show a confirmation with the number of emails scheduled
+
+**Success Message**: "Successfully scheduled [X] emails"
+
+### What Happens Next?
+
+1. **Scheduled emails are stored** in the database
+2. **Every minute**, a background job checks for emails due to be sent
+3. **At the scheduled time**, emails are sent automatically
+4. **Status is updated** in Automation History (visible in your dashboard)
+
+### Editing Scheduled Campaigns
+
+**Before Send Time:**
+Unfortunately, once scheduled, individual emails cannot be edited or cancelled through the UI. Contact your system administrator if you need to cancel a scheduled campaign.
+
+**After Send Time:**
+Emails that have already been sent cannot be recalled.
+
+---
+
+## Viewing Campaign History
+
+### Accessing Automation History
+
+1. Click the **Automation History icon** (🕐) in the top navigation
+2. You'll see all your scheduled and sent campaigns
+
+### Understanding Status
+
+Each automation (email) has one of these statuses:
+
+| Status | Badge Color | Meaning |
+|--------|-------------|---------|
+| **Scheduled** | Maroon | Email is queued and will be sent at the scheduled time |
+| **Processing** | Maroon | Email is currently being sent |
+| **Completed** | Green | Email was successfully sent |
+| **Failed** | Red | Email failed to send (check error message) |
+
+### Filtering by Status
+
+Use the tabs at the top to filter automations:
+- **All**: Show all automations
+- **Scheduled**: Only future/pending emails
+- **Completed**: Only successfully sent emails
+- **Failed**: Only emails that encountered errors
+
+### Viewing Details
+
+1. Click **"View Details"** on any automation
+2. You'll see complete information:
+   - **Template Information**: Which template was used
+   - **Execution Details**: Status, scheduled time, actual send time
+   - **Email Content**: Exact subject and body that was sent
+   - **Error Message**: If failed, what went wrong
+
+### Understanding the Automation Table
+
+| Column | Description |
+|--------|-------------|
+| **Template** | Name of the template used |
+| **Status** | Current status (scheduled, completed, failed) |
+| **Scheduled For** | When the email was supposed to send |
+| **Recipient** | Email address of recipient |
+| **Executed At** | When the email actually sent (if completed) |
+| **Actions** | View detailed information |
+
+### Pagination
+
+If you have many automations, use:
+- **Previous** / **Next** buttons to navigate pages
+- **Page indicator** shows current page and total pages
+
+---
+
+## Managing Templates
+
+### Viewing All Templates
+
+1. Click the **Templates icon** (📦) in navigation
+2. You'll see all your saved templates
+3. Each template shows:
+   - Template name
+   - Number of rules
+   - Last modified date
+
+### Template Actions
+
+Click on a template to expand and see details. Available actions:
+
+| Action | Icon | Description |
+|--------|------|-------------|
+| **Edit** | Gray button | Modify template name, rules, or schedule |
+| **Duplicate** | Copy icon | Create a copy of the template |
+| **Delete** | Trash icon | Permanently remove template |
+
+### Editing an Existing Template
+
+1. Click **"Edit"** on a template
+2. You'll see the same three-step interface:
+   - Template Name and Spreadsheet URL
+   - Build Rules section
+   - Preview section
+3. Make your changes
+4. Click **"Save Template"** to update
+
+### Duplicating a Template
+
+1. Click the **Copy icon** next to a template
+2. A new template named "[Original Name] (Copy)" is created
+3. Edit the duplicate as needed
+
+**Use Case**: Create variations of successful campaigns for different audiences.
+
+### Deleting a Template
+
+1. Click the **Trash icon** next to a template
+2. Confirm deletion when prompted
+3. Template is permanently removed
+
+
+---
+
+**Thank you for using ZapMail!**
+
+We hope this guide helps you create successful email campaigns. For the latest updates and features, check the application regularly or contact your administrator.
+
+*ZapMail User Guide v1.0 - October 2025*
