@@ -202,6 +202,7 @@
       "/home/aurora/CSCE606/ZapMail/app/controllers/templates_controller.rb": {
         "lines": [
           1,
+          null,
           1,
           null,
           1,
@@ -888,7 +889,7 @@
         "branches": {}
       }
     },
-    "timestamp": 1759725377
+    "timestamp": 1759707530
   },
   "Cucumber Features": {
     "coverage": {
