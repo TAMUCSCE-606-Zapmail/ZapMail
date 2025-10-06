@@ -24,7 +24,7 @@ gem "ruby-openai"
 
 # Authentication and API
 gem "bcrypt", "~> 3.1.7"
-gem "jwt", "~> 2.7"
+gem "jwt", "~> 3.1"
 
 # Utilities
 gem "tzinfo-data", platforms: %i[ windows jruby ]
