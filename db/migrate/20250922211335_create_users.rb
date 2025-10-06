@@ -15,4 +15,3 @@ class CreateUsers < ActiveRecord::Migration[7.1]
     add_index :users, :uin, unique: true
   end
 end
-

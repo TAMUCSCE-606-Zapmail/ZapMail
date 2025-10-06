@@ -7,7 +7,7 @@ class AutomationsController < ApplicationController
                               .includes(:template)
                               .recent
 
-    if params[:status].present? && params[:status] != 'all'
+    if params[:status].present? && params[:status] != "all"
       automations = automations.where(status: params[:status])
     end
 
@@ -16,7 +16,7 @@ class AutomationsController < ApplicationController
 
   def show
     @automation = current_user.automations.find(params[:id])
-  rescue ActiveRecord::RecordNotFound
+    rescue ActiveRecord::RecordNotFound
     # --- FIX: Send a warning notification to Slack ---
     # This logs a notable but non-critical event: a user tried to access a record
     # that doesn't exist or doesn't belong to them.

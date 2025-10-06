@@ -36,16 +36,16 @@ class ApplicationController < ActionController::Base
   end
 
   def decoded_token
-    auth_header = request.headers['Authorization']
+    auth_header = request.headers["Authorization"]
     token = if auth_header
-              auth_header.split(' ').last
-            else
+              auth_header.split(" ").last
+    else
               cookies[:jwt]
-            end
+    end
 
     if token
       begin
-        JWT.decode(token, ENV.fetch("JWT_SECRET_KEY"), true, algorithm: 'HS256')
+        JWT.decode(token, ENV.fetch("JWT_SECRET_KEY"), true, algorithm: "HS256")
       rescue JWT::DecodeError
         nil
       end
@@ -56,7 +56,7 @@ class ApplicationController < ActionController::Base
 
   def current_user
     if decoded_token
-      user_id = decoded_token[0]['user_id']
+      user_id = decoded_token[0]["user_id"]
       @current_user ||= User.find_by(id: user_id)
     end
   end
@@ -73,7 +73,7 @@ class ApplicationController < ActionController::Base
         An unauthenticated user tried to access a protected page: `#{request.method.upcase} #{request.original_url}`
       MSG
       SlackNotifierService.new.notify(warning_message, :warning)
-      
+
       flash[:error] = "You must be logged in to access this page."
       redirect_to login_url
     end

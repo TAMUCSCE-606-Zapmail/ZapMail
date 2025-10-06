@@ -36,25 +36,26 @@ Rails.application.configure do
   # FIX: Change the queue adapter to Sidekiq to match your Gemfile.
   # This was the line causing the crash.
   config.active_job.queue_adapter = :sidekiq
-  
+
   # FIX: Comment out the Solid Queue database connection.
   # config.solid_queue.connects_to = { database: { writing: :queue } }
 
   # --- FIX: Configure Action Mailer for Production (SendGrid) ---
   config.action_mailer.perform_caching = false
   config.action_mailer.raise_delivery_errors = true
-  config.action_mailer.delivery_method = :smtp
   config.action_mailer.default_url_options = { host: "zapmail-pradeep-a162d897f0b7.herokuapp.com" } # Use your Heroku app URL
 
+  config.action_mailer.delivery_method = :smtp
   config.action_mailer.smtp_settings = {
-    :user_name => ENV['SENDGRID_USERNAME'],
-    :password => ENV['SENDGRID_PASSWORD'],
-    :domain => 'herokuapp.com',
-    :address => 'smtp.sendgrid.net',
-    :port => 587,
-    :authentication => :plain,
-    :enable_starttls_auto => true
+    address: ENV["MAILGUN_SMTP_SERVER"], # smtp.mailgun.org
+    port: ENV["MAILGUN_SMTP_PORT"],      # 587
+    domain: ENV["MAILGUN_DOMAIN"],       # your sandbox domain
+    user_name: ENV["MAILGUN_SMTP_LOGIN"], # check this, should be in config vars
+    password: ENV["MAILGUN_API_KEY"],    # use the API key here if login missing
+    authentication: :plain,
+    enable_starttls_auto: true
   }
+
   # --- END OF FIX ---
 
   # Enable locale fallbacks for I18n.
@@ -62,4 +63,9 @@ Rails.application.configure do
 
   # Do not dump schema after migrations.
   config.active_record.dump_schema_after_migration = false
+
+  # --- ASSET PIPELINE CONFIGURATION ---
+  config.assets.compile = false
+  config.public_file_server.enabled = ENV["RAILS_SERVE_STATIC_FILES"].present?
+  config.assets.precompile += %w[ application.js application.css ]
 end

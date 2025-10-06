@@ -1,6 +1,6 @@
 class UsersController < ApplicationController
-  before_action :authorize, only: [:show, :edit, :update]
-  before_action :set_user, only: [:show, :edit, :update]
+  before_action :authorize, only: [ :show, :edit, :update ]
+  before_action :set_user, only: [ :show, :edit, :update ]
 
   # GET /signup
   def new
@@ -12,8 +12,9 @@ class UsersController < ApplicationController
     @user = User.new(user_params)
     if @user.save
       # --- Send a success notification to Slack ---
+      # FIX: Changed 'user.email' to '@user.email'
       SlackNotifierService.new.notify(
-        "🎉 New user signed up: `#{user.email}`.",
+        "🎉 New user signed up: `#{@user.email}`.",
         :success
       )
 

@@ -160,6 +160,7 @@ GEM
       multipart-post (~> 2.0)
     faraday-net_http (3.4.1)
       net-http (>= 0.5.0)
+    ffi (1.17.2-arm64-darwin)
     ffi (1.17.2-x64-mingw-ucrt)
     ffi (1.17.2-x86_64-linux-gnu)
     fugit (1.12.0)
@@ -238,6 +239,8 @@ GEM
     net-smtp (0.5.1)
       net-protocol
     nio4r (2.7.4)
+    nokogiri (1.18.10-arm64-darwin)
+      racc (~> 1.4)
     nokogiri (1.18.10-x64-mingw-ucrt)
       racc (~> 1.4)
     nokogiri (1.18.10-x86_64-linux-gnu)
@@ -246,6 +249,7 @@ GEM
     parser (3.3.9.0)
       ast (~> 2.4.1)
       racc
+    pg (1.6.2-arm64-darwin)
     pg (1.6.2-x64-mingw-ucrt)
     pg (1.6.2-x86_64-linux)
     pp (0.6.2)
@@ -367,7 +371,12 @@ GEM
       faraday (>= 1)
       faraday-multipart (>= 1)
     ruby-progressbar (1.13.0)
+    rubyzip (2.4.1)
     securerandom (0.4.1)
+    selenium-webdriver (4.10.0)
+      rexml (~> 3.2, >= 3.2.5)
+      rubyzip (>= 1.2.2, < 3.0)
+      websocket (~> 1.0)
     sidekiq (8.0.7)
       connection_pool (>= 2.5.0)
       json (>= 2.9.0)
@@ -386,6 +395,14 @@ GEM
     simplecov-html (0.13.2)
     simplecov_json_formatter (0.1.4)
     slack-notifier (2.4.0)
+    sprockets (4.2.2)
+      concurrent-ruby (~> 1.0)
+      logger
+      rack (>= 2.2.4, < 4)
+    sprockets-rails (3.5.2)
+      actionpack (>= 6.1)
+      activesupport (>= 6.1)
+      sprockets (>= 3.0.0)
     stimulus-rails (1.3.4)
       railties (>= 6.0.0)
     stringio (3.1.7)
@@ -413,6 +430,11 @@ GEM
       activemodel (>= 6.0.0)
       bindex (>= 0.4.0)
       railties (>= 6.0.0)
+    webdrivers (5.3.1)
+      nokogiri (~> 1.6)
+      rubyzip (>= 1.3.0)
+      selenium-webdriver (~> 4.0, < 4.11)
+    websocket (1.2.11)
     websocket-driver (0.8.0)
       base64
       websocket-extensions (>= 0.1.0)
@@ -422,6 +444,7 @@ GEM
     zeitwerk (2.7.3)
 
 PLATFORMS
+  arm64-darwin-24
   x64-mingw-ucrt
   x86_64-linux
 
@@ -448,14 +471,17 @@ DEPENDENCIES
   rspec-rails
   rubocop-rails-omakase
   ruby-openai
+  selenium-webdriver
   sidekiq
   sidekiq-cron
   simplecov
   slack-notifier
+  sprockets-rails
   stimulus-rails
   turbo-rails
   tzinfo-data
   web-console
+  webdrivers
 
 RUBY VERSION
    ruby 3.4.5p51

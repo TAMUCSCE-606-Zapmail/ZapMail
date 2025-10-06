@@ -6,6 +6,9 @@ class SessionsController < ApplicationController
 
   # POST /login
   def create
+    # puts "PARAMS: #{params.inspect}"
+    # user_params = params.require(:session).permit(:email, :password)
+
     user = User.find_by(email: params[:session][:email].downcase)
     if user && user.authenticate(params[:session][:password])
       # Successful login
@@ -41,12 +44,16 @@ class SessionsController < ApplicationController
 
     cookies.delete(:jwt)
     flash[:success] = "You have successfully logged out."
-    
+
     # --- FIX: Send an info notification to Slack ---
     if user_email
       SlackNotifierService.new.notify("User logged out: `#{user_email}`")
     end
 
     redirect_to root_path
+  end
+
+  def session_params
+    params.require(:session).permit(:email, :password)
   end
 end
