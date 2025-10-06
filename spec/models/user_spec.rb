@@ -43,7 +43,7 @@ RSpec.describe User, type: :model do
     end
 
 
-    #blank password won't overwrite old password
+    # blank password won't overwrite old password
     it "allows profile update without changing password (blank password)" do
       user = User.create!(
         name: "Yifei",
@@ -58,7 +58,7 @@ RSpec.describe User, type: :model do
       expect(user.authenticate("password123")).to eq(user)  # original password still works
     end
   end
-  
+
   describe 'associations' do
     it 'has many templates' do
       user = User.create!(
@@ -67,13 +67,13 @@ RSpec.describe User, type: :model do
         password: 'password123',
         password_confirmation: 'password123'
       )
-      
+
       template = user.templates.create!(
         name: 'Test Template',
         spreadsheet_url: 'https://docs.google.com/spreadsheets/d/1BItHXS8Hh0xeunjWj04yi91djUt5CVxsk6w61iTC8zE/edit?gid=0#gid=0',
         rules_data: { columns: [], rules: [] }
       )
-      
+
       expect(user.templates).to include(template)
     end
 
@@ -84,13 +84,13 @@ RSpec.describe User, type: :model do
         password: 'password123',
         password_confirmation: 'password123'
       )
-      
+
       template = user.templates.create!(
         name: 'Test Template',
         spreadsheet_url: 'https://docs.google.com/spreadsheets/d/1BItHXS8Hh0xeunjWj04yi91djUt5CVxsk6w61iTC8zE/edit?gid=0#gid=0',
         rules_data: { columns: [], rules: [] }
       )
-      
+
       automation = user.automations.create!(
         template: template,
         status: 'scheduled',
@@ -98,7 +98,7 @@ RSpec.describe User, type: :model do
         enabled: true,
         action_data: { to: 'test@example.com', subject: 'Test', body: 'Body' }
       )
-      
+
       expect(user.automations).to include(automation)
     end
 
@@ -109,13 +109,13 @@ RSpec.describe User, type: :model do
         password: 'password123',
         password_confirmation: 'password123'
       )
-      
+
       template = user.templates.create!(
         name: 'Test Template',
         spreadsheet_url: 'https://docs.google.com/spreadsheets/d/1BItHXS8Hh0xeunjWj04yi91djUt5CVxsk6w61iTC8zE/edit?gid=0#gid=0',
         rules_data: { columns: [], rules: [] }
       )
-      
+
       automation = user.automations.create!(
         template: template,
         status: 'scheduled',
@@ -123,9 +123,9 @@ RSpec.describe User, type: :model do
         enabled: true,
         action_data: { to: 'test@example.com', subject: 'Test', body: 'Body' }
       )
-      
+
       automation_id = automation.id
-      
+
       expect { user.destroy }.to change { Automation.count }.by(-1)
       expect(Automation.find_by(id: automation_id)).to be_nil
     end

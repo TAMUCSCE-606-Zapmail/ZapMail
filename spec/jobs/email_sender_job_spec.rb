@@ -82,7 +82,7 @@ RSpec.describe EmailSenderJob, type: :job do
   describe 'job enqueueing' do
     it 'enqueues with correct args' do
       expect { EmailSenderJob.perform_async(automation.id) }.to change(EmailSenderJob.jobs, :size).by(1)
-      expect(EmailSenderJob.jobs.last['args']).to eq([automation.id])
+      expect(EmailSenderJob.jobs.last['args']).to eq([ automation.id ])
     end
   end
 

@@ -32,7 +32,7 @@ puts "Creating templates..."
 template1 = user1.templates.create!(
   name: "Welcome Email Campaign",
   spreadsheet_url: "https://docs.google.com/spreadsheets/d/1BItHXS8Hh0xeunjWj04yi91djUt5CVxsk6w61iTC8zE/edit",
-  rules_data: { 
+  rules_data: {
     columns: [
       { name: 'email', type: 'string' },
       { name: 'name', type: 'string' },
@@ -45,7 +45,7 @@ template1 = user1.templates.create!(
 template2 = user1.templates.create!(
   name: "Newsletter Campaign",
   spreadsheet_url: "https://docs.google.com/spreadsheets/d/1BItHXS8Hh0xeunjWj04yi91djUt5CVxsk6w61iTC8zE/edit",
-  rules_data: { 
+  rules_data: {
     columns: [
       { name: 'email', type: 'string' },
       { name: 'name', type: 'string' }
@@ -57,7 +57,7 @@ template2 = user1.templates.create!(
 template3 = user1.templates.create!(
   name: "Event Invitation",
   spreadsheet_url: "https://docs.google.com/spreadsheets/d/1BItHXS8Hh0xeunjWj04yi91djUt5CVxsk6w61iTC8zE/edit",
-  rules_data: { 
+  rules_data: {
     columns: [
       { name: 'email', type: 'string' },
       { name: 'name', type: 'string' },
@@ -75,7 +75,7 @@ puts "Creating automations..."
 # Completed automations (past dates)
 10.times do |i|
   user1.automations.create!(
-    template: [template1, template2, template3].sample,
+    template: [ template1, template2, template3 ].sample,
     status: 'completed',
     send_at: (i + 1).days.ago,
     enabled: true,
@@ -90,7 +90,7 @@ end
 # Failed automations
 5.times do |i|
   user1.automations.create!(
-    template: [template1, template2, template3].sample,
+    template: [ template1, template2, template3 ].sample,
     status: 'failed',
     send_at: (i + 1).days.ago,
     enabled: true,
@@ -106,7 +106,7 @@ end
 # Scheduled automations (future dates)
 15.times do |i|
   user1.automations.create!(
-    template: [template1, template2, template3].sample,
+    template: [ template1, template2, template3 ].sample,
     status: 'scheduled',
     send_at: (i + 1).hours.from_now,
     enabled: true,
@@ -125,10 +125,10 @@ end
     spreadsheet_url: "https://docs.google.com/spreadsheets/d/1BItHXS8Hh0xeunjWj04yi91djUt5CVxsk6w61iTC8zE/edit",
     rules_data: { columns: [], rules: [] }
   )
-  
+
   user2.automations.create!(
     template: user2_template,
-    status: ['scheduled', 'completed', 'failed'].sample,
+    status: [ 'scheduled', 'completed', 'failed' ].sample,
     send_at: rand(-5..5).days.from_now,
     enabled: true,
     action_data: {

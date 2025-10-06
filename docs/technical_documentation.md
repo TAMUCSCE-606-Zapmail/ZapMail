@@ -149,7 +149,7 @@ touch .env
 Create a `.env` file in the root directory with these three variables:
 
 ```env
-WT_SECRET_KEY=your_generated_secret_key_here
+JWT_SECRET_KEY=your_generated_secret_key_here
 OPENAI_API_KEY=your_openai_api_key_here
 SLACK_WEBHOOK_URL=your_slack_webhook_url_here
 ```
@@ -582,6 +582,8 @@ COVERAGE=true bundle exec rspec
 
 #### Cucumber (Acceptance Tests)
 
+For Cucumber Tests, please note that some minor features were written in JavaScript. For this reason, we employed the use of chromedriver & selenium webdriver to write full coverage over these features. Therefore, for all cucumber tests to function please have chromium and chrome driver installed. In addition, change the path of the variable `Selenium::WebDriver::Chrome::Service.driver_path` to your chromedriver path which you can find on Linux/MacOS environments by running the command `which chromedriver` in your terminal.
+
 ```bash
 # Run all Cucumber features
 bundle exec cucumber
@@ -862,46 +864,6 @@ heroku pg:info
 heroku redis:info
 ```
 
-### Docker Deployment (Alternative)
-
-ZapMail includes Docker support via Kamal for container-based deployment.
-
-#### Build Docker Image
-
-```bash
-# Build image
-docker build -t zapmail .
-
-# Run container locally
-docker run -d \
-  -p 80:80 \
-  -e RAILS_MASTER_KEY=$(cat config/master.key) \
-  -e DATABASE_URL=your_database_url \
-  --name zapmail \
-  zapmail
-
-# View logs
-docker logs -f zapmail
-
-# Stop container
-docker stop zapmail
-```
-
-#### Kamal Deployment
-
-```bash
-# Setup Kamal configuration
-# Edit config/deploy.yml with your server details
-
-# Deploy with Kamal
-kamal deploy
-
-# Check status
-kamal app status
-
-# View logs
-kamal app logs
-```
 
 ---
 

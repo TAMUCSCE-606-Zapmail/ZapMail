@@ -32,31 +32,31 @@ end
 Given("a set of rules with various operators") do
   @rules = [
     {
-      "conditions" => [{ "column" => "a", "operator" => "==", "value" => "5" }],
+      "conditions" => [ { "column" => "a", "operator" => "==", "value" => "5" } ],
       "action" => { "subject" => "Equal", "body" => "A equals 5" }
     },
     {
-      "conditions" => [{ "column" => "b", "operator" => "!=", "value" => "10" }],
+      "conditions" => [ { "column" => "b", "operator" => "!=", "value" => "10" } ],
       "action" => { "subject" => "NotEqual", "body" => "B not 10" }
     },
     {
-      "conditions" => [{ "column" => "c", "operator" => ">", "value" => "3" }],
+      "conditions" => [ { "column" => "c", "operator" => ">", "value" => "3" } ],
       "action" => { "subject" => "Greater", "body" => "C > 3" }
     },
     {
-      "conditions" => [{ "column" => "d", "operator" => "<", "value" => "20" }],
+      "conditions" => [ { "column" => "d", "operator" => "<", "value" => "20" } ],
       "action" => { "subject" => "Less", "body" => "D < 20" }
     },
     {
-      "conditions" => [{ "column" => "e", "operator" => "contains", "value" => "hello" }],
+      "conditions" => [ { "column" => "e", "operator" => "contains", "value" => "hello" } ],
       "action" => { "subject" => "Contains", "body" => "E contains hello" }
     },
     {
-      "conditions" => [{ "column" => "f", "operator" => "not_contains", "value" => "bye" }],
+      "conditions" => [ { "column" => "f", "operator" => "not_contains", "value" => "bye" } ],
       "action" => { "subject" => "NotContains", "body" => "F does not contain bye" }
     },
     {
-      "conditions" => [{ "column" => "g", "operator" => "invalid", "value" => "x" }],
+      "conditions" => [ { "column" => "g", "operator" => "invalid", "value" => "x" } ],
       "action" => { "subject" => "Invalid", "body" => "Should not match" }
     }
   ]
@@ -98,14 +98,14 @@ end
 
 When("I select column {string} as my condition rule column") do |value|
   select_box = find('select[data-rule-condition="column"]', visible: true, wait: 5)
-  
+
   option = select_box.find("option", text: value, wait: 5)
   option.select_option
 end
 
 When("I select operator {string} as my condition rule operator") do |value|
     select_box = find('select[data-rule-condition="operator"]', visible: true, wait: 5)
-  
+
     option = select_box.find("option", text: value, wait: 5)
     option.select_option
 end
@@ -120,7 +120,7 @@ end
 
 When("I select column {string} as my Email To column") do |value|
     select_box = find('select[data-rule-action="toColumn"]', visible: true, wait: 5)
-  
+
     option = select_box.find("option", text: value, wait: 5)
     option.select_option
 end
@@ -294,4 +294,3 @@ Before('@duplicate_sad_path') do
   # Any instance of Template will fail to save
   allow_any_instance_of(Template).to receive(:save).and_return(false)
 end
-

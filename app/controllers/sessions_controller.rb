@@ -44,7 +44,7 @@ class SessionsController < ApplicationController
 
     cookies.delete(:jwt)
     flash[:success] = "You have successfully logged out."
-    
+
     # --- FIX: Send an info notification to Slack ---
     if user_email
       SlackNotifierService.new.notify("User logged out: `#{user_email}`")

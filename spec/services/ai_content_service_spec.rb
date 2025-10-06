@@ -18,11 +18,11 @@ RSpec.describe AiContentService do
     context 'successful AI generation' do
       let(:ai_response) do
         {
-          'choices' => [{
+          'choices' => [ {
             'message' => {
               'content' => '{"subject":"Enhanced Subject","body":"Enhanced body text"}'
             }
-          }]
+          } ]
         }
       end
 

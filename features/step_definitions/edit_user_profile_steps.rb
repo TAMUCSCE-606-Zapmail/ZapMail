@@ -15,4 +15,3 @@ Then("the user's email should be {string}") do |expected_email|
   user = User.find_by(email: expected_email) || User.find_by(email: "test@example.com")
   expect(user.email).to eq(expected_email)
 end
-

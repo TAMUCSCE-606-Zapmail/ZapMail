@@ -7,7 +7,7 @@ class AutomationsController < ApplicationController
                               .includes(:template)
                               .recent
 
-    if params[:status].present? && params[:status] != 'all'
+    if params[:status].present? && params[:status] != "all"
       automations = automations.where(status: params[:status])
     end
 

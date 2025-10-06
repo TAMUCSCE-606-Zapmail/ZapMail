@@ -2,7 +2,7 @@ require 'rails_helper'
 
 RSpec.describe TemplatesController, type: :controller do
   let(:user) { User.create!(name: 'Test', email: 'test@example.com', password: 'password123', password_confirmation: 'password123') }
-  let(:template) { user.templates.create!(name: 'Template', spreadsheet_url: 'https://docs.google.com/spreadsheets/d/1BItHXS8Hh0xeunjWj04yi91djUt5CVxsk6w61iTC8zE/edit', rules_data: { columns: ['email'], rules: [] }) }
+  let(:template) { user.templates.create!(name: 'Template', spreadsheet_url: 'https://docs.google.com/spreadsheets/d/1BItHXS8Hh0xeunjWj04yi91djUt5CVxsk6w61iTC8zE/edit', rules_data: { columns: [ 'email' ], rules: [] }) }
   let(:valid_attributes) { { name: 'New', spreadsheet_url: 'http://example.com' } }
   let(:slack_service) { instance_double(SlackNotifierService) }
 
@@ -77,8 +77,8 @@ RSpec.describe TemplatesController, type: :controller do
   end
 
   describe 'POST #verify_spreadsheet' do
-    let(:data) { [{ 'email' => 'test@test.com', 'age' => '25' }] }
-    
+    let(:data) { [ { 'email' => 'test@test.com', 'age' => '25' } ] }
+
     before { allow(controller).to receive(:fetch_spreadsheet_data).and_return(data) }
 
     it 'verifies spreadsheet' do
@@ -89,7 +89,7 @@ RSpec.describe TemplatesController, type: :controller do
     end
 
     it 'rejects without email column' do
-      allow(controller).to receive(:fetch_spreadsheet_data).and_return([{ 'name' => 'Test' }])
+      allow(controller).to receive(:fetch_spreadsheet_data).and_return([ { 'name' => 'Test' } ])
       post :verify_spreadsheet, params: { spreadsheet_url: 'http://test.com' }, format: :json
       expect(response).to have_http_status(:unprocessable_entity)
     end
@@ -103,8 +103,8 @@ RSpec.describe TemplatesController, type: :controller do
   end
 
   describe 'POST #preview' do
-    let(:data) { [{ 'email' => 'test@test.com', 'age' => '25' }] }
-    let(:rules) { { 'rules' => [{ 'conditions' => [{ 'column' => 'age', 'operator' => '>', 'value' => '18' }], 'action' => { 'subject' => 'Hi', 'body' => 'Body', 'toColumn' => 'email' } }] }.to_json }
+    let(:data) { [ { 'email' => 'test@test.com', 'age' => '25' } ] }
+    let(:rules) { { 'rules' => [ { 'conditions' => [ { 'column' => 'age', 'operator' => '>', 'value' => '18' } ], 'action' => { 'subject' => 'Hi', 'body' => 'Body', 'toColumn' => 'email' } } ] }.to_json }
 
     before { allow(controller).to receive(:fetch_spreadsheet_data).and_return(data) }
 
@@ -121,8 +121,8 @@ RSpec.describe TemplatesController, type: :controller do
   end
 
   describe 'POST #schedule' do
-    let(:data) { [{ 'email' => 'test@test.com', 'age' => '25' }] }
-    let(:rules) { { 'rules' => [{ 'conditions' => [{ 'column' => 'age', 'operator' => '>', 'value' => '18' }], 'action' => { 'subject' => 'Hi', 'body' => 'Body', 'toColumn' => 'email', 'oneTimeSendAt' => 1.hour.from_now.iso8601 } }] }.to_json }
+    let(:data) { [ { 'email' => 'test@test.com', 'age' => '25' } ] }
+    let(:rules) { { 'rules' => [ { 'conditions' => [ { 'column' => 'age', 'operator' => '>', 'value' => '18' } ], 'action' => { 'subject' => 'Hi', 'body' => 'Body', 'toColumn' => 'email', 'oneTimeSendAt' => 1.hour.from_now.iso8601 } } ] }.to_json }
 
     before { allow(controller).to receive(:fetch_spreadsheet_data).and_return(data) }
 
@@ -147,7 +147,7 @@ RSpec.describe TemplatesController, type: :controller do
     end
 
     it 'parses valid JSON rules_data' do
-      params = ActionController::Parameters.new(template: { name: 'Test', spreadsheet_url: 'http://test.com', rules_data: { 'columns' => ['email'] }.to_json })
+      params = ActionController::Parameters.new(template: { name: 'Test', spreadsheet_url: 'http://test.com', rules_data: { 'columns' => [ 'email' ] }.to_json })
       allow(controller).to receive(:params).and_return(params)
       result = controller.send(:processed_template_params)
       expect(result[:rules_data]).to be_a(Hash)
@@ -155,8 +155,8 @@ RSpec.describe TemplatesController, type: :controller do
   end
 
   describe 'RuleProcessorService' do
-    let(:rules) { [{ 'conditions' => [{ 'column' => 'age', 'operator' => '>', 'value' => '18' }], 'action' => { 'subject' => 'Hi {name}', 'body' => 'Age: {age}' } }] }
-    let(:data) { [{ 'name' => 'John', 'age' => '25' }, { 'name' => 'Jane', 'age' => '16' }] }
+    let(:rules) { [ { 'conditions' => [ { 'column' => 'age', 'operator' => '>', 'value' => '18' } ], 'action' => { 'subject' => 'Hi {name}', 'body' => 'Age: {age}' } } ] }
+    let(:data) { [ { 'name' => 'John', 'age' => '25' }, { 'name' => 'Jane', 'age' => '16' } ] }
     let(:processor) { TemplatesController::RuleProcessorService.new(rules, data) }
 
     it 'filters matching rows' do

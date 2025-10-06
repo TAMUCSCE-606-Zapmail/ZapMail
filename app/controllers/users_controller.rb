@@ -1,6 +1,6 @@
 class UsersController < ApplicationController
-  before_action :authorize, only: [:show, :edit, :update]
-  before_action :set_user, only: [:show, :edit, :update]
+  before_action :authorize, only: [ :show, :edit, :update ]
+  before_action :set_user, only: [ :show, :edit, :update ]
 
   # GET /signup
   def new

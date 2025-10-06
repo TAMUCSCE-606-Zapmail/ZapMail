@@ -79,4 +79,3 @@ Then('I should receive a failure response with an error message') do
     expect(@json_response['error']).to be_a(String)
     expect(@json_response['error']).not_to be_empty
 end
-

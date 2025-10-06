@@ -131,7 +131,7 @@ When("I run the scheduler job") do
         begin
             AutomationSchedulerJob.new.perform
         rescue StandardError
-            # swallow error so scenario can continue
+          # swallow error so scenario can continue
         end
     else
         AutomationSchedulerJob.new.perform

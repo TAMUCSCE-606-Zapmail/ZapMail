@@ -1,15 +1,15 @@
 # config/initializers/sidekiq.rb
 
-require 'sidekiq'
-require 'openssl'
+require "sidekiq"
+require "openssl"
 
-redis_url = ENV.fetch('REDIS_URL', 'redis://localhost:6379/1')
+redis_url = ENV.fetch("REDIS_URL", "redis://localhost:6379/1")
 
 # Configure Redis connection with SSL bypass for production
-if redis_url.start_with?('rediss://')
+if redis_url.start_with?("rediss://")
   # For SSL Redis connections, use URL with SSL parameters
   # WARNING: This is a security risk but may be required for some hosting providers
-  
+
   redis_config = {
     url: redis_url,
     ssl_params: {
