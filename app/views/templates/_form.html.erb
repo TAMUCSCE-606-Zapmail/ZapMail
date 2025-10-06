@@ -1,47 +1,38 @@
-<%# This form is now powered by two Stimulus controllers working together %>
+<%# This is the complete, working form with the TAMU theme applied consistently. %>
 <%= form_with(model: template, local: true, html: {
   "data-controller": "form-verification rule-editor",
   "data-action": "form-verification:verified->rule-editor#handleVerification form-verification:reset->rule-editor#handleReset submit->rule-editor#save",
-  "data-rule-editor-rules-value": template.rules_data.to_json
+  "data-rule-editor-rules-value": template.rules_data.to_json,
+  "data-template-id": template.id
 }) do |form| %>
 
-  <% if template.errors.any? %>
-    <div id="error_explanation" class="bg-red-900 border border-red-700 text-red-300 px-4 py-3 rounded relative mb-4" role="alert">
-      <strong class="font-bold">Heads up!</strong>
-      <span class="block sm:inline"><%= pluralize(template.errors.count, "error") %> prohibited this template from being saved:</span>
-      <ul>
-        <% template.errors.full_messages.each do |message| %>
-          <li><%= message %></li>
-        <% end %>
-      </ul>
-    </div>
-  <% end %>
-
-  <div class="mb-6 bg-slate-800 p-4 rounded-lg">
-    <%= form.label :name, class: "block text-slate-300 text-sm font-bold mb-2" %>
-    <%= form.text_field :name, class: "shadow appearance-none border rounded w-full py-2 px-3 bg-slate-700 text-white leading-tight focus:outline-none focus:ring-2 focus:ring-sky-500" %>
+  <div class="mb-6 bg-white p-6 rounded-lg shadow-md border border-gray-200">
+    <h2 class="text-xl font-bold text-gray-800 mb-4">Template Name</h2>
+    <%= form.label :name, "Name", class: "block text-sm font-medium text-gray-700 mb-2 sr-only" %>
+    <%= form.text_field :name, class: "form-input block w-full rounded-lg shadow-sm sm:text-sm py-2 px-3" %>
   </div>
 
-  <div class="mb-6 bg-slate-800 p-4 rounded-lg">
-    <h2 class="text-lg font-semibold text-sky-400 mb-3">Step 1: Link Data Source</h2>
-    <div class="flex items-center space-x-2">
+  <div class="mb-6 bg-white p-6 rounded-lg shadow-md border border-gray-200">
+    <h2 class="text-xl font-bold text-gray-800 mb-4">Step 1: Link Data Source</h2>
+    <div class="flex items-center space-x-3">
       <%= form.text_field :spreadsheet_url,
-          class: "shadow appearance-none border border-slate-600 rounded w-full py-2 px-3 bg-slate-700 text-white leading-tight focus:outline-none focus:ring-2 focus:ring-sky-500 transition-colors",
+          class: "form-input block w-full rounded-lg shadow-sm sm:text-sm py-2 px-3",
+          placeholder: "Paste Google Sheet URL here...",
           "data-form-verification-target": "urlInput",
           "data-action": "input->form-verification#reset" %>
       <button type="button"
               data-action="click->form-verification#verify"
-              class="bg-indigo-600 hover:bg-indigo-700 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline whitespace-nowrap">
-        Verify & Load Columns
+              class="btn-maroon font-semibold py-2 px-4 rounded-lg whitespace-nowrap">
+        Verify & Load
       </button>
     </div>
     <div data-form-verification-target="status" class="mt-2 text-sm h-5"></div>
   </div>
 
-  <div data-rule-editor-target="container" class="hidden bg-slate-800 p-4 rounded-lg mb-6">
+  <div data-rule-editor-target="container" class="hidden bg-white p-6 rounded-lg shadow-md border border-gray-200 mb-6">
     <div class="flex justify-between items-center mb-4">
-      <h2 class="text-lg font-semibold text-sky-400">Step 2: Build Rules</h2>
-      <button type="button" data-action="click->rule-editor#addRule" class="bg-sky-600 hover:bg-sky-700 text-white font-bold py-2 px-4 rounded">
+      <h2 class="text-xl font-bold text-gray-800">Step 2: Build Rules</h2>
+      <button type="button" data-action="click->rule-editor#addRule" class="btn-maroon font-semibold py-2 px-4 rounded-lg">
         + Add Rule
       </button>
     </div>
@@ -49,79 +40,63 @@
     <%= form.hidden_field :rules_data, "data-rule-editor-target": "output" %>
   </div>
 
-  <%# FIX: This container now holds the preview button and results. It will be shown by the controller. %>
-  <div data-rule-editor-target="previewContainer" class="hidden bg-slate-800 p-4 rounded-lg">
-     <h2 class="text-lg font-semibold text-sky-400 mb-3">Step 3: Run & Preview</h2>
-     <button type="button" data-action="click->rule-editor#preview" class="w-full bg-purple-600 hover:bg-purple-700 text-white font-bold py-2 px-4 rounded">
+  <div data-rule-editor-target="previewContainer" class="hidden bg-white p-6 rounded-lg shadow-md border border-gray-200">
+     <h2 class="text-xl font-bold text-gray-800 mb-4">Step 3: Run & Preview</h2>
+     <%# FIX: The "Run Preview" button is now styled consistently. %>
+     <button type="button" data-action="click->rule-editor#preview" class="w-full btn-maroon font-bold py-2 px-4 rounded-lg">
         Run Preview
      </button>
-     <div id="preview_results_frame" class="mt-4">
-        <%# Preview results will be loaded here %>
-     </div>
+     <div id="preview_results_frame" class="mt-4"></div>
   </div>
-
 
   <div class="flex items-center justify-between mt-8">
     <%= form.submit "Save Template",
-        class: "bg-blue-600 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded disabled:bg-slate-500",
+        class: "btn-maroon font-bold py-2 px-4 rounded-lg disabled:bg-gray-400 disabled:cursor-not-allowed",
         "data-form-verification-target": "saveButton",
         disabled: !template.persisted? && template.spreadsheet_url.blank? %>
     
+    <%# FIX: The "Schedule Actions" button is now styled consistently. %>
     <button type="button"
             data-action="click->rule-editor#schedule"
-            class="bg-green-600 hover:bg-green-700 text-white font-bold py-2 px-4 rounded">
+            class="btn-maroon font-bold py-2 px-4 rounded-lg">
       Schedule Actions
     </button>
   </div>
 
   <%# --- HTML TEMPLATES --- %>
   <template data-rule-editor-target="ruleTemplate">
-    <div class="bg-slate-900 p-4 rounded-lg mb-4 border border-slate-700" data-rule-editor-target="rule">
+    <div class="bg-gray-50 p-4 rounded-lg mb-4 border border-gray-200" data-rule-editor-target="rule">
       <div class="flex justify-between items-center mb-3">
-        <h3 class="font-bold text-lg text-sky-400">Rule</h3>
-        <button type="button" data-action="click->rule-editor#removeRule" class="text-red-400 hover:text-red-300">&times; Remove</button>
+        <input type="text" data-rule-action="name" class="form-input text-lg text-gray-800 font-bold rounded border px-2 py-1 w-1/2" placeholder="Rule Name">
+        <button type="button" data-action="click->rule-editor#removeRule" class="text-sm text-red-600 hover:text-red-700 font-medium">&times; Remove Rule</button>
       </div>
       <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
-        <div class="bg-slate-800 p-3 rounded">
-          <h4 class="font-semibold mb-2 text-center text-slate-400">If</h4>
+        <div class="bg-white p-3 rounded-lg border border-gray-200 space-y-3" data-rule-part="if-container">
+          <h4 class="font-semibold text-center text-gray-500">If</h4>
           <div class="space-y-2" data-rule-editor-target="conditionsContainer"></div>
-          <button type="button" data-action="click->rule-editor#addCondition" class="mt-2 text-sky-400 hover:text-sky-300 text-sm">+ Add Condition</button>
+          <button type="button" data-action="click->rule-editor#handleConditionClick" class="link-maroon text-sm font-medium">+ Add Condition</button>
         </div>
-        <div class="bg-slate-800 p-3 rounded space-y-3">
-          <h4 class="font-semibold mb-2 text-center text-slate-400">Then</h4>
-          <div>
-            <label class="block text-sm text-slate-400">Email To (Column)</label>
-            <select class="action-email-to w-full bg-slate-700 p-2 rounded text-white"></select>
-          </div>
-          <div>
-            <label class="block text-sm text-slate-400">Subject</label>
-            <input type="text" class="action-subject w-full bg-slate-700 p-2 rounded text-white" data-mention-input="true" placeholder="Use @ to mention a column">
-          </div>
-          <div>
-            <label class="block text-sm text-slate-400">Body</label>
-            <textarea class="action-body w-full bg-slate-700 p-2 rounded text-white" data-mention-input="true" rows="4"></textarea>
-          </div>
-          <div class="border-t border-slate-700 pt-3">
-             <label class="flex items-center space-x-2">
-                <input type="checkbox" data-action="change->rule-editor#toggleRepeatOptions" class="action-is-repeating bg-slate-700 border-slate-600 rounded">
-                <span class="text-slate-300">Repeat</span>
-            </label>
-            <div class="action-repeat-options hidden space-y-2 mt-2">
-                <div>
-                    <label class="block text-sm text-slate-400">Frequency</label>
-                    <select class="action-repeat-frequency w-full bg-slate-700 p-2 rounded text-white">
-                        <option value="daily">Daily</option>
-                        <option value="weekly">Weekly</option>
-                    </select>
-                </div>
-                <div>
-                    <label class="block text-sm text-slate-400">End Date (Optional)</label>
-                    <input type="date" class="action-repeat-deadline w-full bg-slate-700 p-2 rounded text-white">
-                </div>
+        <div class="bg-white p-3 rounded-lg border border-gray-200 space-y-4">
+          <h4 class="font-semibold text-center text-gray-500">Then</h4>
+          <div class="space-y-2">
+            <div>
+              <label class="block text-xs font-medium text-gray-500">Email To (Column)</label>
+              <select class="mt-1 form-input block w-full rounded-md shadow-sm sm:text-sm py-2 px-3" data-rule-action="toColumn"></select>
             </div>
-            <div class="action-onetime-send mt-2">
-                <label class="block text-sm text-slate-400">Send At</label>
-                <input type="datetime-local" class="action-onetime-send-at w-full bg-slate-700 p-2 rounded text-white">
+            <div>
+              <label class="block text-xs font-medium text-gray-500">Subject</label>
+              <input type="text" class="mt-1 form-input block w-full rounded-md shadow-sm sm:text-sm py-2 px-3" data-mention-input="true" placeholder="Use @ to mention..." data-rule-action="subject">
+            </div>
+             <div>
+              <label class="block text-xs font-medium text-gray-500">Body</label>
+              <textarea class="mt-1 form-input block w-full rounded-md shadow-sm sm:text-sm py-2 px-3" data-mention-input="true" rows="4" data-rule-action="body"></textarea>
+            </div>
+          </div>
+          <div class="border-t border-gray-200 pt-3">
+            <h4 class="font-semibold text-center text-gray-500 mb-2">Schedule</h4>
+            <div>
+              <label class="block text-xs font-medium text-gray-500">Send At</label>
+              <input type="datetime-local" class="mt-1 form-input w-full rounded-md shadow-sm sm:text-sm py-2 px-3" data-rule-action="oneTimeSendAt">
             </div>
           </div>
         </div>
@@ -130,10 +105,10 @@
   </template>
   <template data-rule-editor-target="conditionTemplate">
     <div class="flex items-center space-x-2" data-rule-editor-target="condition">
-      <select class="condition-column w-1/3 bg-slate-700 p-2 rounded text-white"></select>
-      <select class="condition-operator w-1/3 bg-slate-700 p-2 rounded text-white"></select>
-      <input type="text" class="condition-value w-1/3 bg-slate-700 p-2 rounded text-white" placeholder="Value">
-      <button type="button" data-action="click->rule-editor#removeCondition" class="text-red-500 hover:text-red-400">&times;</button>
+      <select class="form-input w-1/3 rounded-md shadow-sm sm:text-sm py-2 px-3" data-rule-condition="column"></select>
+      <select class="form-input w-1/3 rounded-md shadow-sm sm:text-sm py-2 px-3" data-rule-condition="operator"></select>
+      <input type="text" class="form-input w-1/3 rounded-md shadow-sm sm:text-sm py-2 px-3" placeholder="Value" data-rule-condition="value">
+      <button type="button" data-action="click->rule-editor#removeCondition" class="text-red-500 hover:text-red-600">&times;</button>
     </div>
   </template>
 <% end %>

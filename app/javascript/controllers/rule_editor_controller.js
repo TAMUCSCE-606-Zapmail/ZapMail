@@ -19,6 +19,7 @@ export default class extends Controller {
       { value: '>', label: '>' }, { value: '<', label: '<' },
       { value: '==', label: '==' }, { value: '!=', label: '!=' }
     ];
+
     const initialData = this.rulesValue;
     if (initialData && initialData.columns && initialData.columns.length > 0) {
       this.columns = initialData.columns;
@@ -72,22 +73,12 @@ export default class extends Controller {
     this.rulesContainerTarget.appendChild(content);
 
     const action = ruleData?.action || {};
-    this._populateColumns(newRuleEl.querySelector('.action-email-to'), this.emailColumns, action.toColumn);
-    newRuleEl.querySelector('.action-subject').value = action.subject || '';
-    newRuleEl.querySelector('.action-body').value = action.body || '';
-
-    // Set scheduling fields
-    const isRepeatingCheckbox = newRuleEl.querySelector('.action-is-repeating');
-    isRepeatingCheckbox.checked = action.isRepeating || false;
-    this.toggleRepeatOptions({ currentTarget: isRepeatingCheckbox });
-
-    if(action.isRepeating) {
-      newRuleEl.querySelector('.action-repeat-frequency').value = action.repeatFrequency || 'daily';
-      newRuleEl.querySelector('.action-repeat-deadline').value = action.repeatDeadline || '';
-    } else {
-      newRuleEl.querySelector('.action-onetime-send-at').value = action.oneTimeSendAt || '';
-    }
-
+    newRuleEl.querySelector('[data-rule-action="name"]').value = ruleData?.name || '';
+    this._populateColumns(newRuleEl.querySelector('[data-rule-action="toColumn"]'), this.emailColumns, action.toColumn);
+    newRuleEl.querySelector('[data-rule-action="subject"]').value = action.subject || '';
+    newRuleEl.querySelector('[data-rule-action="body"]').value = action.body || '';
+    newRuleEl.querySelector('[data-rule-action="oneTimeSendAt"]').value = action.oneTimeSendAt || '';
+    
     const conditionsContainer = newRuleEl.querySelector('[data-rule-editor-target="conditionsContainer"]');
     if (!ruleData || !ruleData.conditions || ruleData.conditions.length === 0) {
       this.addCondition(conditionsContainer);
@@ -97,40 +88,24 @@ export default class extends Controller {
       });
     }
   }
-  
-  toggleRepeatOptions(event) {
-    const checkbox = event.currentTarget;
-    const ruleElement = checkbox.closest('[data-rule-editor-target="rule"]');
-    const repeatOptions = ruleElement.querySelector('.action-repeat-options');
-    const onetimeOptions = ruleElement.querySelector('.action-onetime-send');
 
-    if (checkbox.checked) {
-      repeatOptions.classList.remove('hidden');
-      onetimeOptions.classList.add('hidden');
-    } else {
-      repeatOptions.classList.add('hidden');
-      onetimeOptions.classList.remove('hidden');
-    }
+  handleConditionClick(event) {
+    event.preventDefault();
+    const conditionsContainer = event.currentTarget.closest('[data-rule-part="if-container"]').querySelector('[data-rule-editor-target="conditionsContainer"]');
+    this.addCondition(conditionsContainer);
   }
 
-  addCondition(eventOrContainer, conditionData = null) {
-    let conditionsContainer;
-    if (eventOrContainer.currentTarget) {
-      eventOrContainer.preventDefault();
-      conditionsContainer = eventOrContainer.currentTarget.closest('.bg-slate-800').querySelector('[data-rule-editor-target="conditionsContainer"]');
-    } else {
-      conditionsContainer = eventOrContainer;
-    }
+  addCondition(container, conditionData = null) {
     const content = this.conditionTemplateTarget.content.cloneNode(true);
-    const columnSelect = content.querySelector('.condition-column');
+    const columnSelect = content.querySelector('[data-rule-condition="column"]');
     this._populateColumns(columnSelect, this.columns.map(c => c.name), conditionData?.column);
-    const operatorSelect = content.querySelector('.condition-operator');
+    const operatorSelect = content.querySelector('[data-rule-condition="operator"]');
     this._updateOperators(operatorSelect, conditionData?.column);
     if(conditionData) operatorSelect.value = conditionData.operator;
-    const valueInput = content.querySelector('.condition-value');
+    const valueInput = content.querySelector('[data-rule-condition="value"]');
     valueInput.value = conditionData?.value || '';
     columnSelect.addEventListener('change', (e) => this._updateOperators(operatorSelect, e.target.value));
-    conditionsContainer.appendChild(content);
+    container.appendChild(content);
   }
 
   attachTribute(elements) {
@@ -139,62 +114,118 @@ export default class extends Controller {
       trigger: '@',
       values: this.columns.map(col => ({ key: col.name, value: `{${col.name}}` })),
       selectTemplate: (item) => item.original.value,
-      allowSpaces: false,
-      menuItemLimit: 10,
     });
     tribute.attach(elements);
     this.tributeInstances.push(tribute);
   }
 
-  async preview(event) {
+  // --- FIX: New validation method ---
+  validate() {
+    if (this.ruleTargets.length === 0) {
+      return "Please add at least one rule before proceeding.";
+    }
+
+    for (const ruleEl of this.ruleTargets) {
+      const ruleName = ruleEl.querySelector('[data-rule-action="name"]').value || "Unnamed Rule";
+      const conditions = ruleEl.querySelectorAll('[data-rule-editor-target="condition"]');
+
+      if (conditions.length === 0) {
+        return `Error in "${ruleName}": Each rule must have at least one 'If' condition.`;
+      }
+
+      for (const condEl of conditions) {
+        const column = condEl.querySelector('[data-rule-condition="column"]').value;
+        const operator = condEl.querySelector('[data-rule-condition="operator"]').value;
+        const value = condEl.querySelector('[data-rule-condition="value"]').value;
+        if (!column || !operator || value === '') {
+          return `Error in "${ruleName}": Please fill out all fields (Column, Operator, Value) in every condition.`;
+        }
+      }
+
+      const toColumn = ruleEl.querySelector('[data-rule-action="toColumn"]').value;
+      const subject = ruleEl.querySelector('[data-rule-action="subject"]').value;
+      const body = ruleEl.querySelector('[data-rule-action="body"]').value;
+      const sendAt = ruleEl.querySelector('[data-rule-action="oneTimeSendAt"]').value;
+
+      if (!toColumn || !subject || !body || !sendAt) {
+        return `Error in "${ruleName}": Please fill out all 'Then' action fields, including 'Email To', 'Subject', 'Body', and 'Send At'.`;
+      }
+    }
+
+    return null; // If all checks pass, return null (no error)
+  }
+
+  changePage(event) {
     event.preventDefault();
+    const page = event.currentTarget.dataset.page;
+    this.preview(event, page);
+  }
+
+  async preview(event, page = 1) {
+    event.preventDefault();
+
+    // FIX: Run validation before proceeding
+    const validationError = this.validate();
+    if (validationError) {
+      alert(validationError);
+      return;
+    }
+
+    const templateId = this.element.dataset.templateId;
+    if (!templateId) {
+      alert("Please save the template before running a preview.");
+      return;
+    }
+
     this.save();
     const rulesData = this.outputTarget.value;
     const spreadsheetUrl = document.querySelector('[data-form-verification-target="urlInput"]').value;
-    const templateId = this.element.closest("form").action.split('/').pop();
-    
+
     await post(`/templates/${templateId}/preview`, {
-      body: { rules_data: rulesData, spreadsheet_url: spreadsheetUrl },
+      body: { 
+        rules_data: rulesData, 
+        spreadsheet_url: spreadsheetUrl,
+        page: page
+      },
       responseKind: 'turbo-stream'
     });
   }
   
   async schedule(event) {
     event.preventDefault();
-    if (!confirm("Are you sure you want to schedule these actions? This will create automation jobs for all matching rows.")) {
+
+    // FIX: Run validation before proceeding
+    const validationError = this.validate();
+    if (validationError) {
+      alert(validationError);
       return;
     }
-    this.save();
 
+    const templateId = this.element.dataset.templateId;
+    if (!templateId) {
+      alert("Please save the template before scheduling actions.");
+      return;
+    }
+    if (!confirm("Are you sure? This will create automation jobs for all matching rows.")) return;
+    this.save();
     const rulesData = this.outputTarget.value;
     const spreadsheetUrl = document.querySelector('[data-form-verification-target="urlInput"]').value;
-    const templateId = this.element.closest("form").action.split('/').pop();
-
     const response = await post(`/templates/${templateId}/schedule`, {
-      body: {
-        rules_data: rulesData,
-        spreadsheet_url: spreadsheetUrl
-      },
+      body: { rules_data: rulesData, spreadsheet_url: spreadsheetUrl },
       responseKind: 'json'
     });
-
     if (response.ok) {
         const data = await response.json;
         alert(`Successfully scheduled ${data.scheduled_count} emails.`);
     } else {
         const errorData = await response.json;
-        alert(`Failed to schedule emails: ${errorData.error}`);
+        alert(`Failed to schedule: ${errorData.error}`);
     }
   }
 
   removeRule(event) {
     event.preventDefault();
-    const ruleElement = event.currentTarget.closest('[data-rule-editor-target="rule"]');
-    const tributeInputs = ruleElement.querySelectorAll('[data-mention-input="true"]');
-    this.tributeInstances.forEach(tribute => {
-      tribute.detach(tributeInputs);
-    });
-    ruleElement.remove();
+    event.currentTarget.closest('[data-rule-editor-target="rule"]').remove();
   }
 
   removeCondition(event) {
@@ -205,22 +236,22 @@ export default class extends Controller {
   save() {
     const rules = Array.from(this.ruleTargets).map(ruleEl => {
       const conditions = Array.from(ruleEl.querySelectorAll('[data-rule-editor-target="condition"]')).map(condEl => ({
-        column: condEl.querySelector('.condition-column').value,
-        operator: condEl.querySelector('.condition-operator').value,
-        value: condEl.querySelector('.condition-value').value
+        column: condEl.querySelector('[data-rule-condition="column"]').value,
+        operator: condEl.querySelector('[data-rule-condition="operator"]').value,
+        value: condEl.querySelector('[data-rule-condition="value"]').value
       }));
-      const isRepeating = ruleEl.querySelector('.action-is-repeating').checked;
       const action = {
         type: 'sendEmail',
-        toColumn: ruleEl.querySelector('.action-email-to').value,
-        subject: ruleEl.querySelector('.action-subject').value,
-        body: ruleEl.querySelector('.action-body').value,
-        isRepeating: isRepeating,
-        repeatFrequency: isRepeating ? ruleEl.querySelector('.action-repeat-frequency').value : null,
-        repeatDeadline: isRepeating ? ruleEl.querySelector('.action-repeat-deadline').value : null,
-        oneTimeSendAt: !isRepeating ? ruleEl.querySelector('.action-onetime-send-at').value : null,
+        toColumn: ruleEl.querySelector('[data-rule-action="toColumn"]').value,
+        subject: ruleEl.querySelector('[data-rule-action="subject"]').value,
+        body: ruleEl.querySelector('[data-rule-action="body"]').value,
+        oneTimeSendAt: ruleEl.querySelector('[data-rule-action="oneTimeSendAt"]').value,
       };
-      return { conditions, action };
+      return { 
+        name: ruleEl.querySelector('[data-rule-action="name"]').value,
+        conditions, 
+        action 
+      };
     });
     const finalData = { columns: this.columns, rules: rules };
     this.outputTarget.value = JSON.stringify(finalData);

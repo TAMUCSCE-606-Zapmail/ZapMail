@@ -28,7 +28,7 @@ RSpec.describe Automation, type: :model do
         enabled: true,
         action_data: { to: 'test@example.com' }
       )
-      
+
       expect(automation.template).to eq(template)
     end
 
@@ -41,7 +41,7 @@ RSpec.describe Automation, type: :model do
         enabled: true,
         action_data: { to: 'test@example.com' }
       )
-      
+
       expect(automation.user).to eq(user)
     end
   end
@@ -167,14 +167,14 @@ RSpec.describe Automation, type: :model do
     describe '.completed' do
       it 'returns only completed automations' do
         result = Automation.completed
-        expect(result).to eq([completed_automation])
+        expect(result).to eq([ completed_automation ])
       end
     end
 
     describe '.failed' do
       it 'returns only failed automations' do
         result = Automation.failed
-        expect(result).to eq([failed_automation])
+        expect(result).to eq([ failed_automation ])
       end
     end
 

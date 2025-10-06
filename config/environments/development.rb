@@ -31,14 +31,24 @@ Rails.application.configure do
   # Store uploaded files on the local file system (see config/storage.yml for options).
   config.active_storage.service = :local
 
+
+  # --- FIX: EXPLICITLY CONFIGURE ACTION MAILER ---
   # Don't care if the mailer can't send.
   config.action_mailer.raise_delivery_errors = false
 
   # Make template changes take effect immediately.
   config.action_mailer.perform_caching = false
 
+  # This is the most important line. It tells Rails to use the Letter Opener gem.
+  config.action_mailer.delivery_method = :letter_opener_web
+
+  # This ensures that emails are actually "delivered" to Letter Opener.
+  config.action_mailer.perform_deliveries = true
+
   # Set localhost to be used by links generated in mailer templates.
   config.action_mailer.default_url_options = { host: "localhost", port: 3000 }
+  # --- END OF FIX ---
+
 
   # Print deprecation notices to the Rails logger.
   config.active_support.deprecation = :log

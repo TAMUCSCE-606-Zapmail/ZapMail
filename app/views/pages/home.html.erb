@@ -1,0 +1,135 @@
+<%#
+  This is the complete, refactored landing page with a TAMU-themed SVG background,
+  on-scroll animations, and corrected navigation.
+%>
+<div data-controller="home-animations" class="min-h-screen bg-tamu-gray-light flex flex-col">
+
+  <!-- HERO SECTION -->
+  <section class="relative bg-tamu-maroon text-tamu-white py-20 flex flex-col items-center text-center overflow-hidden">
+    
+    <%# --- SVG Background --- %>
+    <%# This is a subtle, decorative SVG of Texas that animates in the background. %>
+    <div class="absolute inset-0 z-100 bg-tamu-gray">
+      <%= image_tag "texas-bg.svg", class: "w-full h-full" %>
+    </div>
+    
+    <div class="relative z-10">
+      <div class="w-32 h-32 mb-8 mx-auto rounded-full bg-white flex items-center justify-center shadow-2xl backdrop-blur-sm animate-fade-in">
+        <%= image_tag "zapmail-logo.png", alt: "ZapMail Logo", class: "w-24 h-24 object-contain" %>
+      </div>
+      <h1 class="text-5xl font-bold mb-4 animate-fade-in-up" style="animation-delay: 200ms;">Welcome to ZapMail</h1>
+      <p class="text-xl max-w-3xl mx-auto animate-fade-in-up" style="animation-delay: 400ms;">
+        Automate your email campaigns with a click of a button. Streamline your workflows and save time for what matters most.
+      </p>
+      <div class="mt-8 flex gap-4 justify-center animate-fade-in-up" style="animation-delay: 600ms;">
+        <%# This now correctly points to the templates page, which will redirect to login if the user is not signed in. %>
+        <%= link_to "Get Started", templates_path, class: "transition hover:bg-tamu-accent-bright bg-tamu-accent text-tamu-white px-8 py-3 rounded-lg font-semibold shadow-lg hover:shadow-xl transform hover:-translate-y-0.5" %>
+        <%= link_to "Learn More", "#about", class: "border-2 border-tamu-white/50 hover:bg-tamu-white hover:text-tamu-maroon px-8 py-3 rounded-lg font-semibold transition-colors" %>
+      </div>
+    </div>
+  </section>
+
+  <!-- ABOUT / MISSION SECTION -->
+  <section id="about" class="py-20 px-6 bg-tamu-gray-light text-tamu-gray-800" data-animate="fade-in-up">
+    <div class="max-w-4xl mx-auto text-center">
+      <h2 class="text-4xl font-bold mb-6 text-tamu-maroon animate-fade-in-up" style="animation-delay: 800ms;">Our Mission</h2>
+      <p class="text-lg leading-relaxed mb-4 animate-fade-in-up" style="animation-delay: 1s;">
+        We are students at Texas A&M University taking <strong>CSCE 606 Software Engineering</strong>. 
+        We built ZapMail to learn, grow, and create a tool that is useful for automating email campaigns. 
+        Our goal is to simplify repetitive workflows so users can focus on the creative aspects of their campaigns.
+      </p>
+      <p class="text-lg leading-relaxed animate-fade-in-up" style="animation-delay: 1.2s;">
+        ZapMail allows you to manage, schedule, and streamline your email campaigns effortlessly — giving you more time to focus on what matters.
+      </p>
+    </div>
+  </section>
+
+  <!-- CONTRIBUTORS SECTION -->
+  <section id="contributors" class="py-20 px-6 bg-white" data-animate="fade-in-up">
+    <div class="max-w-6xl mx-auto text-center">
+      <h2 class="text-4xl font-bold mb-12 text-tamu-maroon animate-fade-in-up" style="animation-delay: 1.4s;">Contributors</h2>
+      <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8 animate-fade-in-up" style="animation-delay: 1.4s;">
+        <%# Contributor Card with improved hover effect %>
+        <div class="bg-tamu-gray-light rounded-lg p-6 shadow-md hover:shadow-xl hover:-translate-y-2 transition-all duration-300">
+          <p class="text-xl font-semibold mb-2 text-tamu-gray-800">Aurora Jitrskul</p>
+          <p class="text-tamu-gray-700 text-sm">TAMU Undergraduate Student</p>
+        </div>
+        <div class="bg-tamu-gray-light rounded-lg p-6 shadow-md hover:shadow-xl hover:-translate-y-2 transition-all duration-300">
+          <p class="text-xl font-semibold mb-2 text-tamu-gray-800">Pradeep Periyasamy</p>
+          <p class="text-tamu-gray-700 text-sm">TAMU Master's Student</p>
+        </div>
+        <div class="bg-tamu-gray-light rounded-lg p-6 shadow-md hover:shadow-xl hover:-translate-y-2 transition-all duration-300">
+          <p class="text-xl font-semibold mb-2 text-tamu-gray-800">Charlie Chiu</p>
+          <p class="text-tamu-gray-700 text-sm">TAMU Master's Student</p>
+        </div>
+        <div class="bg-tamu-gray-light rounded-lg p-6 shadow-md hover:shadow-xl hover:-translate-y-2 transition-all duration-300">
+          <p class="text-xl font-semibold mb-2 text-tamu-gray-800">Wang Yifei</p>
+          <p class="text-tamu-gray-700 text-sm">TAMU Master's Student</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- FOOTER -->
+  <footer class="bg-tamu-maroon text-tamu-white py-6 mt-auto text-center">
+    <p class="text-sm">&copy; <%= Time.current.year %> ZapMail | Built by Texas A&M CSCE 606 Students</p>
+  </footer>
+
+</div>
+
+<%# --- JAVASCRIPT FOR ANIMATIONS --- %>
+<%# This script adds the on-scroll fade-in animations for a more dynamic feel. %>
+<script>
+  document.addEventListener("DOMContentLoaded", () => {
+    // Define the animations in the stylesheet for Tailwind JIT
+    const animationStyles = `
+      @keyframes fadeIn {
+        from { opacity: 0; }
+        to { opacity: 1; }
+      }
+      @keyframes fadeInUp {
+        from { opacity: 0; transform: translateY(20px); }
+        to { opacity: 1; transform: translateY(0); }
+      }
+      .animate-fade-in { animation: fadeIn 1s ease-out forwards; }
+      .animate-fade-in-slow { animation: fadeIn 2s ease-out forwards; }
+      .animate-fade-in-up { animation: fadeInUp 0.8s ease-out forwards; }
+    `;
+    const styleSheet = document.createElement("style");
+    styleSheet.innerText = animationStyles;
+    document.head.appendChild(styleSheet);
+
+    const animatedElements = document.querySelectorAll('[data-animate]');
+    
+    const observer = new IntersectionObserver((entries) => {
+      entries.forEach(entry => {
+        if (entry.isIntersecting) {
+          entry.target.classList.add('is-visible');
+          observer.unobserve(entry.target);
+        }
+      });
+    }, {
+      threshold: 0.1
+    });
+
+    animatedElements.forEach(el => {
+      observer.observe(el);
+    });
+    
+    // Add initial hidden states for on-scroll animations
+    const onScrollStyles = `
+      [data-animate] {
+        opacity: 0;
+        transform: translateY(30px);
+        transition: opacity 0.6s ease-out, transform 0.6s ease-out;
+      }
+      [data-animate].is-visible {
+        opacity: 1;
+        transform: translateY(0);
+      }
+    `;
+    const onScrollStyleSheet = document.createElement("style");
+    onScrollStyleSheet.innerText = onScrollStyles;
+    document.head.appendChild(onScrollStyleSheet);
+  });
+</script>

@@ -32,18 +32,19 @@ RSpec.describe User, type: :model do
     end
 
     it "rejects if password confirmation does not match" do
-  user = User.new(
-    name: "yifei",
-    email: "yifeiwang@tamu.edu",
-    password: "newpassword",
-    password_confirmation: "wrongpassword"
-  )
-  expect(user).not_to be_valid
-  expect(user.errors[:password_confirmation]).to include("doesn't match Password")
-end
+      user = User.new(
+        name: "yifei",
+        email: "yifeiwang@tamu.edu",
+        password: "newpassword",
+        password_confirmation: "wrongpassword"
+      )
+      expect(user).not_to be_valid
+      expect(user.errors[:password_confirmation]).to include("doesn't match Password")
+    end
 
-#blank password won't overwrite old password
- it "allows profile update without changing password (blank password)" do
+
+    # blank password won't overwrite old password
+    it "allows profile update without changing password (blank password)" do
       user = User.create!(
         name: "Yifei",
         email: "yifei@example.com",
@@ -56,8 +57,8 @@ end
       expect(user).to be_valid
       expect(user.authenticate("password123")).to eq(user)  # original password still works
     end
-end
-end
+  end
+
   describe 'associations' do
     it 'has many templates' do
       user = User.create!(
@@ -66,13 +67,13 @@ end
         password: 'password123',
         password_confirmation: 'password123'
       )
-      
+
       template = user.templates.create!(
         name: 'Test Template',
         spreadsheet_url: 'https://docs.google.com/spreadsheets/d/1BItHXS8Hh0xeunjWj04yi91djUt5CVxsk6w61iTC8zE/edit?gid=0#gid=0',
         rules_data: { columns: [], rules: [] }
       )
-      
+
       expect(user.templates).to include(template)
     end
 
@@ -83,13 +84,13 @@ end
         password: 'password123',
         password_confirmation: 'password123'
       )
-      
+
       template = user.templates.create!(
         name: 'Test Template',
         spreadsheet_url: 'https://docs.google.com/spreadsheets/d/1BItHXS8Hh0xeunjWj04yi91djUt5CVxsk6w61iTC8zE/edit?gid=0#gid=0',
         rules_data: { columns: [], rules: [] }
       )
-      
+
       automation = user.automations.create!(
         template: template,
         status: 'scheduled',
@@ -97,7 +98,7 @@ end
         enabled: true,
         action_data: { to: 'test@example.com', subject: 'Test', body: 'Body' }
       )
-      
+
       expect(user.automations).to include(automation)
     end
 
@@ -108,13 +109,13 @@ end
         password: 'password123',
         password_confirmation: 'password123'
       )
-      
+
       template = user.templates.create!(
         name: 'Test Template',
         spreadsheet_url: 'https://docs.google.com/spreadsheets/d/1BItHXS8Hh0xeunjWj04yi91djUt5CVxsk6w61iTC8zE/edit?gid=0#gid=0',
         rules_data: { columns: [], rules: [] }
       )
-      
+
       automation = user.automations.create!(
         template: template,
         status: 'scheduled',
@@ -122,9 +123,9 @@ end
         enabled: true,
         action_data: { to: 'test@example.com', subject: 'Test', body: 'Body' }
       )
-      
+
       automation_id = automation.id
-      
+
       expect { user.destroy }.to change { Automation.count }.by(-1)
       expect(Automation.find_by(id: automation_id)).to be_nil
     end
