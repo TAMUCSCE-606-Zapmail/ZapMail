@@ -1,0 +1,23 @@
+<%# app/views/sessions/new.html.erb %>
+<div class="max-w-md mx-auto bg-white p-8 rounded-lg shadow-md">
+  <h1 class="text-3xl font-bold text-center text-gray-800 mb-6">Log In</h1>  
+  <%= form_with(url: login_path, local: true, scope: :session, data: { turbo: false }, class: "space-y-6") do |form| %>
+    <div>
+      <%= form.label :email, class: "block text-sm font-medium text-gray-700" %>
+      <%= form.email_field :email, class: "mt-1 block w-full px-3 py-2 border rounded-md shadow-sm form-input focus:outline-none", required: true %>
+    </div>
+
+    <div>
+      <%= form.label :password, class: "block text-sm font-medium text-gray-700" %>
+      <%= form.password_field :password, class: "mt-1 block w-full px-3 py-2 border rounded-md shadow-sm form-input focus:outline-none", required: true %>
+    </div>
+    
+    <div class="text-center">
+      <%= form.submit "Log In", class: "w-full cursor-pointer btn-primary font-semibold py-3 px-4 rounded-lg hover:bg-tamu-white hover:text-tamu-maroon transition duration-200 bg-tamu-maroon text-tamu-white border border-tamu-maroon" %>
+    </div>
+  <% end %>
+
+  <p class="text-center mt-6 text-sm text-gray-600">
+    Don't have an account? <%= link_to 'Sign Up', signup_path, class: 'link-primary font-medium' %>
+  </p>
+</div>

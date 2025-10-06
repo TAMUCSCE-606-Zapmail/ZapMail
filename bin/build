@@ -1,0 +1,8 @@
+#!/usr/bin/env bash
+#
+# This script runs during the Heroku build process.
+# It explicitly tells Rails to build the assets using the importmap command.
+
+set -eo pipefail
+
+bundle exec rails importmap:build

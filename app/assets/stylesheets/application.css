@@ -1,10 +1,89 @@
-/*
- * This is a manifest file that'll be compiled into application.css.
- *
- * With Propshaft, assets are served efficiently without preprocessing steps. You can still include
- * application-wide styles in this file, but keep in mind that CSS precedence will follow the standard
- * cascading order, meaning styles declared later in the document or manifest will override earlier ones,
- * depending on specificity.
- *
- * Consider organizing styles into separate files for maintainability.
- */
+.tribute-container {
+  background-color: white;
+  font-family: "Arial", sans-serif;
+  z-index: 1000; /* make sure it's above other elements */
+  color: black;
+  margin-top: 10px;
+  border-radius: 0.25rem;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+}
+
+.tribute-container li {
+  padding: 6px 12px;
+  cursor: pointer;
+}
+
+.tribute-container li:hover {
+    background-color: rgb(240, 240, 240);
+}
+
+.tribute-container li.tribute-highlight {
+  background-color: var(--tamu-maroon);
+  color: white;
+}
+
+/* app/assets/stylesheets/application.css or tailwind.css */
+.flash-notifier {
+  position: fixed;      /* stays at top of screen */
+  top: 1rem;            /* small margin from top */
+  left: 50%;            /* center horizontally */
+  transform: translateX(-50%);
+  z-index: 50;          /* on top of everything */
+  max-width: 90%;       /* optional: constrain width */
+  text-align: center;   /* center text */
+}
+
+/* --- TAMU Custom Tailwind-like Utilities --- */
+
+/* Text colors */
+.text-tamu-maroon { color: var(--tamu-maroon); }
+.text-tamu-white { color: var(--tamu-white); }
+.text-tamu-gray-light { color: var(--tamu-gray-light); }
+.text-tamu-gray-medium { color: var(--tamu-gray-medium); }
+.text-tamu-gray-dark { color: var(--tamu-gray-dark); }
+.text-tamu-accent { color: var(--tamu-accent); }
+
+/* Background colors */
+.bg-tamu-maroon { background-color: var(--tamu-maroon); }
+.bg-tamu-white { background-color: var(--tamu-white); }
+.bg-tamu-gray-light { background-color: var(--tamu-gray-light); }
+.bg-tamu-gray-medium { background-color: var(--tamu-gray-medium); }
+.bg-tamu-gray-dark { background-color: var(--tamu-gray-dark); }
+.bg-tamu-accent { background-color: var(--tamu-accent); }
+
+/* Border colors */
+.border-tamu-maroon { border-color: var(--tamu-maroon); }
+.border-tamu-white { border-color: var(--tamu-white); }
+.border-tamu-gray-light { border-color: var(--tamu-gray-light); }
+.border-tamu-gray-medium { border-color: var(--tamu-gray-medium); }
+.border-tamu-gray-dark { border-color: var(--tamu-gray-dark); }
+.border-tamu-accent { border-color: var(--tamu-accent); }
+
+/* Background color hover */
+.hover\:bg-tamu-maroon:hover { background-color: var(--tamu-maroon); }
+.hover\:bg-tamu-white:hover { background-color: var(--tamu-white); }
+.hover\:bg-tamu-gray-light:hover { background-color: var(--tamu-gray-light); }
+.hover\:bg-tamu-gray-medium:hover { background-color: var(--tamu-gray-medium); }
+.hover\:bg-tamu-gray-dark:hover { background-color: var(--tamu-gray-dark); }
+.hover\:bg-tamu-accent:hover { background-color: var(--tamu-accent); }
+/* Hover background for TAMU accent (gold) */
+.hover\:bg-tamu-accent-bright:hover {
+  background-color: #C59B6B; /* brighter gold variant */
+}
+
+/* Text color hover */
+.hover\:text-tamu-maroon:hover { color: var(--tamu-maroon); }
+.hover\:text-tamu-white:hover { color: var(--tamu-white); }
+.hover\:text-tamu-gray-light:hover { color: var(--tamu-gray-light); }
+.hover\:text-tamu-gray-medium:hover { color: var(--tamu-gray-medium); }
+.hover\:text-tamu-gray-dark:hover { color: var(--tamu-gray-dark); }
+.hover\:text-tamu-accent:hover { color: var(--tamu-accent); }
+
+/* Border color hover */
+.hover\:border-tamu-maroon:hover { border-color: var(--tamu-maroon); }
+.hover\:border-tamu-white:hover { border-color: var(--tamu-white); }
+.hover\:border-tamu-gray-light:hover { border-color: var(--tamu-gray-light); }
+.hover\:border-tamu-gray-medium:hover { border-color: var(--tamu-gray-medium); }
+.hover\:border-tamu-gray-dark:hover { border-color: var(--tamu-gray-dark); }
+.hover\:border-tamu-accent:hover { border-color: var(--tamu-accent); }
+
