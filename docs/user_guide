@@ -474,7 +474,6 @@ Click on a template to expand and see details. Available actions:
 2. Confirm deletion when prompted
 3. Template is permanently removed
 
-**Warning**: Deleting a template does NOT cancel scheduled emails created from that template. Scheduled emails will still be sent.
 
 ---
 
