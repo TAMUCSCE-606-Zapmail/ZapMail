@@ -3,7 +3,7 @@ ruby "3.4.5"
 
 # --- CORE GEMS (needed everywhere) ---
 gem "rails", "~> 8.0.2", ">= 8.0.2.1"
-gem "pg", "~> 1.1" # For PostgreSQL
+gem "pg", "~> 1.6" # For PostgreSQL
 gem "puma", ">= 5.0"
 gem "jbuilder"
 gem "dotenv-rails"
